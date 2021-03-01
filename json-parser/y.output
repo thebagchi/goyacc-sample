@@ -1,0 +1,290 @@
+
+state 0
+	$accept: .ParseJson $end 
+
+	CURLY_START  shift 6
+	SQUARE_START  shift 7
+	MINUS  shift 12
+	TokenNumber  shift 11
+	TokenString  shift 10
+	TokenBoolean  shift 9
+	TokenNull  shift 13
+	.  error
+
+	ParseString  goto 4
+	ParseNumber  goto 5
+	ParseBoolean  goto 3
+	ParseValue  goto 2
+	ParseNull  goto 8
+	ParseJson  goto 1
+
+state 1
+	$accept:  ParseJson.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	ParseJson:  ParseValue.    (1)
+
+	.  reduce 1 (src line 51)
+
+
+state 3
+	ParseValue:  ParseBoolean.    (2)
+
+	.  reduce 2 (src line 56)
+
+
+state 4
+	ParseValue:  ParseString.    (3)
+
+	.  reduce 3 (src line 60)
+
+
+state 5
+	ParseValue:  ParseNumber.    (4)
+
+	.  reduce 4 (src line 63)
+
+
+state 6
+	ParseValue:  CURLY_START.ParseDict CURLY_END 
+
+	DOUBLE_QUOTE  shift 15
+	.  error
+
+	ParseDict  goto 14
+
+state 7
+	ParseValue:  SQUARE_START.ParseList SQUARE_END 
+
+	CURLY_START  shift 6
+	SQUARE_START  shift 7
+	MINUS  shift 12
+	TokenNumber  shift 11
+	TokenString  shift 10
+	TokenBoolean  shift 9
+	TokenNull  shift 13
+	.  error
+
+	ParseString  goto 4
+	ParseNumber  goto 5
+	ParseBoolean  goto 3
+	ParseList  goto 16
+	ParseValue  goto 17
+	ParseNull  goto 8
+
+state 8
+	ParseValue:  ParseNull.    (7)
+
+	.  reduce 7 (src line 72)
+
+
+state 9
+	ParseBoolean:  TokenBoolean.    (15)
+
+	.  reduce 15 (src line 111)
+
+
+state 10
+	ParseString:  TokenString.    (8)
+
+	.  reduce 8 (src line 76)
+
+
+state 11
+	ParseNumber:  TokenNumber.    (9)
+
+	.  reduce 9 (src line 81)
+
+
+state 12
+	ParseNumber:  MINUS.TokenNumber 
+
+	TokenNumber  shift 18
+	.  error
+
+
+state 13
+	ParseNull:  TokenNull.    (16)
+
+	.  reduce 16 (src line 116)
+
+
+state 14
+	ParseValue:  CURLY_START ParseDict.CURLY_END 
+	ParseDict:  ParseDict.COMMA DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON ParseValue 
+
+	CURLY_END  shift 19
+	COMMA  shift 20
+	.  error
+
+
+state 15
+	ParseDict:  DOUBLE_QUOTE.TokenString DOUBLE_QUOTE COLON ParseValue 
+
+	TokenString  shift 21
+	.  error
+
+
+state 16
+	ParseValue:  SQUARE_START ParseList.SQUARE_END 
+	ParseList:  ParseList.COMMA ParseValue 
+
+	SQUARE_END  shift 22
+	COMMA  shift 23
+	.  error
+
+
+state 17
+	ParseList:  ParseValue.    (13)
+
+	.  reduce 13 (src line 100)
+
+
+state 18
+	ParseNumber:  MINUS TokenNumber.    (10)
+
+	.  reduce 10 (src line 85)
+
+
+state 19
+	ParseValue:  CURLY_START ParseDict CURLY_END.    (5)
+
+	.  reduce 5 (src line 66)
+
+
+state 20
+	ParseDict:  ParseDict COMMA.DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON ParseValue 
+
+	DOUBLE_QUOTE  shift 24
+	.  error
+
+
+state 21
+	ParseDict:  DOUBLE_QUOTE TokenString.DOUBLE_QUOTE COLON ParseValue 
+
+	DOUBLE_QUOTE  shift 25
+	.  error
+
+
+state 22
+	ParseValue:  SQUARE_START ParseList SQUARE_END.    (6)
+
+	.  reduce 6 (src line 69)
+
+
+state 23
+	ParseList:  ParseList COMMA.ParseValue 
+
+	CURLY_START  shift 6
+	SQUARE_START  shift 7
+	MINUS  shift 12
+	TokenNumber  shift 11
+	TokenString  shift 10
+	TokenBoolean  shift 9
+	TokenNull  shift 13
+	.  error
+
+	ParseString  goto 4
+	ParseNumber  goto 5
+	ParseBoolean  goto 3
+	ParseValue  goto 26
+	ParseNull  goto 8
+
+state 24
+	ParseDict:  ParseDict COMMA DOUBLE_QUOTE.TokenString DOUBLE_QUOTE COLON ParseValue 
+
+	TokenString  shift 27
+	.  error
+
+
+state 25
+	ParseDict:  DOUBLE_QUOTE TokenString DOUBLE_QUOTE.COLON ParseValue 
+
+	COLON  shift 28
+	.  error
+
+
+state 26
+	ParseList:  ParseList COMMA ParseValue.    (14)
+
+	.  reduce 14 (src line 106)
+
+
+state 27
+	ParseDict:  ParseDict COMMA DOUBLE_QUOTE TokenString.DOUBLE_QUOTE COLON ParseValue 
+
+	DOUBLE_QUOTE  shift 29
+	.  error
+
+
+state 28
+	ParseDict:  DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON.ParseValue 
+
+	CURLY_START  shift 6
+	SQUARE_START  shift 7
+	MINUS  shift 12
+	TokenNumber  shift 11
+	TokenString  shift 10
+	TokenBoolean  shift 9
+	TokenNull  shift 13
+	.  error
+
+	ParseString  goto 4
+	ParseNumber  goto 5
+	ParseBoolean  goto 3
+	ParseValue  goto 30
+	ParseNull  goto 8
+
+state 29
+	ParseDict:  ParseDict COMMA DOUBLE_QUOTE TokenString DOUBLE_QUOTE.COLON ParseValue 
+
+	COLON  shift 31
+	.  error
+
+
+state 30
+	ParseDict:  DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON ParseValue.    (11)
+
+	.  reduce 11 (src line 89)
+
+
+state 31
+	ParseDict:  ParseDict COMMA DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON.ParseValue 
+
+	CURLY_START  shift 6
+	SQUARE_START  shift 7
+	MINUS  shift 12
+	TokenNumber  shift 11
+	TokenString  shift 10
+	TokenBoolean  shift 9
+	TokenNull  shift 13
+	.  error
+
+	ParseString  goto 4
+	ParseNumber  goto 5
+	ParseBoolean  goto 3
+	ParseValue  goto 32
+	ParseNull  goto 8
+
+state 32
+	ParseDict:  ParseDict COMMA DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON ParseValue.    (12)
+
+	.  reduce 12 (src line 95)
+
+
+18 terminals, 9 nonterminals
+17 grammar rules, 33/16000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+58 working sets used
+memory: parser 35/240000
+16 extra closures
+48 shift entries, 1 exceptions
+12 goto entries
+16 entries saved by goto default
+Optimizer space used: output 33/240000
+33 table entries, 1 zero
+maximum spread: 15, maximum offset: 31
