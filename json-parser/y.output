@@ -52,7 +52,7 @@ state 5
 state 6
 	ParseValue:  CURLY_START.ParseDict CURLY_END 
 
-	DOUBLE_QUOTE  shift 15
+	TokenString  shift 15
 	.  error
 
 	ParseDict  goto 14
@@ -115,7 +115,7 @@ state 13
 
 state 14
 	ParseValue:  CURLY_START ParseDict.CURLY_END 
-	ParseDict:  ParseDict.COMMA DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON ParseValue 
+	ParseDict:  ParseDict.COMMA TokenString COLON ParseValue 
 
 	CURLY_END  shift 19
 	COMMA  shift 20
@@ -123,9 +123,9 @@ state 14
 
 
 state 15
-	ParseDict:  DOUBLE_QUOTE.TokenString DOUBLE_QUOTE COLON ParseValue 
+	ParseDict:  TokenString.COLON ParseValue 
 
-	TokenString  shift 21
+	COLON  shift 21
 	.  error
 
 
@@ -157,18 +157,29 @@ state 19
 
 
 state 20
-	ParseDict:  ParseDict COMMA.DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON ParseValue 
+	ParseDict:  ParseDict COMMA.TokenString COLON ParseValue 
 
-	DOUBLE_QUOTE  shift 24
+	TokenString  shift 24
 	.  error
 
 
 state 21
-	ParseDict:  DOUBLE_QUOTE TokenString.DOUBLE_QUOTE COLON ParseValue 
+	ParseDict:  TokenString COLON.ParseValue 
 
-	DOUBLE_QUOTE  shift 25
+	CURLY_START  shift 6
+	SQUARE_START  shift 7
+	MINUS  shift 12
+	TokenNumber  shift 11
+	TokenString  shift 10
+	TokenBoolean  shift 9
+	TokenNull  shift 13
 	.  error
 
+	ParseString  goto 4
+	ParseNumber  goto 5
+	ParseBoolean  goto 3
+	ParseValue  goto 25
+	ParseNull  goto 8
 
 state 22
 	ParseValue:  SQUARE_START ParseList SQUARE_END.    (6)
@@ -195,17 +206,16 @@ state 23
 	ParseNull  goto 8
 
 state 24
-	ParseDict:  ParseDict COMMA DOUBLE_QUOTE.TokenString DOUBLE_QUOTE COLON ParseValue 
+	ParseDict:  ParseDict COMMA TokenString.COLON ParseValue 
 
-	TokenString  shift 27
+	COLON  shift 27
 	.  error
 
 
 state 25
-	ParseDict:  DOUBLE_QUOTE TokenString DOUBLE_QUOTE.COLON ParseValue 
+	ParseDict:  TokenString COLON ParseValue.    (11)
 
-	COLON  shift 28
-	.  error
+	.  reduce 11 (src line 89)
 
 
 state 26
@@ -215,76 +225,38 @@ state 26
 
 
 state 27
-	ParseDict:  ParseDict COMMA DOUBLE_QUOTE TokenString.DOUBLE_QUOTE COLON ParseValue 
+	ParseDict:  ParseDict COMMA TokenString COLON.ParseValue 
 
-	DOUBLE_QUOTE  shift 29
+	CURLY_START  shift 6
+	SQUARE_START  shift 7
+	MINUS  shift 12
+	TokenNumber  shift 11
+	TokenString  shift 10
+	TokenBoolean  shift 9
+	TokenNull  shift 13
 	.  error
 
+	ParseString  goto 4
+	ParseNumber  goto 5
+	ParseBoolean  goto 3
+	ParseValue  goto 28
+	ParseNull  goto 8
 
 state 28
-	ParseDict:  DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON.ParseValue 
-
-	CURLY_START  shift 6
-	SQUARE_START  shift 7
-	MINUS  shift 12
-	TokenNumber  shift 11
-	TokenString  shift 10
-	TokenBoolean  shift 9
-	TokenNull  shift 13
-	.  error
-
-	ParseString  goto 4
-	ParseNumber  goto 5
-	ParseBoolean  goto 3
-	ParseValue  goto 30
-	ParseNull  goto 8
-
-state 29
-	ParseDict:  ParseDict COMMA DOUBLE_QUOTE TokenString DOUBLE_QUOTE.COLON ParseValue 
-
-	COLON  shift 31
-	.  error
-
-
-state 30
-	ParseDict:  DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON ParseValue.    (11)
-
-	.  reduce 11 (src line 89)
-
-
-state 31
-	ParseDict:  ParseDict COMMA DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON.ParseValue 
-
-	CURLY_START  shift 6
-	SQUARE_START  shift 7
-	MINUS  shift 12
-	TokenNumber  shift 11
-	TokenString  shift 10
-	TokenBoolean  shift 9
-	TokenNull  shift 13
-	.  error
-
-	ParseString  goto 4
-	ParseNumber  goto 5
-	ParseBoolean  goto 3
-	ParseValue  goto 32
-	ParseNull  goto 8
-
-state 32
-	ParseDict:  ParseDict COMMA DOUBLE_QUOTE TokenString DOUBLE_QUOTE COLON ParseValue.    (12)
+	ParseDict:  ParseDict COMMA TokenString COLON ParseValue.    (12)
 
 	.  reduce 12 (src line 95)
 
 
 18 terminals, 9 nonterminals
-17 grammar rules, 33/16000 states
+17 grammar rules, 29/16000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
 58 working sets used
 memory: parser 35/240000
 16 extra closures
-48 shift entries, 1 exceptions
+44 shift entries, 1 exceptions
 12 goto entries
 16 entries saved by goto default
-Optimizer space used: output 33/240000
-33 table entries, 1 zero
-maximum spread: 15, maximum offset: 31
+Optimizer space used: output 29/240000
+29 table entries, 1 zero
+maximum spread: 15, maximum offset: 27

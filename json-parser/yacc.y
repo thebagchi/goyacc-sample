@@ -3,7 +3,7 @@
 package main
 
 func SetResult(l yyLexer, v interface{}) {
-  l.(*Parser)._Result = v
+  l.(*Parser).Result = v
 }
 
 %}
@@ -64,10 +64,10 @@ ParseValue:
         $$ = $1
     }
   | CURLY_START ParseDict CURLY_END {
-        $$ = $1
+        $$ = $2
     }
   | SQUARE_START ParseList SQUARE_END {
-        $$ = $1
+        $$ = $2
     }
   | ParseNull {
         $$ = nil

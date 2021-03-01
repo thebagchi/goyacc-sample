@@ -4,7 +4,7 @@ package main
 import __yyfmt__ "fmt"
 
 func SetResult(l yyLexer, v interface{}) {
-	l.(*Parser)._Result = v
+	l.(*Parser).Result = v
 }
 
 type yySymType struct {
@@ -70,24 +70,22 @@ var yyExca = [...]int{
 
 const yyPrivate = 57344
 
-const yyLast = 33
+const yyLast = 29
 
 var yyAct = [...]int{
-	2, 27, 6, 21, 7, 18, 31, 28, 17, 12,
-	11, 10, 9, 13, 22, 19, 23, 29, 1, 20,
-	25, 24, 15, 8, 26, 16, 14, 3, 5, 30,
-	4, 0, 32,
+	2, 24, 6, 15, 7, 18, 27, 21, 17, 12,
+	11, 10, 9, 13, 22, 19, 23, 1, 8, 20,
+	16, 14, 25, 3, 26, 5, 4, 0, 28,
 }
 
 var yyPact = [...]int{
-	-2, -1000, -1000, -1000, -1000, -1000, 14, -2, -1000, -1000,
-	-1000, -1000, -7, -1000, 10, -10, 7, -1000, -1000, -1000,
-	13, 12, -1000, -2, -12, -3, -1000, 9, -2, -4,
-	-1000, -2, -1000,
+	-2, -1000, -1000, -1000, -1000, -1000, -10, -2, -1000, -1000,
+	-1000, -1000, -7, -1000, 10, -3, 7, -1000, -1000, -1000,
+	-12, -2, -1000, -2, -4, -1000, -1000, -2, -1000,
 }
 
 var yyPgo = [...]int{
-	0, 30, 28, 27, 26, 25, 0, 23, 18,
+	0, 26, 25, 23, 21, 20, 0, 18, 17,
 }
 
 var yyR1 = [...]int{
@@ -97,21 +95,19 @@ var yyR1 = [...]int{
 
 var yyR2 = [...]int{
 	0, 1, 1, 1, 1, 3, 3, 1, 1, 1,
-	2, 5, 7, 1, 3, 1, 1,
+	2, 3, 5, 1, 3, 1, 1,
 }
 
 var yyChk = [...]int{
 	-1000, -8, -6, -3, -1, -2, 4, 6, -7, 14,
-	13, 12, 11, 15, -4, 8, -5, -6, 12, 5,
-	9, 13, 7, 9, 8, 8, -6, 13, 10, 8,
-	-6, 10, -6,
+	13, 12, 11, 15, -4, 13, -5, -6, 12, 5,
+	9, 10, 7, 9, 13, -6, -6, 10, -6,
 }
 
 var yyDef = [...]int{
 	0, -2, 1, 2, 3, 4, 0, 0, 7, 15,
 	8, 9, 0, 16, 0, 0, 0, 13, 10, 5,
-	0, 0, 6, 0, 0, 0, 14, 0, 0, 0,
-	11, 0, 12,
+	0, 0, 6, 0, 0, 11, 14, 0, 12,
 }
 
 var yyTok1 = [...]int{
@@ -485,12 +481,12 @@ yydefault:
 	case 5:
 		yyDollar = yyS[yypt-3 : yypt+1]
 		{
-			yyVAL.TypeValue = yyDollar[1].TypeToken
+			yyVAL.TypeValue = yyDollar[2].TypeObject
 		}
 	case 6:
 		yyDollar = yyS[yypt-3 : yypt+1]
 		{
-			yyVAL.TypeValue = yyDollar[1].TypeToken
+			yyVAL.TypeValue = yyDollar[2].TypeList
 		}
 	case 7:
 		yyDollar = yyS[yypt-1 : yypt+1]
@@ -513,17 +509,17 @@ yydefault:
 			yyVAL.TypeNumber = (-1) * yyDollar[2].TypeNumber
 		}
 	case 11:
-		yyDollar = yyS[yypt-5 : yypt+1]
+		yyDollar = yyS[yypt-3 : yypt+1]
 		{
 			yyVAL.TypeObject = map[string]interface{}{
-				yyDollar[2].TypeString: yyDollar[5].TypeValue,
+				yyDollar[1].TypeString: yyDollar[3].TypeValue,
 			}
 		}
 	case 12:
-		yyDollar = yyS[yypt-7 : yypt+1]
+		yyDollar = yyS[yypt-5 : yypt+1]
 		{
 			yyVAL.TypeObject = yyDollar[1].TypeObject
-			yyVAL.TypeObject[yyDollar[4].TypeString] = yyDollar[7].TypeValue
+			yyVAL.TypeObject[yyDollar[3].TypeString] = yyDollar[5].TypeValue
 		}
 	case 13:
 		yyDollar = yyS[yypt-1 : yypt+1]

@@ -5,7 +5,9 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"os"
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -106,33 +108,106 @@ func (p *Parser) Lex(lval *yySymType) int {
 }
 
 func (p *Parser) ParseNull() (struct{}, error) {
-	return struct{}{}, nil
+	var (
+		buffer = strings.Builder{}
+		empty  struct{}
+	)
+	for i := 0; i < 4; i++ {
+		b, err := p.Input.ReadByte()
+		if nil != err {
+			return empty, err
+		}
+		buffer.WriteByte(b)
+	}
+	if 0 != strings.Compare(buffer.String(), "null") {
+		return empty, errors.New("failed parsing null")
+	}
+	return empty, nil
 }
 
 func (p *Parser) ParseFalse() (bool, error) {
+	var (
+		buffer = strings.Builder{}
+	)
+	for i := 0; i < 5; i++ {
+		b, err := p.Input.ReadByte()
+		if nil != err {
+			return false, err
+		}
+		buffer.WriteByte(b)
+	}
+	if 0 != strings.Compare(buffer.String(), "false") {
+		return false, errors.New("failed parsing false")
+	}
 	return false, nil
 }
 
 func (p *Parser) ParseTrue() (bool, error) {
+	var (
+		buffer = strings.Builder{}
+	)
+	for i := 0; i < 4; i++ {
+		b, err := p.Input.ReadByte()
+		if nil != err {
+			return false, err
+		}
+		buffer.WriteByte(b)
+	}
+	if 0 != strings.Compare(buffer.String(), "true") {
+		return false, errors.New("failed parsing true")
+	}
 	return true, nil
 }
 
 func (p *Parser) ParseNumber() (float64, error) {
-	return 0, nil
-}
-
-func (p *Parser) ParseString() (string, error) {
 	var (
 		buffer = strings.Builder{}
 	)
 	for {
 		b, err := p.Input.ReadByte()
-		fmt.Println(string(b))
+		if err == io.EOF {
+			break
+		}
+		if nil != err {
+			return 0, err
+		}
+		if unicode.IsDigit(rune(b)) || b == '.' {
+			buffer.WriteByte(b)
+		} else {
+			err := p.Input.UnreadByte()
+			if nil != err {
+				return 0, err
+			}
+			break
+		}
+	}
+	return strconv.ParseFloat(buffer.String(), 64)
+}
+
+func (p *Parser) ParseString() (string, error) {
+	var (
+		buffer = strings.Builder{}
+		count  = 0
+	)
+	for {
+		b, err := p.Input.ReadByte()
 		if nil != err {
 			return "", err
 		}
 		if b == '"' {
+			if count == 0 {
+				count += 1
+				continue
+			}
 			break
+		}
+		if b == '\\' {
+			b, err := p.Input.ReadByte()
+			if nil != err {
+				return "", nil
+			}
+			buffer.WriteByte(b)
+			continue
 		}
 		buffer.WriteByte(b)
 	}
@@ -143,19 +218,85 @@ func (p *Parser) Error(msg string) {
 	p.ErrorMsg = errors.New(msg)
 }
 
-func Parse(content []byte) error {
+func Parse(content []byte) (interface{}, error) {
 	parser := &Parser{
 		Input: bytes.NewBuffer(content),
 	}
 	yyParse(parser)
-	return parser.ErrorMsg
+	return parser.Result, parser.ErrorMsg
 }
 
 func main() {
-	content := `"Hello World"`
-	err := Parse([]byte(content))
-	if nil != err {
-		fmt.Println("Error: ", err)
-		os.Exit(-1)
+	{
+		content := `"Hello World"`
+		result, err := Parse([]byte(content))
+		if nil != err {
+			fmt.Println("Error: ", err)
+			os.Exit(-1)
+		}
+		fmt.Println(result)
+	}
+	{
+		content := `true`
+		result, err := Parse([]byte(content))
+		if nil != err {
+			fmt.Println("Error: ", err)
+			os.Exit(-1)
+		}
+		fmt.Println(result)
+	}
+	{
+		content := `false`
+		result, err := Parse([]byte(content))
+		if nil != err {
+			fmt.Println("Error: ", err)
+			os.Exit(-1)
+		}
+		fmt.Println(result)
+	}
+	{
+		content := `null`
+		result, err := Parse([]byte(content))
+		if nil != err {
+			fmt.Println("Error: ", err)
+			os.Exit(-1)
+		}
+		fmt.Println(result)
+	}
+	{
+		content := `12345`
+		result, err := Parse([]byte(content))
+		if nil != err {
+			fmt.Println("Error: ", err)
+			os.Exit(-1)
+		}
+		fmt.Println(result)
+	}
+	{
+		content := `[12345,54321]`
+		result, err := Parse([]byte(content))
+		if nil != err {
+			fmt.Println("Error: ", err)
+			os.Exit(-1)
+		}
+		fmt.Println(result)
+	}
+	{
+		content := `["Hello","World"]`
+		result, err := Parse([]byte(content))
+		if nil != err {
+			fmt.Println("Error: ", err)
+			os.Exit(-1)
+		}
+		fmt.Println(result)
+	}
+	{
+		content := `{"Hello":"World"}`
+		result, err := Parse([]byte(content))
+		if nil != err {
+			fmt.Println("Error: ", err)
+			os.Exit(-1)
+		}
+		fmt.Println(result)
 	}
 }
