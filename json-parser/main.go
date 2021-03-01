@@ -11,9 +11,9 @@ import (
 )
 
 type Parser struct {
-	Input  *bytes.Buffer
-	ErrorMsg  error
-	Result interface{}
+	Input    *bytes.Buffer
+	ErrorMsg error
+	Result   interface{}
 }
 
 func (p *Parser) Lex(lval *yySymType) int {
