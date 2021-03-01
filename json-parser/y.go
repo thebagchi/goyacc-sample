@@ -70,44 +70,48 @@ var yyExca = [...]int{
 
 const yyPrivate = 57344
 
-const yyLast = 29
+const yyLast = 37
 
 var yyAct = [...]int{
-	2, 24, 6, 15, 7, 18, 27, 21, 17, 12,
-	11, 10, 9, 13, 22, 19, 23, 1, 8, 20,
-	16, 14, 25, 3, 26, 5, 4, 0, 28,
+	2, 26, 6, 20, 7, 17, 14, 29, 19, 12,
+	11, 10, 9, 13, 16, 24, 23, 25, 21, 1,
+	8, 18, 22, 15, 27, 6, 28, 7, 3, 5,
+	30, 4, 12, 11, 10, 9, 13,
 }
 
 var yyPact = [...]int{
-	-2, -1000, -1000, -1000, -1000, -1000, -10, -2, -1000, -1000,
-	-1000, -1000, -7, -1000, 10, -3, 7, -1000, -1000, -1000,
-	-12, -2, -1000, -2, -4, -1000, -1000, -2, -1000,
+	21, -1000, -1000, -1000, -1000, -1000, 1, -2, -1000, -1000,
+	-1000, -1000, -9, -1000, -1000, 13, 6, -1000, 8, -1000,
+	-1000, -1000, -12, 21, -1000, 21, -3, -1000, -1000, 21,
+	-1000,
 }
 
 var yyPgo = [...]int{
-	0, 26, 25, 23, 21, 20, 0, 18, 17,
+	0, 31, 29, 28, 23, 21, 0, 20, 19,
 }
 
 var yyR1 = [...]int{
-	0, 8, 6, 6, 6, 6, 6, 6, 1, 2,
-	2, 4, 4, 5, 5, 3, 7,
+	0, 8, 6, 6, 6, 6, 6, 6, 6, 6,
+	1, 2, 2, 4, 4, 5, 5, 3, 7,
 }
 
 var yyR2 = [...]int{
-	0, 1, 1, 1, 1, 3, 3, 1, 1, 1,
-	2, 3, 5, 1, 3, 1, 1,
+	0, 1, 1, 1, 1, 2, 3, 2, 3, 1,
+	1, 1, 2, 3, 5, 1, 3, 1, 1,
 }
 
 var yyChk = [...]int{
 	-1000, -8, -6, -3, -1, -2, 4, 6, -7, 14,
-	13, 12, 11, 15, -4, 13, -5, -6, 12, 5,
-	9, 10, 7, 9, 13, -6, -6, 10, -6,
+	13, 12, 11, 15, 5, -4, 13, 7, -5, -6,
+	12, 5, 9, 10, 7, 9, 13, -6, -6, 10,
+	-6,
 }
 
 var yyDef = [...]int{
-	0, -2, 1, 2, 3, 4, 0, 0, 7, 15,
-	8, 9, 0, 16, 0, 0, 0, 13, 10, 5,
-	0, 0, 6, 0, 0, 11, 14, 0, 12,
+	0, -2, 1, 2, 3, 4, 0, 0, 9, 17,
+	10, 11, 0, 18, 5, 0, 0, 7, 0, 15,
+	12, 6, 0, 0, 8, 0, 0, 13, 16, 0,
+	14,
 }
 
 var yyTok1 = [...]int{
@@ -479,67 +483,77 @@ yydefault:
 			yyVAL.TypeValue = yyDollar[1].TypeNumber
 		}
 	case 5:
-		yyDollar = yyS[yypt-3 : yypt+1]
+		yyDollar = yyS[yypt-2 : yypt+1]
 		{
-			yyVAL.TypeValue = yyDollar[2].TypeObject
+			yyVAL.TypeValue = make(map[string]interface{})
 		}
 	case 6:
 		yyDollar = yyS[yypt-3 : yypt+1]
 		{
-			yyVAL.TypeValue = yyDollar[2].TypeList
+			yyVAL.TypeValue = yyDollar[2].TypeObject
 		}
 	case 7:
-		yyDollar = yyS[yypt-1 : yypt+1]
+		yyDollar = yyS[yypt-2 : yypt+1]
 		{
-			yyVAL.TypeValue = nil
+			yyVAL.TypeValue = make([]interface{}, 0)
 		}
 	case 8:
-		yyDollar = yyS[yypt-1 : yypt+1]
+		yyDollar = yyS[yypt-3 : yypt+1]
 		{
-			yyVAL.TypeString = yyDollar[1].TypeString
+			yyVAL.TypeValue = yyDollar[2].TypeList
 		}
 	case 9:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		{
-			yyVAL.TypeNumber = yyDollar[1].TypeNumber
+			yyVAL.TypeValue = nil
 		}
 	case 10:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		{
+			yyVAL.TypeString = yyDollar[1].TypeString
+		}
+	case 11:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		{
+			yyVAL.TypeNumber = yyDollar[1].TypeNumber
+		}
+	case 12:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		{
 			yyVAL.TypeNumber = (-1) * yyDollar[2].TypeNumber
 		}
-	case 11:
+	case 13:
 		yyDollar = yyS[yypt-3 : yypt+1]
 		{
 			yyVAL.TypeObject = map[string]interface{}{
 				yyDollar[1].TypeString: yyDollar[3].TypeValue,
 			}
 		}
-	case 12:
+	case 14:
 		yyDollar = yyS[yypt-5 : yypt+1]
 		{
 			yyVAL.TypeObject = yyDollar[1].TypeObject
 			yyVAL.TypeObject[yyDollar[3].TypeString] = yyDollar[5].TypeValue
 		}
-	case 13:
+	case 15:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		{
 			yyVAL.TypeList = []interface{}{
 				yyDollar[1].TypeValue,
 			}
 		}
-	case 14:
+	case 16:
 		yyDollar = yyS[yypt-3 : yypt+1]
 		{
 			yyVAL.TypeList = yyDollar[1].TypeList
 			yyVAL.TypeList = append(yyVAL.TypeList, yyDollar[3].TypeValue)
 		}
-	case 15:
+	case 17:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		{
 			yyVAL.TypeBoolean = yyDollar[1].TypeBoolean
 		}
-	case 16:
+	case 18:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		{
 			yyVAL.TypeNull = yyDollar[1].TypeNull

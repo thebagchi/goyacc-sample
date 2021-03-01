@@ -63,8 +63,14 @@ ParseValue:
   | ParseNumber {
         $$ = $1
     }
+  | CURLY_START CURLY_END {
+        $$ = make(map[string]interface{})
+    }
   | CURLY_START ParseDict CURLY_END {
         $$ = $2
+    }
+  | SQUARE_START SQUARE_END {
+        $$ = make([]interface{}, 0)
     }
   | SQUARE_START ParseList SQUARE_END {
         $$ = $2

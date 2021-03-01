@@ -50,18 +50,22 @@ state 5
 
 
 state 6
+	ParseValue:  CURLY_START.CURLY_END 
 	ParseValue:  CURLY_START.ParseDict CURLY_END 
 
-	TokenString  shift 15
+	CURLY_END  shift 14
+	TokenString  shift 16
 	.  error
 
-	ParseDict  goto 14
+	ParseDict  goto 15
 
 state 7
+	ParseValue:  SQUARE_START.SQUARE_END 
 	ParseValue:  SQUARE_START.ParseList SQUARE_END 
 
 	CURLY_START  shift 6
 	SQUARE_START  shift 7
+	SQUARE_END  shift 17
 	MINUS  shift 12
 	TokenNumber  shift 11
 	TokenString  shift 10
@@ -72,98 +76,110 @@ state 7
 	ParseString  goto 4
 	ParseNumber  goto 5
 	ParseBoolean  goto 3
-	ParseList  goto 16
-	ParseValue  goto 17
+	ParseList  goto 18
+	ParseValue  goto 19
 	ParseNull  goto 8
 
 state 8
-	ParseValue:  ParseNull.    (7)
+	ParseValue:  ParseNull.    (9)
 
-	.  reduce 7 (src line 72)
+	.  reduce 9 (src line 78)
 
 
 state 9
-	ParseBoolean:  TokenBoolean.    (15)
+	ParseBoolean:  TokenBoolean.    (17)
 
-	.  reduce 15 (src line 111)
+	.  reduce 17 (src line 117)
 
 
 state 10
-	ParseString:  TokenString.    (8)
+	ParseString:  TokenString.    (10)
 
-	.  reduce 8 (src line 76)
+	.  reduce 10 (src line 82)
 
 
 state 11
-	ParseNumber:  TokenNumber.    (9)
+	ParseNumber:  TokenNumber.    (11)
 
-	.  reduce 9 (src line 81)
+	.  reduce 11 (src line 87)
 
 
 state 12
 	ParseNumber:  MINUS.TokenNumber 
 
-	TokenNumber  shift 18
+	TokenNumber  shift 20
 	.  error
 
 
 state 13
-	ParseNull:  TokenNull.    (16)
+	ParseNull:  TokenNull.    (18)
 
-	.  reduce 16 (src line 116)
+	.  reduce 18 (src line 122)
 
 
 state 14
-	ParseValue:  CURLY_START ParseDict.CURLY_END 
-	ParseDict:  ParseDict.COMMA TokenString COLON ParseValue 
-
-	CURLY_END  shift 19
-	COMMA  shift 20
-	.  error
-
-
-state 15
-	ParseDict:  TokenString.COLON ParseValue 
-
-	COLON  shift 21
-	.  error
-
-
-state 16
-	ParseValue:  SQUARE_START ParseList.SQUARE_END 
-	ParseList:  ParseList.COMMA ParseValue 
-
-	SQUARE_END  shift 22
-	COMMA  shift 23
-	.  error
-
-
-state 17
-	ParseList:  ParseValue.    (13)
-
-	.  reduce 13 (src line 100)
-
-
-state 18
-	ParseNumber:  MINUS TokenNumber.    (10)
-
-	.  reduce 10 (src line 85)
-
-
-state 19
-	ParseValue:  CURLY_START ParseDict CURLY_END.    (5)
+	ParseValue:  CURLY_START CURLY_END.    (5)
 
 	.  reduce 5 (src line 66)
 
 
-state 20
-	ParseDict:  ParseDict COMMA.TokenString COLON ParseValue 
+state 15
+	ParseValue:  CURLY_START ParseDict.CURLY_END 
+	ParseDict:  ParseDict.COMMA TokenString COLON ParseValue 
 
-	TokenString  shift 24
+	CURLY_END  shift 21
+	COMMA  shift 22
 	.  error
 
 
+state 16
+	ParseDict:  TokenString.COLON ParseValue 
+
+	COLON  shift 23
+	.  error
+
+
+state 17
+	ParseValue:  SQUARE_START SQUARE_END.    (7)
+
+	.  reduce 7 (src line 72)
+
+
+state 18
+	ParseValue:  SQUARE_START ParseList.SQUARE_END 
+	ParseList:  ParseList.COMMA ParseValue 
+
+	SQUARE_END  shift 24
+	COMMA  shift 25
+	.  error
+
+
+state 19
+	ParseList:  ParseValue.    (15)
+
+	.  reduce 15 (src line 106)
+
+
+state 20
+	ParseNumber:  MINUS TokenNumber.    (12)
+
+	.  reduce 12 (src line 91)
+
+
 state 21
+	ParseValue:  CURLY_START ParseDict CURLY_END.    (6)
+
+	.  reduce 6 (src line 69)
+
+
+state 22
+	ParseDict:  ParseDict COMMA.TokenString COLON ParseValue 
+
+	TokenString  shift 26
+	.  error
+
+
+state 23
 	ParseDict:  TokenString COLON.ParseValue 
 
 	CURLY_START  shift 6
@@ -178,54 +194,17 @@ state 21
 	ParseString  goto 4
 	ParseNumber  goto 5
 	ParseBoolean  goto 3
-	ParseValue  goto 25
-	ParseNull  goto 8
-
-state 22
-	ParseValue:  SQUARE_START ParseList SQUARE_END.    (6)
-
-	.  reduce 6 (src line 69)
-
-
-state 23
-	ParseList:  ParseList COMMA.ParseValue 
-
-	CURLY_START  shift 6
-	SQUARE_START  shift 7
-	MINUS  shift 12
-	TokenNumber  shift 11
-	TokenString  shift 10
-	TokenBoolean  shift 9
-	TokenNull  shift 13
-	.  error
-
-	ParseString  goto 4
-	ParseNumber  goto 5
-	ParseBoolean  goto 3
-	ParseValue  goto 26
+	ParseValue  goto 27
 	ParseNull  goto 8
 
 state 24
-	ParseDict:  ParseDict COMMA TokenString.COLON ParseValue 
+	ParseValue:  SQUARE_START ParseList SQUARE_END.    (8)
 
-	COLON  shift 27
-	.  error
+	.  reduce 8 (src line 75)
 
 
 state 25
-	ParseDict:  TokenString COLON ParseValue.    (11)
-
-	.  reduce 11 (src line 89)
-
-
-state 26
-	ParseList:  ParseList COMMA ParseValue.    (14)
-
-	.  reduce 14 (src line 106)
-
-
-state 27
-	ParseDict:  ParseDict COMMA TokenString COLON.ParseValue 
+	ParseList:  ParseList COMMA.ParseValue 
 
 	CURLY_START  shift 6
 	SQUARE_START  shift 7
@@ -242,21 +221,58 @@ state 27
 	ParseValue  goto 28
 	ParseNull  goto 8
 
-state 28
-	ParseDict:  ParseDict COMMA TokenString COLON ParseValue.    (12)
+state 26
+	ParseDict:  ParseDict COMMA TokenString.COLON ParseValue 
 
-	.  reduce 12 (src line 95)
+	COLON  shift 29
+	.  error
+
+
+state 27
+	ParseDict:  TokenString COLON ParseValue.    (13)
+
+	.  reduce 13 (src line 95)
+
+
+state 28
+	ParseList:  ParseList COMMA ParseValue.    (16)
+
+	.  reduce 16 (src line 112)
+
+
+state 29
+	ParseDict:  ParseDict COMMA TokenString COLON.ParseValue 
+
+	CURLY_START  shift 6
+	SQUARE_START  shift 7
+	MINUS  shift 12
+	TokenNumber  shift 11
+	TokenString  shift 10
+	TokenBoolean  shift 9
+	TokenNull  shift 13
+	.  error
+
+	ParseString  goto 4
+	ParseNumber  goto 5
+	ParseBoolean  goto 3
+	ParseValue  goto 30
+	ParseNull  goto 8
+
+state 30
+	ParseDict:  ParseDict COMMA TokenString COLON ParseValue.    (14)
+
+	.  reduce 14 (src line 101)
 
 
 18 terminals, 9 nonterminals
-17 grammar rules, 29/16000 states
+19 grammar rules, 31/16000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
 58 working sets used
 memory: parser 35/240000
-16 extra closures
-44 shift entries, 1 exceptions
+18 extra closures
+46 shift entries, 1 exceptions
 12 goto entries
 16 entries saved by goto default
-Optimizer space used: output 29/240000
-29 table entries, 1 zero
-maximum spread: 15, maximum offset: 27
+Optimizer space used: output 37/240000
+37 table entries, 0 zero
+maximum spread: 15, maximum offset: 29
