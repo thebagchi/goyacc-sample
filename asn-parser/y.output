@@ -1,0 +1,308 @@
+
+state 0
+	$accept: .ParseASN $end 
+
+	TokenString  shift 5
+	.  error
+
+	ParseModules  goto 2
+	ParseModule  goto 3
+	ParseModuleIdentifier  goto 4
+	ParseASN  goto 1
+
+state 1
+	$accept:  ParseASN.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	ParseASN:  ParseModules.    (1)
+	ParseModules:  ParseModules.ParseModule 
+
+	TokenString  shift 5
+	.  reduce 1 (src line 81)
+
+	ParseModule  goto 6
+	ParseModuleIdentifier  goto 4
+
+state 3
+	ParseModules:  ParseModule.    (2)
+
+	.  reduce 2 (src line 87)
+
+
+state 4
+	ParseModule:  ParseModuleIdentifier.DEFINITIONS_SYMBOL ParseEncodingReferenceDefault ParseTagDefault ParseExtensionDefault ASSIGNMENT_SYMBOL BEGIN_SYMBOL ParseModuleBody END_SYMBOL 
+
+	DEFINITIONS_SYMBOL  shift 7
+	.  error
+
+
+state 5
+	ParseModuleIdentifier:  TokenString.ParseDefinitiveIdentification 
+	ParseDefinitiveIdentification: .    (7)
+
+	CURLY_START  shift 10
+	.  reduce 7 (src line 132)
+
+	ParseDefinitiveIdentification  goto 8
+	ParseDefinitiveOID  goto 9
+
+state 6
+	ParseModules:  ParseModules ParseModule.    (3)
+
+	.  reduce 3 (src line 93)
+
+
+state 7
+	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL.ParseEncodingReferenceDefault ParseTagDefault ParseExtensionDefault ASSIGNMENT_SYMBOL BEGIN_SYMBOL ParseModuleBody END_SYMBOL 
+	ParseEncodingReferenceDefault: .    (18)
+
+	TokenString  shift 12
+	.  reduce 18 (src line 189)
+
+	ParseEncodingReferenceDefault  goto 11
+
+state 8
+	ParseModuleIdentifier:  TokenString ParseDefinitiveIdentification.    (5)
+
+	.  reduce 5 (src line 118)
+
+
+state 9
+	ParseDefinitiveIdentification:  ParseDefinitiveOID.    (6)
+
+	.  reduce 6 (src line 128)
+
+
+state 10
+	ParseDefinitiveOID:  CURLY_START.ParseDefinitiveObjIdComponentList CURLY_END 
+
+	TokenString  shift 18
+	TokenInteger  shift 19
+	.  error
+
+	ParseDefinitiveObjIdComponentList  goto 13
+	ParseDefinitiveObjIdComponent  goto 14
+	ParseDefinitiveNameForm  goto 15
+	ParseDefinitiveNumberForm  goto 16
+	ParseDefinitiveNameAndNumberForm  goto 17
+
+state 11
+	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL ParseEncodingReferenceDefault.ParseTagDefault ParseExtensionDefault ASSIGNMENT_SYMBOL BEGIN_SYMBOL ParseModuleBody END_SYMBOL 
+	ParseTagDefault: .    (22)
+
+	EXPLICIT_SYMBOL  shift 22
+	IMPLICIT_SYMBOL  shift 21
+	AUTOMATIC_SYMBOL  shift 23
+	.  reduce 22 (src line 203)
+
+	ParseTagDefault  goto 20
+
+state 12
+	ParseEncodingReferenceDefault:  TokenString.INSTRUCTIONS_SYMBOL 
+
+	INSTRUCTIONS_SYMBOL  shift 24
+	.  error
+
+
+state 13
+	ParseDefinitiveOID:  CURLY_START ParseDefinitiveObjIdComponentList.CURLY_END 
+	ParseDefinitiveObjIdComponentList:  ParseDefinitiveObjIdComponentList.ParseDefinitiveObjIdComponent 
+
+	CURLY_END  shift 25
+	TokenString  shift 18
+	TokenInteger  shift 19
+	.  error
+
+	ParseDefinitiveObjIdComponent  goto 26
+	ParseDefinitiveNameForm  goto 15
+	ParseDefinitiveNumberForm  goto 16
+	ParseDefinitiveNameAndNumberForm  goto 17
+
+state 14
+	ParseDefinitiveObjIdComponentList:  ParseDefinitiveObjIdComponent.    (9)
+
+	.  reduce 9 (src line 141)
+
+
+state 15
+	ParseDefinitiveObjIdComponent:  ParseDefinitiveNameForm.    (11)
+
+	.  reduce 11 (src line 152)
+
+
+state 16
+	ParseDefinitiveObjIdComponent:  ParseDefinitiveNumberForm.    (12)
+
+	.  reduce 12 (src line 156)
+
+
+state 17
+	ParseDefinitiveObjIdComponent:  ParseDefinitiveNameAndNumberForm.    (13)
+
+	.  reduce 13 (src line 159)
+
+
+state 18
+	ParseDefinitiveNameForm:  TokenString.    (14)
+	ParseDefinitiveNameAndNumberForm:  TokenString.ROUND_START TokenInteger ROUND_END 
+
+	ROUND_START  shift 27
+	.  reduce 14 (src line 163)
+
+
+state 19
+	ParseDefinitiveNumberForm:  TokenInteger.    (15)
+
+	.  reduce 15 (src line 170)
+
+
+state 20
+	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL ParseEncodingReferenceDefault ParseTagDefault.ParseExtensionDefault ASSIGNMENT_SYMBOL BEGIN_SYMBOL ParseModuleBody END_SYMBOL 
+	ParseExtensionDefault: .    (24)
+
+	EXTENSIBILITY_SYMBOL  shift 29
+	.  reduce 24 (src line 211)
+
+	ParseExtensionDefault  goto 28
+
+state 21
+	ParseTagDefault:  IMPLICIT_SYMBOL.TAGS_SYMBOL 
+
+	TAGS_SYMBOL  shift 30
+	.  error
+
+
+state 22
+	ParseTagDefault:  EXPLICIT_SYMBOL.TAGS_SYMBOL 
+
+	TAGS_SYMBOL  shift 31
+	.  error
+
+
+state 23
+	ParseTagDefault:  AUTOMATIC_SYMBOL.TAGS_SYMBOL 
+
+	TAGS_SYMBOL  shift 32
+	.  error
+
+
+state 24
+	ParseEncodingReferenceDefault:  TokenString INSTRUCTIONS_SYMBOL.    (17)
+
+	.  reduce 17 (src line 185)
+
+
+state 25
+	ParseDefinitiveOID:  CURLY_START ParseDefinitiveObjIdComponentList CURLY_END.    (8)
+
+	.  reduce 8 (src line 136)
+
+
+state 26
+	ParseDefinitiveObjIdComponentList:  ParseDefinitiveObjIdComponentList ParseDefinitiveObjIdComponent.    (10)
+
+	.  reduce 10 (src line 147)
+
+
+state 27
+	ParseDefinitiveNameAndNumberForm:  TokenString ROUND_START.TokenInteger ROUND_END 
+
+	TokenInteger  shift 33
+	.  error
+
+
+state 28
+	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL ParseEncodingReferenceDefault ParseTagDefault ParseExtensionDefault.ASSIGNMENT_SYMBOL BEGIN_SYMBOL ParseModuleBody END_SYMBOL 
+
+	ASSIGNMENT_SYMBOL  shift 34
+	.  error
+
+
+state 29
+	ParseExtensionDefault:  EXTENSIBILITY_SYMBOL.IMPLIED_SYMBOL 
+
+	IMPLIED_SYMBOL  shift 35
+	.  error
+
+
+state 30
+	ParseTagDefault:  IMPLICIT_SYMBOL TAGS_SYMBOL.    (19)
+
+	.  reduce 19 (src line 193)
+
+
+state 31
+	ParseTagDefault:  EXPLICIT_SYMBOL TAGS_SYMBOL.    (20)
+
+	.  reduce 20 (src line 197)
+
+
+state 32
+	ParseTagDefault:  AUTOMATIC_SYMBOL TAGS_SYMBOL.    (21)
+
+	.  reduce 21 (src line 200)
+
+
+state 33
+	ParseDefinitiveNameAndNumberForm:  TokenString ROUND_START TokenInteger.ROUND_END 
+
+	ROUND_END  shift 36
+	.  error
+
+
+state 34
+	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL ParseEncodingReferenceDefault ParseTagDefault ParseExtensionDefault ASSIGNMENT_SYMBOL.BEGIN_SYMBOL ParseModuleBody END_SYMBOL 
+
+	BEGIN_SYMBOL  shift 37
+	.  error
+
+
+state 35
+	ParseExtensionDefault:  EXTENSIBILITY_SYMBOL IMPLIED_SYMBOL.    (23)
+
+	.  reduce 23 (src line 207)
+
+
+state 36
+	ParseDefinitiveNameAndNumberForm:  TokenString ROUND_START TokenInteger ROUND_END.    (16)
+
+	.  reduce 16 (src line 177)
+
+
+state 37
+	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL ParseEncodingReferenceDefault ParseTagDefault ParseExtensionDefault ASSIGNMENT_SYMBOL BEGIN_SYMBOL.ParseModuleBody END_SYMBOL 
+	ParseModuleBody: .    (25)
+
+	.  reduce 25 (src line 215)
+
+	ParseModuleBody  goto 38
+
+state 38
+	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL ParseEncodingReferenceDefault ParseTagDefault ParseExtensionDefault ASSIGNMENT_SYMBOL BEGIN_SYMBOL ParseModuleBody.END_SYMBOL 
+
+	END_SYMBOL  shift 39
+	.  error
+
+
+state 39
+	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL ParseEncodingReferenceDefault ParseTagDefault ParseExtensionDefault ASSIGNMENT_SYMBOL BEGIN_SYMBOL ParseModuleBody END_SYMBOL.    (4)
+
+	.  reduce 4 (src line 98)
+
+
+39 terminals, 16 nonterminals
+26 grammar rules, 40/16000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+65 working sets used
+memory: parser 20/240000
+0 extra closures
+25 shift entries, 1 exceptions
+17 goto entries
+4 entries saved by goto default
+Optimizer space used: output 41/240000
+41 table entries, 0 zero
+maximum spread: 37, maximum offset: 37
