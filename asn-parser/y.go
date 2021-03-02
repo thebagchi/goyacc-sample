@@ -22,6 +22,8 @@ type ASNSymType struct {
 	TypeDefinitiveIdentifier  DefinitiveIdentifier
 	TypeTagDefault            TagDefault
 	TypeModuleBody            ModuleBody
+	TypeModuleImports         ModuleImports
+	TypeModuleExports         ModuleExports
 	TypeToken                 Empty
 	TypeString                string
 	TypeInteger               int
@@ -50,21 +52,25 @@ const PIPE = 57363
 const AT_THE_RATE = 57364
 const EXCLAMATION = 57365
 const CARET = 57366
-const DEFINITIONS_SYMBOL = 57367
-const ASSIGNMENT_SYMBOL = 57368
-const BEGIN_SYMBOL = 57369
-const END_SYMBOL = 57370
-const INSTRUCTIONS_SYMBOL = 57371
-const EXPLICIT_SYMBOL = 57372
-const IMPLICIT_SYMBOL = 57373
-const AUTOMATIC_SYMBOL = 57374
-const TAGS_SYMBOL = 57375
-const EXTENSIBILITY_SYMBOL = 57376
-const IMPLIED_SYMBOL = 57377
-const TokenString = 57378
-const TokenInteger = 57379
-const TokenFloat = 57380
-const TokenBoolean = 57381
+const SEMI_COMMA = 57367
+const DEFINITIONS_SYMBOL = 57368
+const ASSIGNMENT_SYMBOL = 57369
+const BEGIN_SYMBOL = 57370
+const END_SYMBOL = 57371
+const INSTRUCTIONS_SYMBOL = 57372
+const EXPLICIT_SYMBOL = 57373
+const IMPLICIT_SYMBOL = 57374
+const AUTOMATIC_SYMBOL = 57375
+const TAGS_SYMBOL = 57376
+const EXTENSIBILITY_SYMBOL = 57377
+const IMPLIED_SYMBOL = 57378
+const EXPORTS_SYMBOL = 57379
+const IMPORTS_SYMBOL = 57380
+const ALL_SYMBOL = 57381
+const TokenString = 57382
+const TokenInteger = 57383
+const TokenFloat = 57384
+const TokenBoolean = 57385
 
 var ASNToknames = [...]string{
 	"$end",
@@ -91,6 +97,7 @@ var ASNToknames = [...]string{
 	"AT_THE_RATE",
 	"EXCLAMATION",
 	"CARET",
+	"SEMI_COMMA",
 	"DEFINITIONS_SYMBOL",
 	"ASSIGNMENT_SYMBOL",
 	"BEGIN_SYMBOL",
@@ -102,6 +109,9 @@ var ASNToknames = [...]string{
 	"TAGS_SYMBOL",
 	"EXTENSIBILITY_SYMBOL",
 	"IMPLIED_SYMBOL",
+	"EXPORTS_SYMBOL",
+	"IMPORTS_SYMBOL",
+	"ALL_SYMBOL",
 	"TokenString",
 	"TokenInteger",
 	"TokenFloat",
@@ -114,7 +124,7 @@ const ASNEofCode = 1
 const ASNErrCode = 2
 const ASNInitialStackSize = 16
 
-//line yacc.y:220
+//line yacc.y:268
 
 //line yacctab:1
 var ASNExca = [...]int{
@@ -125,52 +135,57 @@ var ASNExca = [...]int{
 
 const ASNPrivate = 57344
 
-const ASNLast = 41
+const ASNLast = 49
 
 var ASNAct = [...]int{
-	25, 18, 19, 33, 12, 5, 35, 29, 22, 21,
-	23, 24, 32, 31, 30, 39, 37, 34, 7, 36,
-	27, 14, 10, 3, 1, 38, 6, 28, 20, 11,
-	17, 18, 19, 16, 15, 26, 13, 9, 8, 4,
-	2,
+	25, 18, 19, 33, 12, 5, 44, 40, 35, 29,
+	22, 21, 23, 24, 32, 31, 30, 41, 37, 34,
+	7, 47, 46, 36, 27, 14, 10, 3, 1, 43,
+	6, 45, 39, 42, 38, 18, 19, 28, 20, 26,
+	11, 17, 16, 15, 13, 9, 8, 4, 2,
 }
 
 var ASNPact = [...]int{
-	-31, -1000, -31, -1000, -7, 18, -1000, -32, -1000, -1000,
-	-35, -22, -18, -5, -1000, -1000, -1000, -1000, 4, -1000,
-	-27, -19, -20, -21, -1000, -1000, -1000, -34, -9, -29,
-	-1000, -1000, -1000, 2, -11, -1000, -1000, -1000, -13, -1000,
+	-35, -1000, -35, -1000, -6, 22, -1000, -36, -1000, -1000,
+	-39, -21, -17, -5, -1000, -1000, -1000, -1000, 8, -1000,
+	-26, -18, -19, -20, -1000, -1000, -1000, -38, -8, -28,
+	-1000, -1000, -1000, 6, -10, -1000, -1000, -30, -12, -1000,
+	-33, -1000, -1000, -3, -4, -1000, -1000, -1000,
 }
 
 var ASNPgo = [...]int{
-	0, 40, 23, 39, 38, 37, 36, 21, 34, 33,
-	30, 29, 28, 27, 25, 24,
+	0, 48, 27, 47, 46, 45, 44, 25, 43, 42,
+	41, 40, 38, 37, 34, 33, 32, 31, 29, 28,
 }
 
 var ASNR1 = [...]int{
-	0, 15, 1, 1, 2, 3, 4, 4, 5, 6,
+	0, 19, 1, 1, 2, 3, 4, 4, 5, 6,
 	6, 7, 7, 7, 8, 9, 10, 11, 11, 12,
-	12, 12, 12, 13, 13, 14,
+	12, 12, 12, 13, 13, 14, 15, 16, 16, 16,
+	17, 18,
 }
 
 var ASNR2 = [...]int{
 	0, 1, 1, 2, 9, 2, 1, 0, 3, 1,
 	2, 1, 1, 1, 1, 1, 4, 2, 0, 2,
-	2, 2, 0, 2, 0, 0,
+	2, 2, 0, 2, 0, 3, 0, 3, 3, 0,
+	0, 0,
 }
 
 var ASNChk = [...]int{
-	-1000, -15, -1, -2, -3, 36, -2, 25, -4, -5,
-	4, -11, 36, -6, -7, -8, -9, -10, 36, 37,
-	-12, 31, 30, 32, 29, 5, -7, 16, -13, 34,
-	33, 33, 33, 37, 26, 35, 17, 27, -14, 28,
+	-1000, -19, -1, -2, -3, 40, -2, 26, -4, -5,
+	4, -11, 40, -6, -7, -8, -9, -10, 40, 41,
+	-12, 32, 31, 33, 30, 5, -7, 16, -13, 35,
+	34, 34, 34, 41, 27, 36, 17, 28, -14, -16,
+	37, 29, -15, -18, 39, -17, 25, 25,
 }
 
 var ASNDef = [...]int{
 	0, -2, 1, 2, 0, 7, 3, 18, 5, 6,
 	0, 22, 0, 0, 9, 11, 12, 13, 14, 15,
 	24, 0, 0, 0, 17, 8, 10, 0, 0, 0,
-	19, 20, 21, 0, 0, 23, 16, 25, 0, 4,
+	19, 20, 21, 0, 0, 23, 16, 29, 0, 26,
+	31, 4, 30, 0, 0, 25, 27, 28,
 }
 
 var ASNTok1 = [...]int{
@@ -181,7 +196,8 @@ var ASNTok2 = [...]int{
 	2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 	12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
 	22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-	32, 33, 34, 35, 36, 37, 38, 39,
+	32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
+	42, 43,
 }
 
 var ASNTok3 = [...]int{
@@ -527,13 +543,13 @@ ASNdefault:
 
 	case 1:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:83
+//line yacc.y:93
 		{
 			SetResult(ASNlex, ASNDollar[1].TypeModuleDefinitions)
 		}
 	case 2:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:88
+//line yacc.y:98
 		{
 			ASNVAL.TypeModuleDefinitions = []ModuleDefinition{
 				ASNDollar[1].TypeModuleDefinition,
@@ -541,14 +557,14 @@ ASNdefault:
 		}
 	case 3:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line yacc.y:93
+//line yacc.y:103
 		{
 			ASNVAL.TypeModuleDefinitions = ASNDollar[1].TypeModuleDefinitions
 			ASNVAL.TypeModuleDefinitions = append(ASNVAL.TypeModuleDefinitions, ASNDollar[2].TypeModuleDefinition)
 		}
 	case 4:
 		ASNDollar = ASNS[ASNpt-9 : ASNpt+1]
-//line yacc.y:108
+//line yacc.y:118
 		{
 			ASNVAL.TypeModuleDefinition = ModuleDefinition{
 				Identifier:        ASNDollar[1].TypeModuleIdentifer,
@@ -560,7 +576,7 @@ ASNdefault:
 		}
 	case 5:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line yacc.y:121
+//line yacc.y:131
 		{
 			ASNVAL.TypeModuleIdentifer = ModuleIdentifier{
 				Reference:             ASNDollar[1].TypeString,
@@ -569,25 +585,25 @@ ASNdefault:
 		}
 	case 6:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:129
+//line yacc.y:139
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = ASNDollar[1].TypeDefinitiveIdentifiers
 		}
 	case 7:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line yacc.y:132
+//line yacc.y:142
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = make(DefinitiveIdentifiers, 0)
 		}
 	case 8:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line yacc.y:137
+//line yacc.y:147
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = ASNDollar[2].TypeDefinitiveIdentifiers
 		}
 	case 9:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:142
+//line yacc.y:152
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = []DefinitiveIdentifier{
 				ASNDollar[1].TypeDefinitiveIdentifier,
@@ -595,32 +611,32 @@ ASNdefault:
 		}
 	case 10:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line yacc.y:147
+//line yacc.y:157
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = ASNDollar[1].TypeDefinitiveIdentifiers
 			ASNVAL.TypeDefinitiveIdentifiers = append(ASNVAL.TypeDefinitiveIdentifiers, ASNDollar[2].TypeDefinitiveIdentifier)
 		}
 	case 11:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:153
+//line yacc.y:163
 		{
 			ASNVAL.TypeDefinitiveIdentifier = ASNDollar[1].TypeDefinitiveIdentifier
 		}
 	case 12:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:156
+//line yacc.y:166
 		{
 			ASNVAL.TypeDefinitiveIdentifier = ASNDollar[1].TypeDefinitiveIdentifier
 		}
 	case 13:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:159
+//line yacc.y:169
 		{
 			ASNVAL.TypeDefinitiveIdentifier = ASNDollar[1].TypeDefinitiveIdentifier
 		}
 	case 14:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:164
+//line yacc.y:174
 		{
 			ASNVAL.TypeDefinitiveIdentifier = DefinitiveIdentifier{
 				Name: ASNDollar[1].TypeString,
@@ -628,7 +644,7 @@ ASNdefault:
 		}
 	case 15:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line yacc.y:171
+//line yacc.y:181
 		{
 			ASNVAL.TypeDefinitiveIdentifier = DefinitiveIdentifier{
 				Id: ASNDollar[1].TypeInteger,
@@ -636,7 +652,7 @@ ASNdefault:
 		}
 	case 16:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line yacc.y:178
+//line yacc.y:188
 		{
 			ASNVAL.TypeDefinitiveIdentifier = DefinitiveIdentifier{
 				Name: ASNDollar[1].TypeString,
@@ -645,57 +661,104 @@ ASNdefault:
 		}
 	case 17:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line yacc.y:186
+//line yacc.y:196
 		{
 			ASNVAL.TypeString = ASNDollar[1].TypeString
 		}
 	case 18:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line yacc.y:189
+//line yacc.y:199
 		{
 			ASNVAL.TypeString = ""
 		}
 	case 19:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line yacc.y:194
+//line yacc.y:204
 		{
 			ASNVAL.TypeTagDefault = ImplicitTag
 		}
 	case 20:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line yacc.y:197
+//line yacc.y:207
 		{
 			ASNVAL.TypeTagDefault = ExplicitTag
 		}
 	case 21:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line yacc.y:200
+//line yacc.y:210
 		{
 			ASNVAL.TypeTagDefault = AutomaticTag
 		}
 	case 22:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line yacc.y:203
+//line yacc.y:213
 		{
 			ASNVAL.TypeTagDefault = ExplicitTag
 		}
 	case 23:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line yacc.y:208
+//line yacc.y:218
 		{
 			ASNVAL.TypeBoolean = true
 		}
 	case 24:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line yacc.y:211
+//line yacc.y:221
 		{
 			ASNVAL.TypeBoolean = false
 		}
 	case 25:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line yacc.y:216
+		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
+//line yacc.y:228
 		{
-			ASNVAL.TypeModuleBody = ModuleBody{}
+			ASNVAL.TypeModuleBody = ModuleBody{
+				Exports: ASNDollar[1].TypeModuleExports,
+				Imports: ASNDollar[2].TypeModuleImports,
+			}
+		}
+	case 26:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line yacc.y:236
+		{
+			ASNVAL.TypeModuleImports = ModuleImports{
+				//Empty
+			}
+		}
+	case 27:
+		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
+//line yacc.y:243
+		{
+			ASNVAL.TypeModuleExports = ModuleExports{
+				//Empty
+			}
+		}
+	case 28:
+		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
+//line yacc.y:248
+		{
+			ASNVAL.TypeModuleExports = ModuleExports{
+				All: true,
+			}
+		}
+	case 29:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line yacc.y:253
+		{
+			ASNVAL.TypeModuleExports = ModuleExports{
+				//Empty
+			}
+		}
+	case 30:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line yacc.y:260
+		{
+			ASNVAL.TypeString = ""
+		}
+	case 31:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line yacc.y:265
+		{
+			ASNVAL.TypeString = ""
 		}
 	}
 	goto ASNstack /* stack new state and value */

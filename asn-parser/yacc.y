@@ -14,6 +14,8 @@ type Empty struct{}
     TypeDefinitiveIdentifier  DefinitiveIdentifier
     TypeTagDefault            TagDefault
     TypeModuleBody            ModuleBody
+    TypeModuleImports         ModuleImports
+    TypeModuleExports         ModuleExports
     TypeToken                 Empty
     TypeString                string
     TypeInteger               int
@@ -42,18 +44,22 @@ type Empty struct{}
 %token <TypeToken> AT_THE_RATE
 %token <TypeToken> EXCLAMATION
 %token <TypeToken> CARET
+%token <TypeToken> SEMI_COMMA
 
-%token<TypeToken>  DEFINITIONS_SYMBOL
-%token<TypeToken>  ASSIGNMENT_SYMBOL
-%token<TypeToken>  BEGIN_SYMBOL
-%token<TypeToken>  END_SYMBOL
-%token<TypeToken>  INSTRUCTIONS_SYMBOL
-%token<TypeToken>  EXPLICIT_SYMBOL
-%token<TypeToken>  IMPLICIT_SYMBOL
-%token<TypeToken>  AUTOMATIC_SYMBOL
-%token<TypeToken>  TAGS_SYMBOL
-%token<TypeToken>  EXTENSIBILITY_SYMBOL
-%token<TypeToken>  IMPLIED_SYMBOL
+%token<TypeString>  DEFINITIONS_SYMBOL
+%token<TypeString>  ASSIGNMENT_SYMBOL
+%token<TypeString>  BEGIN_SYMBOL
+%token<TypeString>  END_SYMBOL
+%token<TypeString>  INSTRUCTIONS_SYMBOL
+%token<TypeString>  EXPLICIT_SYMBOL
+%token<TypeString>  IMPLICIT_SYMBOL
+%token<TypeString>  AUTOMATIC_SYMBOL
+%token<TypeString>  TAGS_SYMBOL
+%token<TypeString>  EXTENSIBILITY_SYMBOL
+%token<TypeString>  IMPLIED_SYMBOL
+%token<TypeString>  EXPORTS_SYMBOL
+%token<TypeString>  IMPORTS_SYMBOL
+%token<TypeString>  ALL_SYMBOL
 
 %token<TypeString>  TokenString
 %token<TypeInteger> TokenInteger
@@ -74,6 +80,10 @@ type Empty struct{}
 %type<TypeTagDefault>            ParseTagDefault
 %type<TypeBoolean>               ParseExtensionDefault
 %type<TypeModuleBody>            ParseModuleBody
+%type<TypeModuleImports>         ParseImports
+%type<TypeModuleExports>         ParseExports
+%type<TypeString>                ParseAssigmentList
+%type<TypeString>                ParseSymbolsExported
 
 %start ParseASN
 
@@ -213,8 +223,46 @@ ParseExtensionDefault:
     }
 
 ParseModuleBody:
-    {
+    ParseExports
+    ParseImports
+    ParseAssigmentList {
         $$ = ModuleBody{
+            Exports: $1,
+            Imports: $2,
         }
+    }
+
+ParseImports:
+    /*EMPTY*/ {
+        $$ = ModuleImports {
+            //Empty
+        }
+    }
+
+ParseExports:
+    EXPORTS_SYMBOL ParseSymbolsExported SEMI_COMMA {
+        $$ = ModuleExports {
+            //Empty
+        }
+    }
+  | EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA {
+        $$ = ModuleExports {
+            All: true,
+        }
+    }
+  | /*EMPTY*/ {
+        $$ = ModuleExports {
+            //Empty
+        }
+    }
+
+ParseAssigmentList:
+    {
+        $$ = ""
+    }
+
+ParseSymbolsExported:
+    {
+        $$ = ""
     }
 %%

@@ -20,7 +20,16 @@ type ModuleIdentifier struct {
 	DefinitiveIdentifiers DefinitiveIdentifiers
 }
 
+type ModuleExports struct {
+	All bool
+}
+
+type ModuleImports struct {
+}
+
 type ModuleBody struct {
+	Exports ModuleExports
+	Imports ModuleImports
 }
 
 type ModuleDefinition struct {
