@@ -21,7 +21,8 @@ type ModuleIdentifier struct {
 }
 
 type ModuleExports struct {
-	All bool
+	All     bool
+	Symbols []string
 }
 
 type ModuleImports struct {

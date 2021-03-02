@@ -21,6 +21,7 @@ type Empty struct{}
     TypeInteger               int
     TypeFloat                 float64
     TypeBoolean               bool
+    TypeListString            []string
 }
 
 %token <TypeToken> CURLY_START
@@ -83,7 +84,9 @@ type Empty struct{}
 %type<TypeModuleImports>         ParseImports
 %type<TypeModuleExports>         ParseExports
 %type<TypeString>                ParseAssigmentList
-%type<TypeString>                ParseSymbolsExported
+%type<TypeListString>            ParseSymbolsExported
+%type<TypeListString>            ParseSymbolList
+%type<TypeString>                ParseSymbol
 
 %start ParseASN
 
@@ -242,7 +245,8 @@ ParseImports:
 ParseExports:
     EXPORTS_SYMBOL ParseSymbolsExported SEMI_COMMA {
         $$ = ModuleExports {
-            //Empty
+            Symbols: $2,
+            All: false,
         }
     }
   | EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA {
@@ -262,7 +266,32 @@ ParseAssigmentList:
     }
 
 ParseSymbolsExported:
-    {
-        $$ = ""
+    ParseSymbolList {
+        $$ = $1
     }
+  | /*EMPTY*/ {
+        $$ = []string {
+            // Empty
+        }
+    }
+
+ParseSymbolList:
+    ParseSymbol {
+        $$ = []string {
+            $1,
+        }
+    }
+  | ParseSymbolList COMMA ParseSymbol {
+        $$ = $1
+        $$ = append($$, $3)
+    }
+
+// ParseSymbol:
+//     ParseReference
+//   | ParameterizedReference
+ParseSymbol:
+    TokenString {
+        $$ = $1
+    }
+
 %%

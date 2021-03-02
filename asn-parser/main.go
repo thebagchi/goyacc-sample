@@ -7,7 +7,11 @@ import (
 
 func main() {
 	{
-		content := `"Hello World"`
+		content := `
+MySyntax DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+END 
+`
 		result, err := Parse([]byte(content))
 		if nil != err {
 			fmt.Println("Error: ", err)
