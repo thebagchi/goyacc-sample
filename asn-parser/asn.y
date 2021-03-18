@@ -159,6 +159,8 @@ type Empty struct{}
 %type<TypeDefinitiveIdentifier>  ParseDefinitiveNameAndNumberForm
 %type<TypeString>                ParseAssignementSymbol
 %type<TypeTagDefault>            ParseTagDefault
+%type<TypeBoolean>               ParseExtensionDefault
+%type<TypeString>                ParseEncodingReferenceDefault
 
 %start ParseASN
 
@@ -183,10 +185,12 @@ ParseModules:
 ParseModule:
     ParseModuleIdentifier          // 1
     DEFINITIONS_SYMBOL             // 2
-    ParseTagDefault                // 3
-    ParseAssignementSymbol         // 4
-    BEGIN_SYMBOL                   // 5
-    END_SYMBOL                     // 6
+    ParseEncodingReferenceDefault  // 3
+    ParseTagDefault                // 4
+    ParseExtensionDefault          // 5
+    ParseAssignementSymbol         // 6
+    BEGIN_SYMBOL                   // 7
+    END_SYMBOL                     // 8
     {
         $$ = ModuleDefinition {
             Identifier: $1,
@@ -275,10 +279,23 @@ ParseTagDefault:
   | AUTOMATIC_SYMBOL TAGS_SYMBOL {
         $$ = AutomaticTag
     }
-  | EXTENSIBILITY_SYMBOL IMPLIED_SYMBOL {
-
-    }
   | /*EMPTY*/ {
         $$ = ExplicitTag
+    }
+
+ParseExtensionDefault:
+    EXTENSIBILITY_SYMBOL IMPLIED_SYMBOL {
+        $$ = true
+    }
+  | /*EMPTY*/ {
+        $$ = false
+    }
+
+ParseEncodingReferenceDefault:
+    TokenCapitalString INSTRUCTIONS_SYMBOL {
+        $$ = $1
+    }
+  | /*EMPTY*/ {
+        $$ = ""
     }
 %%
