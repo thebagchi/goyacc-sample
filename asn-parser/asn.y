@@ -47,21 +47,101 @@ type Empty struct{}
 %token <TypeToken> CARET
 %token <TypeToken> SEMI_COMMA
 
-%token<TypeString>  DEFINITIONS_SYMBOL
-%token<TypeString>  ASSIGNMENT_SYMBOL
-%token<TypeString>  BEGIN_SYMBOL
-%token<TypeString>  END_SYMBOL
-%token<TypeString>  INSTRUCTIONS_SYMBOL
-%token<TypeString>  EXPLICIT_SYMBOL
-%token<TypeString>  IMPLICIT_SYMBOL
-%token<TypeString>  AUTOMATIC_SYMBOL
-%token<TypeString>  TAGS_SYMBOL
-%token<TypeString>  EXTENSIBILITY_SYMBOL
-%token<TypeString>  IMPLIED_SYMBOL
-%token<TypeString>  EXPORTS_SYMBOL
-%token<TypeString>  IMPORTS_SYMBOL
+%token<TypeString>  ABSENT_SYMBOL
+%token<TypeString>  ABSTRACTSYNTAX_SYMBOL
 %token<TypeString>  ALL_SYMBOL
+%token<TypeString>  APPLICATION_SYMBOL
+%token<TypeString>  AUTOMATIC_SYMBOL
+%token<TypeString>  BEGIN_SYMBOL
+%token<TypeString>  BIT_SYMBOL
+%token<TypeString>  BMPSTRING_SYMBOL
+%token<TypeString>  BOOLEAN_SYMBOL
+%token<TypeString>  BY_SYMBOL
+%token<TypeString>  CHARACTER_SYMBOL
+%token<TypeString>  CHOICE_SYMBOL
+%token<TypeString>  CLASS_SYMBOL
+%token<TypeString>  COMPONENT_SYMBOL
+%token<TypeString>  COMPONENTS_SYMBOL
+%token<TypeString>  CONSTRAINED_SYMBOL
+%token<TypeString>  CONTAINING_SYMBOL
+%token<TypeString>  DATE_SYMBOL
+%token<TypeString>  DATETIME_SYMBOL
+%token<TypeString>  DEFAULT_SYMBOL
+%token<TypeString>  DEFINITIONS_SYMBOL
+%token<TypeString>  DURATION_SYMBOL
+%token<TypeString>  EMBEDDED_SYMBOL
+%token<TypeString>  ENCODED_SYMBOL
+%token<TypeString>  ENCODINGCONTROL_SYMBOL
+%token<TypeString>  END_SYMBOL
+%token<TypeString>  ENUMERATED_SYMBOL
+%token<TypeString>  EXCEPT_SYMBOL
+%token<TypeString>  EXPLICIT_SYMBOL
+%token<TypeString>  EXPORTS_SYMBOL
+%token<TypeString>  EXTENSIBILITY_SYMBOL
+%token<TypeString>  EXTERNEL_SYMBOL
+%token<TypeString>  FALSE_SYMBOL
+%token<TypeString>  FROM_SYMBOL
+%token<TypeString>  GENERALIZEDTIME_SYMBOL
+%token<TypeString>  GENERALSTRING_SYMBOL
+%token<TypeString>  GRAPHICSTRING_SYMBOL
+%token<TypeString>  IA5STRING_SYMBOL
+%token<TypeString>  IDENTIFIER_SYMBOL
+%token<TypeString>  IMPLICIT_SYMBOL
+%token<TypeString>  IMPLIED_SYMBOL
+%token<TypeString>  IMPORTS_SYMBOL
+%token<TypeString>  INCLUDES_SYMBOL
+%token<TypeString>  INSTANCE_SYMBOL
+%token<TypeString>  INSTRUCTIONS_SYMBOL
+%token<TypeString>  INTEGER_SYMBOL
+%token<TypeString>  INTERSECTION_SYMBOL
+%token<TypeString>  ISO646STRING_SYMBOL
+%token<TypeString>  MAX_SYMBOL
+%token<TypeString>  MIN_SYMBOL
+%token<TypeString>  MINUSINFINITY_SYMBOL
+%token<TypeString>  NOTANUMBER_SYMBOL
+%token<TypeString>  NULL_SYMBOL
+%token<TypeString>  NUMERICSTRING_SYMBOL
+%token<TypeString>  OBJECT_SYMBOL
+%token<TypeString>  OBJECTDESCRIPTOR_SYMBOL
+%token<TypeString>  OCTET_SYMBOL
+%token<TypeString>  OF_SYMBOL
+%token<TypeString>  OIDIRI_SYMBOL
+%token<TypeString>  OPTIONAL_SYMBOL
+%token<TypeString>  PATTERN_SYMBOL
+%token<TypeString>  PDV_SYMBOL
+%token<TypeString>  PLUSINFINITY_SYMBOL
+%token<TypeString>  PRESENT_SYMBOL
+%token<TypeString>  PRINTABLESTRING_SYMBOL
+%token<TypeString>  PRIVATE_SYMBOL
+%token<TypeString>  REAL_SYMBOL
+%token<TypeString>  RELATIVEOID_SYMBOL
+%token<TypeString>  RELATIVEOIDIRI_SYMBOL
+%token<TypeString>  SEQUENCE_SYMBOL
+%token<TypeString>  SET_SYMBOL
+%token<TypeString>  SETTINGS_SYMBOL
+%token<TypeString>  SIZE_SYMBOL
+%token<TypeString>  STRING_SYMBOL
+%token<TypeString>  SYNTAX_SYMBOL
+%token<TypeString>  T61STRING_SYMBOL
+%token<TypeString>  TAGS_SYMBOL
+%token<TypeString>  TELETEXSTRING_SYMBOL
+%token<TypeString>  TIME_SYMBOL
+%token<TypeString>  TIMEOFDAY_SYMBOL
+%token<TypeString>  TRUE_SYMBOL
+%token<TypeString>  TYPEIDENTIFIER_SYMBOL
+%token<TypeString>  UNION_SYMBOL
+%token<TypeString>  UNIQUE_SYMBOL
+%token<TypeString>  UNIVERSAL_SYMBOL
+%token<TypeString>  UNIVERSALSTRING_SYMBOL
+%token<TypeString>  UTCTIME_SYMBOL
+%token<TypeString>  UTF8STRING_SYMBOL
+%token<TypeString>  VIDEOTEXSTRING_SYMBOL
+%token<TypeString>  VISIBLESTRING_SYMBOL
+%token<TypeString>  WITH_SYMBOL
 
+%token<TypeString>  ASSIGNMENT_SYMBOL
+
+%token<TypeString>  TokenCapitalString
 %token<TypeString>  TokenString
 %token<TypeInteger> TokenInteger
 %token<TypeFloat>   TokenFloat
@@ -77,16 +157,8 @@ type Empty struct{}
 %type<TypeDefinitiveIdentifier>  ParseDefinitiveNameForm
 %type<TypeDefinitiveIdentifier>  ParseDefinitiveNumberForm
 %type<TypeDefinitiveIdentifier>  ParseDefinitiveNameAndNumberForm
-%type<TypeString>                ParseEncodingReferenceDefault
+%type<TypeString>                ParseAssignementSymbol
 %type<TypeTagDefault>            ParseTagDefault
-%type<TypeBoolean>               ParseExtensionDefault
-%type<TypeModuleBody>            ParseModuleBody
-%type<TypeModuleImports>         ParseImports
-%type<TypeModuleExports>         ParseExports
-%type<TypeString>                ParseAssigmentList
-%type<TypeListString>            ParseSymbolsExported
-%type<TypeListString>            ParseSymbolList
-%type<TypeString>                ParseSymbol
 
 %start ParseASN
 
@@ -111,21 +183,19 @@ ParseModules:
 ParseModule:
     ParseModuleIdentifier          // 1
     DEFINITIONS_SYMBOL             // 2
-    ParseEncodingReferenceDefault  // 3
-    ParseTagDefault                // 4
-    ParseExtensionDefault          // 5
-    ASSIGNMENT_SYMBOL              // 6
-    BEGIN_SYMBOL                   // 7
-    ParseModuleBody                // 8
-    END_SYMBOL                     // 9
+    ParseTagDefault                // 3
+    ParseAssignementSymbol         // 4
+    BEGIN_SYMBOL                   // 5
+    END_SYMBOL                     // 6
     {
         $$ = ModuleDefinition {
             Identifier: $1,
-            EncodingReference: $3,
-            Tag: $4,
-            Extensibility: $5,
-            Body: $8,
         }
+    }
+
+ParseAssignementSymbol:
+    COLON COLON EQUALITY {
+        $$ = "::="
     }
 
 ParseModuleIdentifier:
@@ -195,14 +265,6 @@ ParseDefinitiveNameAndNumberForm:
         }
     }
 
-ParseEncodingReferenceDefault:
-    TokenString INSTRUCTIONS_SYMBOL {
-        $$ = $1
-    }
-  | /*EMPTY*/ {
-        $$ = ""
-    }
-
 ParseTagDefault:
     IMPLICIT_SYMBOL TAGS_SYMBOL {
         $$ = ImplicitTag
@@ -213,85 +275,10 @@ ParseTagDefault:
   | AUTOMATIC_SYMBOL TAGS_SYMBOL {
         $$ = AutomaticTag
     }
+  | EXTENSIBILITY_SYMBOL IMPLIED_SYMBOL {
+
+    }
   | /*EMPTY*/ {
         $$ = ExplicitTag
     }
-
-ParseExtensionDefault:
-    EXTENSIBILITY_SYMBOL IMPLIED_SYMBOL {
-        $$ = true
-    }
-  | /*EMPTY*/ {
-        $$ = false
-    }
-
-ParseModuleBody:
-    ParseExports
-    ParseImports
-    ParseAssigmentList {
-        $$ = ModuleBody{
-            Exports: $1,
-            Imports: $2,
-        }
-    }
-
-ParseImports:
-    /*EMPTY*/ {
-        $$ = ModuleImports {
-            //Empty
-        }
-    }
-
-ParseExports:
-    EXPORTS_SYMBOL ParseSymbolsExported SEMI_COMMA {
-        $$ = ModuleExports {
-            Symbols: $2,
-            All: false,
-        }
-    }
-  | EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA {
-        $$ = ModuleExports {
-            All: true,
-        }
-    }
-  | /*EMPTY*/ {
-        $$ = ModuleExports {
-            //Empty
-        }
-    }
-
-ParseAssigmentList:
-    {
-        $$ = ""
-    }
-
-ParseSymbolsExported:
-    ParseSymbolList {
-        $$ = $1
-    }
-  | /*EMPTY*/ {
-        $$ = []string {
-            // Empty
-        }
-    }
-
-ParseSymbolList:
-    ParseSymbol {
-        $$ = []string {
-            $1,
-        }
-    }
-  | ParseSymbolList COMMA ParseSymbol {
-        $$ = $1
-        $$ = append($$, $3)
-    }
-
-// ParseSymbol:
-//     ParseReference
-//   | ParameterizedReference
-ParseSymbol:
-    TokenString {
-        $$ = $1
-    }
-
 %%
