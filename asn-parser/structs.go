@@ -28,9 +28,15 @@ type ModuleExports struct {
 type ModuleImports struct {
 }
 
+type Assignment struct {
+}
+
+type Assignments []Assignment
+
 type ModuleBody struct {
-	Exports ModuleExports
-	Imports ModuleImports
+	Exports     ModuleExports
+	Imports     ModuleImports
+	Assignments []Assignment
 }
 
 type ModuleDefinition struct {

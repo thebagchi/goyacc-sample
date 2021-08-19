@@ -16,6 +16,8 @@ type Empty struct{}
     TypeModuleBody            ModuleBody
     TypeModuleImports         ModuleImports
     TypeModuleExports         ModuleExports
+    TypeAssignment            Assignment
+    TypeAssignments           Assignments
     TypeToken                 Empty
     TypeString                string
     TypeInteger               int
@@ -157,10 +159,16 @@ type Empty struct{}
 %type<TypeDefinitiveIdentifier>  ParseDefinitiveNameForm
 %type<TypeDefinitiveIdentifier>  ParseDefinitiveNumberForm
 %type<TypeDefinitiveIdentifier>  ParseDefinitiveNameAndNumberForm
+%type<TypeAssignments>           ParseAssignments
+%type<TypeAssignment>            ParseAssignment
+%type<TypeModuleImports>         ParseImports
+%type<TypeModuleExports>         ParseExports
 %type<TypeString>                ParseAssignementSymbol
 %type<TypeTagDefault>            ParseTagDefault
 %type<TypeBoolean>               ParseExtensionDefault
 %type<TypeString>                ParseEncodingReferenceDefault
+%type<TypeModuleBody>            ParseModuleBody
+%type<TypeString>                ParseString
 
 %start ParseASN
 
@@ -169,6 +177,14 @@ ParseASN:
     ParseModules
     {
         SetResult(ASNlex, $1)
+    }
+
+ParseString:
+    TokenCapitalString {
+        $$ = $1
+    }
+  | TokenString {
+        $$ = $1
     }
 
 ParseModules:
@@ -190,7 +206,8 @@ ParseModule:
     ParseExtensionDefault          // 5
     ParseAssignementSymbol         // 6
     BEGIN_SYMBOL                   // 7
-    END_SYMBOL                     // 8
+    ParseModuleBody                // 8
+    END_SYMBOL                     // 9
     {
         $$ = ModuleDefinition {
             Identifier: $1,
@@ -203,7 +220,7 @@ ParseAssignementSymbol:
     }
 
 ParseModuleIdentifier:
-    TokenString
+    ParseString
     ParseDefinitiveIdentification
     {
         $$ = ModuleIdentifier {
@@ -297,5 +314,66 @@ ParseEncodingReferenceDefault:
     }
   | /*EMPTY*/ {
         $$ = ""
+    }
+
+ParseModuleBody:
+    ParseImports
+    ParseExports
+    ParseAssignments {
+      $$ = ModuleBody {
+          Imports: $1,
+          Exports: $2,
+      }
+    }
+  | /* EMPTY */ {
+      $$ = ModuleBody {
+          // Empty
+      }
+    }
+
+ParseImports:
+    IMPORTS_SYMBOL {
+      $$ = ModuleImports {
+          // Empty
+      }
+    }
+  | /* EMPTY */ {
+      $$ = ModuleImports {
+          // EMPTY
+      }
+  }
+
+ParseExports:
+    EXPORTS_SYMBOL {
+      $$ = ModuleExports {
+          // Empty
+      }
+    }
+  |  EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA {
+      $$ = ModuleExports {
+          All: true,
+      }
+    }
+  | /* EMPTY */ {
+      $$ = ModuleExports {
+          // Empty
+      }
+  }
+
+ParseAssignments:
+    ParseAssignment {
+        $$ = []Assignment{
+            $1,
+        }
+    }
+  | ParseAssignments ParseAssignment {
+      $$ = $1
+      $$ = append($$, $2)
+    }
+
+ParseAssignment:
+    TokenString ParseAssignementSymbol
+    /* Empty */ {
+
     }
 %%
