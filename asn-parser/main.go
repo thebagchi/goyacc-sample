@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -19,6 +18,17 @@ END
 
 MyModule3 DEFINITIONS ::=
 BEGIN
+EXPORTS ALL;
+END
+
+MyModule4 DEFINITIONS ::=
+BEGIN
+EXPORTS exported;
+END
+
+MyModule5 DEFINITIONS ::=
+BEGIN
+EXPORTS exported-1,exported-2;
 END
 `
 		result, err := Parse([]byte(content))
@@ -26,11 +36,6 @@ END
 			fmt.Println("Error: ", err)
 			os.Exit(-1)
 		}
-		data, err := json.MarshalIndent(result, "", "  ")
-		if nil != err {
-			fmt.Println("Error:", err)
-		} else {
-			fmt.Println(string(data))
-		}
+		_ = result
 	}
 }

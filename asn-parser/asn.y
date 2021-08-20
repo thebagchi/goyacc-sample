@@ -1,5 +1,20 @@
 %{
 package main
+import (
+    "fmt"
+    "encoding/json"
+)
+func JSON(obj interface{}) string {
+    data, err := json.MarshalIndent(obj, "", "    ")
+    if nil != err {
+        fmt.Println("Error: ", err)
+        return ""
+    }
+    return string(data)
+}
+func Print(line string) {
+    fmt.Println(line)
+}
 func SetResult(l ASNLexer, v ModuleDefinitions) {
     l.(*Parser).Result = v
 }
@@ -169,6 +184,8 @@ type Empty struct{}
 %type<TypeString>                ParseEncodingReferenceDefault
 %type<TypeModuleBody>            ParseModuleBody
 %type<TypeString>                ParseString
+%type<TypeListString>            ParseSymbols
+%type<TypeString>                ParseSymbol
 
 %start ParseASN
 
@@ -177,6 +194,10 @@ ParseASN:
     ParseModules
     {
         SetResult(ASNlex, $1)
+        Print("Done")
+        Print("--------------------------------------------------------------------------------")
+        Print(JSON(&$1))
+        Print("--------------------------------------------------------------------------------")
     }
 
 ParseString:
@@ -211,6 +232,7 @@ ParseModule:
     {
         $$ = ModuleDefinition {
             Identifier: $1,
+            Body:       $8,
         }
     }
 
@@ -341,12 +363,13 @@ ParseImports:
       $$ = ModuleImports {
           // EMPTY
       }
-  }
+    }
 
 ParseExports:
-    EXPORTS_SYMBOL {
+    EXPORTS_SYMBOL ParseSymbols SEMI_COMMA {
       $$ = ModuleExports {
-          // Empty
+          All:     false,
+          Symbols: $2,
       }
     }
   |  EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA {
@@ -360,6 +383,22 @@ ParseExports:
       }
   }
 
+ParseSymbols:
+    ParseSymbol {
+         $$ = []string{
+             $1,
+         }
+    }
+  | ParseSymbols COMMA ParseSymbol {
+        $$ = $1
+        $$ = append($$, $3)
+    }
+
+ParseSymbol:
+    TokenString {
+        $$ = $1
+    }
+
 ParseAssignments:
     ParseAssignment {
         $$ = []Assignment{
@@ -370,10 +409,16 @@ ParseAssignments:
       $$ = $1
       $$ = append($$, $2)
     }
+  | /* EMPTY */ {
+      $$ = []Assignment{
+          // Empty
+      }
+    }
 
 ParseAssignment:
-    TokenString ParseAssignementSymbol
-    /* Empty */ {
-
+    TokenString ParseAssignementSymbol {
+        $$ = Assignment{
+            // Empty
+        }
     }
 %%
