@@ -31,6 +31,8 @@ type Empty struct{}
     TypeModuleBody            ModuleBody
     TypeModuleImports         ModuleImports
     TypeModuleExports         ModuleExports
+    TypeModuleImport          ModuleImport
+    TypeModuleReference       ModuleReference
     TypeAssignment            Assignment
     TypeAssignments           Assignments
     TypeToken                 Empty
@@ -186,6 +188,10 @@ type Empty struct{}
 %type<TypeString>                ParseString
 %type<TypeListString>            ParseSymbols
 %type<TypeString>                ParseSymbol
+%type<TypeModuleImports>         ParseImportSymbols
+%type<TypeModuleImports>         ParseSymbolsFromModules
+%type<TypeModuleImport>          ParseSymbolsFromModule
+%type<TypeModuleReference>       ParseModuleReference
 
 %start ParseASN
 
@@ -347,6 +353,14 @@ ParseModuleBody:
           Exports: $2,
       }
     }
+  | ParseExports
+    ParseImports
+    ParseAssignments {
+        $$ = ModuleBody {
+            Imports: $2,
+            Exports: $1,
+        }
+    }
   | /* EMPTY */ {
       $$ = ModuleBody {
           // Empty
@@ -354,15 +368,49 @@ ParseModuleBody:
     }
 
 ParseImports:
-    IMPORTS_SYMBOL {
-      $$ = ModuleImports {
-          // Empty
-      }
+    IMPORTS_SYMBOL ParseImportSymbols SEMI_COMMA {
+      $$ = $2
     }
   | /* EMPTY */ {
-      $$ = ModuleImports {
+      $$ = []ModuleImport{
           // EMPTY
       }
+    }
+
+ParseImportSymbols:
+   ParseSymbolsFromModules {
+       $$ = $1
+   }
+ | /* EMPTY */ {
+       $$ = []ModuleImport{
+           // EMPTY
+       }
+   }
+
+ParseSymbolsFromModules:
+    ParseSymbolsFromModule {
+        $$ = []ModuleImport{
+            $1,
+        }
+    }
+  | ParseSymbolsFromModules ParseSymbolsFromModule {
+        $$ = $1
+        $$ = append($$, $2)
+    }
+
+ParseSymbolsFromModule:
+    ParseSymbols FROM_SYMBOL ParseModuleReference {
+        $$ = ModuleImport{
+            Symbols:   $1,
+            Reference: $3,
+        }
+    }
+
+ParseModuleReference:
+    ParseString {
+       $$ = ModuleReference{
+           Identifier: $1,
+       }
     }
 
 ParseExports:
@@ -375,6 +423,11 @@ ParseExports:
   |  EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA {
       $$ = ModuleExports {
           All: true,
+      }
+    }
+  | EXPORTS_SYMBOL SEMI_COMMA {
+      $$ = ModuleExports {
+          // Empty
       }
     }
   | /* EMPTY */ {

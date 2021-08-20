@@ -25,8 +25,16 @@ type ModuleExports struct {
 	Symbols []string
 }
 
-type ModuleImports struct {
+type ModuleReference struct {
+	Identifier string
 }
+
+type ModuleImport struct {
+	Symbols   []string
+	Reference ModuleReference
+}
+
+type ModuleImports []ModuleImport
 
 type Assignment struct {
 }
