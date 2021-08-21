@@ -57,6 +57,26 @@ MyModule9 DEFINITIONS ::=
 BEGIN
 IMPORTS imported FROM ModuleName;
 END
+
+MyModule10 DEFINITIONS ::=
+BEGIN
+IMPORTS imported FROM ModuleName{iso(1)};
+END
+
+MyModule10 DEFINITIONS ::=
+BEGIN
+IMPORTS imported FROM ModuleName{iso};
+END
+
+MyModule11 DEFINITIONS ::=
+BEGIN
+IMPORTS imported FROM ModuleName{1};
+END
+
+MyModule11 DEFINITIONS ::=
+BEGIN
+IMPORTS imported FROM ModuleName{ieee(111) iso(1)};
+END
 `
 		result, err := Parse([]byte(content))
 		if nil != err {

@@ -1,9 +1,12 @@
 %{
 package main
 import (
+    "bytes"
     "fmt"
     "encoding/json"
+    "strconv"
 )
+
 func JSON(obj interface{}) string {
     data, err := json.MarshalIndent(obj, "", "    ")
     if nil != err {
@@ -12,12 +15,23 @@ func JSON(obj interface{}) string {
     }
     return string(data)
 }
+
 func Print(line string) {
     fmt.Println(line)
 }
+
+func Join(values ...string) string {
+    var buffer bytes.Buffer
+    for _, value := range values {
+        buffer.WriteString(value)
+    }
+    return buffer.String()
+}
+
 func SetResult(l ASNLexer, v ModuleDefinitions) {
     l.(*Parser).Result = v
 }
+
 type Empty struct{}
 %}
 
@@ -186,12 +200,22 @@ type Empty struct{}
 %type<TypeString>                ParseEncodingReferenceDefault
 %type<TypeModuleBody>            ParseModuleBody
 %type<TypeString>                ParseString
+%type<TypeString>                ParseStringOrNumber
+%type<TypeInteger>               ParseInteger
+%type<TypeFloat>                 ParseFloat
 %type<TypeListString>            ParseSymbols
 %type<TypeString>                ParseSymbol
 %type<TypeModuleImports>         ParseImportSymbols
 %type<TypeModuleImports>         ParseSymbolsFromModules
 %type<TypeModuleImport>          ParseSymbolsFromModule
-%type<TypeModuleReference>       ParseModuleReference
+%type<TypeModuleReference>       ParseGlobalModuleReference
+%type<TypeString>                ParseAssignedIdentifier
+%type<TypeString>                ParseObjectIdentifierValue
+%type<TypeString>                ParseObjIdComponentsList
+%type<TypeString>                ParseObjIdComponents
+%type<TypeString>                ParseObjIdComponentsNameForm
+%type<TypeString>                ParseObjIdComponentsNumberForm
+%type<TypeString>                ParseObjIdComponentsNameAndNumberForm
 
 %start ParseASN
 
@@ -212,6 +236,39 @@ ParseString:
     }
   | TokenString {
         $$ = $1
+    }
+
+ParseStringOrNumber:
+    TokenInteger {
+        $$ = strconv.Itoa($1)
+    }
+  | MINUS TokenInteger {
+      $$ = strconv.Itoa((-1) * $2)
+    }
+  | TokenFloat {
+      $$ = strconv.FormatFloat($1, 'f', -1, 64)
+    }
+  | MINUS TokenFloat {
+      $$ = strconv.FormatFloat(((-1) * $2), 'f', -1, 64)
+    }
+  | ParseString {
+      $$ = $1
+    }
+
+ParseInteger:
+    TokenInteger {
+        $$ = $1
+    }
+  | MINUS TokenInteger {
+        $$ = (-1) * $2
+    }
+
+ParseFloat:
+    TokenFloat {
+        $$ = $1
+    }
+  | MINUS TokenFloat {
+        $$ = (-1) * $2
     }
 
 ParseModules:
@@ -399,18 +456,69 @@ ParseSymbolsFromModules:
     }
 
 ParseSymbolsFromModule:
-    ParseSymbols FROM_SYMBOL ParseModuleReference {
+    ParseSymbols FROM_SYMBOL ParseGlobalModuleReference {
         $$ = ModuleImport{
             Symbols:   $1,
             Reference: $3,
         }
     }
 
-ParseModuleReference:
-    ParseString {
+ParseGlobalModuleReference:
+    ParseString ParseAssignedIdentifier {
        $$ = ModuleReference{
-           Identifier: $1,
+           Identifier:          $1,
+           AssignedIdentifiers: $2,
        }
+    }
+
+ParseAssignedIdentifier:
+    ParseObjectIdentifierValue {
+        $$ = $1
+    }
+  | /* EMPTY */ {
+        $$ = ""
+    }
+
+ParseObjectIdentifierValue:
+    CURLY_START ParseObjIdComponentsList CURLY_END {
+        $$ = Join("{", $2, "}")
+    }
+
+ParseObjIdComponentsList:
+    ParseObjIdComponents {
+        $$ = Join("", $1)
+    }
+  | ParseObjIdComponents ParseObjIdComponentsList {
+        $$ = Join($1, " ", $2)
+    }
+
+ParseObjIdComponents:
+    ParseObjIdComponentsNameForm {
+        $$ = $1
+    }
+  | ParseObjIdComponentsNumberForm {
+        $$ = $1
+    }
+  | ParseObjIdComponentsNameAndNumberForm {
+        $$ = $1
+    }
+
+ParseObjIdComponentsNameForm:
+   ParseString {
+       $$ = $1
+   }
+
+ParseObjIdComponentsNumberForm:
+    ParseInteger {
+        $$ = strconv.Itoa($1)
+    }
+  | ParseFloat {
+        $$ = strconv.FormatFloat($1, 'f', -1, 64)
+    }
+
+ParseObjIdComponentsNameAndNumberForm:
+    ParseStringOrNumber ROUND_START ParseStringOrNumber ROUND_END {
+        $$ = Join($1, "(", $3, ")")
     }
 
 ParseExports:

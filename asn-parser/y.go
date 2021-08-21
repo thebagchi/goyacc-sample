@@ -8,8 +8,10 @@ import __yyfmt__ "fmt"
 
 //line asn.y:3
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 func JSON(obj interface{}) string {
@@ -20,16 +22,26 @@ func JSON(obj interface{}) string {
 	}
 	return string(data)
 }
+
 func Print(line string) {
 	fmt.Println(line)
 }
+
+func Join(values ...string) string {
+	var buffer bytes.Buffer
+	for _, value := range values {
+		buffer.WriteString(value)
+	}
+	return buffer.String()
+}
+
 func SetResult(l ASNLexer, v ModuleDefinitions) {
 	l.(*Parser).Result = v
 }
 
 type Empty struct{}
 
-//line asn.y:24
+//line asn.y:38
 type ASNSymType struct {
 	yys                       int
 	TypeModuleDefinitions     ModuleDefinitions
@@ -304,7 +316,7 @@ const ASNEofCode = 1
 const ASNErrCode = 2
 const ASNInitialStackSize = 16
 
-//line asn.y:477
+//line asn.y:585
 
 //line yacctab:1
 var ASNExca = [...]int{
@@ -312,82 +324,113 @@ var ASNExca = [...]int{
 	1, -1,
 	-2, 0,
 	-1, 40,
-	119, 32,
-	-2, 30,
+	119, 41,
+	-2, 39,
+	-1, 83,
+	16, 8,
+	-2, 56,
+	-1, 87,
+	16, 4,
+	-2, 9,
+	-1, 89,
+	16, 6,
+	-2, 11,
+	-1, 93,
+	16, 5,
+	-2, 10,
+	-1, 94,
+	16, 7,
+	-2, 12,
 }
 
 const ASNPrivate = 57344
 
-const ASNLast = 116
+const ASNLast = 119
 
 var ASNAct = [...]int{
-	27, 59, 20, 21, 58, 6, 7, 14, 35, 56,
-	62, 34, 33, 32, 26, 46, 55, 45, 25, 5,
-	38, 61, 67, 31, 36, 46, 53, 45, 48, 60,
-	54, 9, 44, 43, 40, 67, 69, 64, 47, 39,
-	29, 16, 24, 37, 41, 12, 3, 1, 72, 8,
-	52, 68, 51, 23, 42, 13, 30, 28, 22, 19,
-	18, 17, 15, 11, 10, 4, 2, 0, 0, 0,
-	0, 0, 66, 0, 0, 0, 49, 57, 50, 65,
-	63, 0, 70, 0, 74, 70, 73, 71, 0, 0,
-	0, 0, 0, 0, 0, 56, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 20, 21,
+	97, 101, 102, 27, 88, 93, 94, 59, 20, 21,
+	58, 6, 7, 14, 35, 56, 62, 34, 33, 32,
+	26, 46, 5, 86, 78, 55, 45, 25, 38, 36,
+	61, 67, 31, 45, 46, 53, 48, 54, 9, 60,
+	43, 40, 44, 67, 69, 64, 47, 100, 39, 92,
+	16, 24, 29, 37, 41, 90, 77, 12, 3, 68,
+	1, 8, 23, 82, 81, 80, 28, 79, 76, 75,
+	72, 52, 51, 85, 84, 42, 13, 30, 22, 19,
+	18, 66, 17, 15, 57, 50, 49, 11, 65, 73,
+	63, 70, 71, 74, 70, 10, 4, 2, 0, 0,
+	83, 56, 83, 0, 91, 0, 0, 6, 7, 96,
+	98, 6, 7, 87, 89, 99, 95, 20, 21,
 }
 
 var ASNPact = [...]int{
-	-113, -1000, -113, -1000, -15, 41, -1000, -1000, -1000, -111,
-	-1000, -1000, -117, -12, -56, -5, -1000, -1000, -1000, -1000,
-	24, -1000, -33, -89, -90, -91, -1000, -1000, -1000, -112,
-	33, -46, -1000, -1000, -1000, 22, 3, 34, -1000, -1000,
-	-40, 20, -23, -30, -50, -110, -24, -1000, -1000, -109,
-	-109, 12, -110, -1000, 13, -1000, -1000, 26, 11, -1000,
-	-109, -1000, 33, -109, -1000, -1000, -113, -110, -1000, -1000,
-	-1000, -1000, -1000, -1000, -1000,
+	-107, -1000, -107, -1000, -8, 53, -1000, -1000, -1000, -105,
+	-1000, -1000, -111, -3, -50, -2, -1000, -1000, -1000, -1000,
+	36, -1000, -24, -83, -84, -85, -1000, -1000, -1000, -106,
+	43, -38, -1000, -1000, -1000, 31, 10, 44, -1000, -1000,
+	-34, 28, -15, -21, -41, -104, -18, -1000, -1000, -103,
+	-103, 20, -104, -1000, 22, -1000, -1000, 34, 19, -1000,
+	-103, -1000, 43, -103, -1000, -1000, -107, -104, -1000, -1000,
+	-1000, -1000, -1000, 52, -1000, -1000, -1000, -7, 50, -7,
+	-1000, -1000, -1000, -1000, -1000, -1000, 33, -1000, -115, -1000,
+	-1000, -1000, -11, -1000, -1000, 30, -1000, -119, -1000, -1000,
+	-1000, -1000, -1000,
 }
 
 var ASNPgo = [...]int{
-	0, 66, 46, 65, 64, 63, 62, 41, 61, 60,
-	59, 29, 21, 33, 32, 24, 58, 56, 55, 54,
-	19, 30, 16, 52, 50, 26, 48, 47,
+	0, 97, 58, 96, 95, 87, 83, 50, 82, 80,
+	79, 39, 30, 40, 42, 29, 78, 77, 76, 75,
+	22, 23, 74, 73, 37, 25, 72, 71, 35, 70,
+	69, 68, 24, 67, 65, 64, 63, 60,
 }
 
 var ASNR1 = [...]int{
-	0, 27, 20, 20, 1, 1, 2, 15, 3, 4,
-	4, 5, 6, 6, 7, 7, 7, 8, 9, 10,
-	16, 16, 16, 16, 17, 17, 18, 18, 19, 19,
-	19, 13, 13, 23, 23, 24, 24, 25, 26, 14,
-	14, 14, 14, 21, 21, 22, 11, 11, 11, 12,
+	0, 37, 20, 20, 21, 21, 21, 21, 21, 22,
+	22, 23, 23, 1, 1, 2, 15, 3, 4, 4,
+	5, 6, 6, 7, 7, 7, 8, 9, 10, 16,
+	16, 16, 16, 17, 17, 18, 18, 19, 19, 19,
+	13, 13, 26, 26, 27, 27, 28, 29, 30, 30,
+	31, 32, 32, 33, 33, 33, 34, 35, 35, 36,
+	14, 14, 14, 14, 24, 24, 25, 11, 11, 11,
+	12,
 }
 
 var ASNR2 = [...]int{
-	0, 1, 1, 1, 1, 2, 9, 3, 2, 1,
-	0, 3, 1, 2, 1, 1, 1, 1, 1, 4,
-	2, 2, 2, 0, 2, 0, 2, 0, 3, 3,
-	0, 3, 0, 1, 0, 1, 2, 3, 1, 3,
-	3, 2, 0, 1, 3, 1, 1, 2, 0, 2,
+	0, 1, 1, 1, 1, 2, 1, 2, 1, 1,
+	2, 1, 2, 1, 2, 9, 3, 2, 1, 0,
+	3, 1, 2, 1, 1, 1, 1, 1, 4, 2,
+	2, 2, 0, 2, 0, 2, 0, 3, 3, 0,
+	3, 0, 1, 0, 1, 2, 3, 2, 1, 0,
+	3, 1, 2, 1, 1, 1, 1, 1, 1, 4,
+	3, 3, 2, 0, 1, 3, 1, 1, 2, 0,
+	2,
 }
 
 var ASNChk = [...]int{
-	-1000, -27, -1, -2, -3, -20, 118, 119, -2, 46,
+	-1000, -37, -1, -2, -3, -20, 118, 119, -2, 46,
 	-4, -5, 4, -18, 118, -6, -7, -8, -9, -10,
 	119, 120, -16, 65, 54, 30, 70, 5, -7, 16,
 	-17, 56, 102, 102, 102, 120, -15, 10, 66, 17,
 	31, 10, -19, -13, -14, 67, 55, 18, 51, -14,
-	-13, -23, -24, -25, -21, -22, 119, -21, 28, 25,
-	-11, -12, 119, -11, 25, -25, 59, 9, 25, 25,
-	-12, -15, -26, -20, -22,
+	-13, -26, -27, -28, -24, -25, 119, -24, 28, 25,
+	-11, -12, 119, -11, 25, -28, 59, 9, 25, 25,
+	-12, -15, -29, -20, -25, -30, -31, 4, -32, -33,
+	-34, -35, -36, -20, -22, -23, -21, 120, 11, 121,
+	5, -32, 16, 120, 121, -21, 120, 11, 121, -20,
+	17, 120, 121,
 }
 
 var ASNDef = [...]int{
-	0, -2, 1, 4, 0, 10, 2, 3, 5, 27,
-	8, 9, 0, 23, 0, 0, 12, 14, 15, 16,
-	17, 18, 25, 0, 0, 0, 26, 11, 13, 0,
-	0, 0, 20, 21, 22, 0, 0, 0, 24, 19,
-	-2, 0, 0, 42, 32, 34, 0, 7, 6, 48,
-	48, 0, 33, 35, 0, 43, 45, 0, 0, 41,
-	28, 46, 0, 29, 31, 36, 0, 0, 39, 40,
-	47, 49, 37, 38, 44,
+	0, -2, 1, 13, 0, 19, 2, 3, 14, 36,
+	17, 18, 0, 32, 0, 0, 21, 23, 24, 25,
+	26, 27, 34, 0, 0, 0, 35, 20, 22, 0,
+	0, 0, 29, 30, 31, 0, 0, 0, 33, 28,
+	-2, 0, 0, 63, 41, 43, 0, 16, 15, 69,
+	69, 0, 42, 44, 0, 64, 66, 0, 0, 62,
+	37, 67, 0, 38, 40, 45, 0, 0, 60, 61,
+	68, 70, 46, 49, 65, 47, 48, 0, 0, 51,
+	53, 54, 55, -2, 57, 58, 0, -2, 0, -2,
+	50, 52, 0, -2, -2, 0, 4, 0, 6, 8,
+	59, 5, 7,
 }
 
 var ASNTok1 = [...]int{
@@ -753,7 +796,7 @@ ASNdefault:
 
 	case 1:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:201
+//line asn.y:225
 		{
 			SetResult(ASNlex, ASNDollar[1].TypeModuleDefinitions)
 			Print("Done")
@@ -763,345 +806,472 @@ ASNdefault:
 		}
 	case 2:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:210
+//line asn.y:234
 		{
 			ASNVAL.TypeString = ASNDollar[1].TypeString
 		}
 	case 3:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:213
+//line asn.y:237
 		{
 			ASNVAL.TypeString = ASNDollar[1].TypeString
 		}
 	case 4:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:218
+//line asn.y:242
+		{
+			ASNVAL.TypeString = strconv.Itoa(ASNDollar[1].TypeInteger)
+		}
+	case 5:
+		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
+//line asn.y:245
+		{
+			ASNVAL.TypeString = strconv.Itoa((-1) * ASNDollar[2].TypeInteger)
+		}
+	case 6:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:248
+		{
+			ASNVAL.TypeString = strconv.FormatFloat(ASNDollar[1].TypeFloat, 'f', -1, 64)
+		}
+	case 7:
+		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
+//line asn.y:251
+		{
+			ASNVAL.TypeString = strconv.FormatFloat(((-1) * ASNDollar[2].TypeFloat), 'f', -1, 64)
+		}
+	case 8:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:254
+		{
+			ASNVAL.TypeString = ASNDollar[1].TypeString
+		}
+	case 9:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:259
+		{
+			ASNVAL.TypeInteger = ASNDollar[1].TypeInteger
+		}
+	case 10:
+		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
+//line asn.y:262
+		{
+			ASNVAL.TypeInteger = (-1) * ASNDollar[2].TypeInteger
+		}
+	case 11:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:267
+		{
+			ASNVAL.TypeFloat = ASNDollar[1].TypeFloat
+		}
+	case 12:
+		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
+//line asn.y:270
+		{
+			ASNVAL.TypeFloat = (-1) * ASNDollar[2].TypeFloat
+		}
+	case 13:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:275
 		{
 			ASNVAL.TypeModuleDefinitions = []ModuleDefinition{
 				ASNDollar[1].TypeModuleDefinition,
 			}
 		}
-	case 5:
+	case 14:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:223
+//line asn.y:280
 		{
 			ASNVAL.TypeModuleDefinitions = ASNDollar[1].TypeModuleDefinitions
 			ASNVAL.TypeModuleDefinitions = append(ASNVAL.TypeModuleDefinitions, ASNDollar[2].TypeModuleDefinition)
 		}
-	case 6:
+	case 15:
 		ASNDollar = ASNS[ASNpt-9 : ASNpt+1]
-//line asn.y:238
+//line asn.y:295
 		{
 			ASNVAL.TypeModuleDefinition = ModuleDefinition{
 				Identifier: ASNDollar[1].TypeModuleIdentifer,
 				Body:       ASNDollar[8].TypeModuleBody,
 			}
 		}
-	case 7:
+	case 16:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:246
+//line asn.y:303
 		{
 			ASNVAL.TypeString = "::="
 		}
-	case 8:
+	case 17:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:253
+//line asn.y:310
 		{
 			ASNVAL.TypeModuleIdentifer = ModuleIdentifier{
 				Reference:             ASNDollar[1].TypeString,
 				DefinitiveIdentifiers: ASNDollar[2].TypeDefinitiveIdentifiers,
 			}
 		}
-	case 9:
+	case 18:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:261
+//line asn.y:318
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = ASNDollar[1].TypeDefinitiveIdentifiers
 		}
-	case 10:
+	case 19:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:264
+//line asn.y:321
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = make(DefinitiveIdentifiers, 0)
 		}
-	case 11:
+	case 20:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:269
+//line asn.y:326
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = ASNDollar[2].TypeDefinitiveIdentifiers
 		}
-	case 12:
+	case 21:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:274
+//line asn.y:331
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = []DefinitiveIdentifier{
 				ASNDollar[1].TypeDefinitiveIdentifier,
 			}
 		}
-	case 13:
+	case 22:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:279
+//line asn.y:336
 		{
 			ASNVAL.TypeDefinitiveIdentifiers = ASNDollar[1].TypeDefinitiveIdentifiers
 			ASNVAL.TypeDefinitiveIdentifiers = append(ASNVAL.TypeDefinitiveIdentifiers, ASNDollar[2].TypeDefinitiveIdentifier)
 		}
-	case 14:
+	case 23:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:285
+//line asn.y:342
 		{
 			ASNVAL.TypeDefinitiveIdentifier = ASNDollar[1].TypeDefinitiveIdentifier
 		}
-	case 15:
+	case 24:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:288
+//line asn.y:345
 		{
 			ASNVAL.TypeDefinitiveIdentifier = ASNDollar[1].TypeDefinitiveIdentifier
 		}
-	case 16:
+	case 25:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:291
+//line asn.y:348
 		{
 			ASNVAL.TypeDefinitiveIdentifier = ASNDollar[1].TypeDefinitiveIdentifier
 		}
-	case 17:
+	case 26:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:296
+//line asn.y:353
 		{
 			ASNVAL.TypeDefinitiveIdentifier = DefinitiveIdentifier{
 				Name: ASNDollar[1].TypeString,
 			}
 		}
-	case 18:
+	case 27:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:303
+//line asn.y:360
 		{
 			ASNVAL.TypeDefinitiveIdentifier = DefinitiveIdentifier{
 				Id: ASNDollar[1].TypeInteger,
 			}
 		}
-	case 19:
+	case 28:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line asn.y:310
+//line asn.y:367
 		{
 			ASNVAL.TypeDefinitiveIdentifier = DefinitiveIdentifier{
 				Name: ASNDollar[1].TypeString,
 				Id:   ASNDollar[3].TypeInteger,
 			}
 		}
-	case 20:
+	case 29:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:318
+//line asn.y:375
 		{
 			ASNVAL.TypeTagDefault = ImplicitTag
 		}
-	case 21:
+	case 30:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:321
+//line asn.y:378
 		{
 			ASNVAL.TypeTagDefault = ExplicitTag
 		}
-	case 22:
+	case 31:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:324
+//line asn.y:381
 		{
 			ASNVAL.TypeTagDefault = AutomaticTag
 		}
-	case 23:
+	case 32:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:327
+//line asn.y:384
 		{
 			ASNVAL.TypeTagDefault = ExplicitTag
 		}
-	case 24:
+	case 33:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:332
+//line asn.y:389
 		{
 			ASNVAL.TypeBoolean = true
 		}
-	case 25:
+	case 34:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:335
+//line asn.y:392
 		{
 			ASNVAL.TypeBoolean = false
 		}
-	case 26:
+	case 35:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:340
+//line asn.y:397
 		{
 			ASNVAL.TypeString = ASNDollar[1].TypeString
 		}
-	case 27:
+	case 36:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:343
+//line asn.y:400
 		{
 			ASNVAL.TypeString = ""
 		}
-	case 28:
+	case 37:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:350
+//line asn.y:407
 		{
 			ASNVAL.TypeModuleBody = ModuleBody{
 				Imports: ASNDollar[1].TypeModuleImports,
 				Exports: ASNDollar[2].TypeModuleExports,
 			}
 		}
-	case 29:
+	case 38:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:358
+//line asn.y:415
 		{
 			ASNVAL.TypeModuleBody = ModuleBody{
 				Imports: ASNDollar[2].TypeModuleImports,
 				Exports: ASNDollar[1].TypeModuleExports,
 			}
 		}
-	case 30:
+	case 39:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:364
+//line asn.y:421
 		{
 			ASNVAL.TypeModuleBody = ModuleBody{
 				// Empty
 			}
 		}
-	case 31:
+	case 40:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:371
+//line asn.y:428
 		{
 			ASNVAL.TypeModuleImports = ASNDollar[2].TypeModuleImports
 		}
-	case 32:
+	case 41:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:374
+//line asn.y:431
 		{
 			ASNVAL.TypeModuleImports = []ModuleImport{
 				// EMPTY
 			}
 		}
-	case 33:
+	case 42:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:381
+//line asn.y:438
 		{
 			ASNVAL.TypeModuleImports = ASNDollar[1].TypeModuleImports
 		}
-	case 34:
+	case 43:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:384
+//line asn.y:441
 		{
 			ASNVAL.TypeModuleImports = []ModuleImport{
 				// EMPTY
 			}
 		}
-	case 35:
+	case 44:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:391
+//line asn.y:448
 		{
 			ASNVAL.TypeModuleImports = []ModuleImport{
 				ASNDollar[1].TypeModuleImport,
 			}
 		}
-	case 36:
+	case 45:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:396
+//line asn.y:453
 		{
 			ASNVAL.TypeModuleImports = ASNDollar[1].TypeModuleImports
 			ASNVAL.TypeModuleImports = append(ASNVAL.TypeModuleImports, ASNDollar[2].TypeModuleImport)
 		}
-	case 37:
+	case 46:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:402
+//line asn.y:459
 		{
 			ASNVAL.TypeModuleImport = ModuleImport{
 				Symbols:   ASNDollar[1].TypeListString,
 				Reference: ASNDollar[3].TypeModuleReference,
 			}
 		}
-	case 38:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:410
+	case 47:
+		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
+//line asn.y:467
 		{
 			ASNVAL.TypeModuleReference = ModuleReference{
-				Identifier: ASNDollar[1].TypeString,
+				Identifier:          ASNDollar[1].TypeString,
+				AssignedIdentifiers: ASNDollar[2].TypeString,
 			}
 		}
-	case 39:
+	case 48:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:475
+		{
+			ASNVAL.TypeString = ASNDollar[1].TypeString
+		}
+	case 49:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:478
+		{
+			ASNVAL.TypeString = ""
+		}
+	case 50:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:417
+//line asn.y:483
+		{
+			ASNVAL.TypeString = Join("{", ASNDollar[2].TypeString, "}")
+		}
+	case 51:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:488
+		{
+			ASNVAL.TypeString = Join("", ASNDollar[1].TypeString)
+		}
+	case 52:
+		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
+//line asn.y:491
+		{
+			ASNVAL.TypeString = Join(ASNDollar[1].TypeString, " ", ASNDollar[2].TypeString)
+		}
+	case 53:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:496
+		{
+			ASNVAL.TypeString = ASNDollar[1].TypeString
+		}
+	case 54:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:499
+		{
+			ASNVAL.TypeString = ASNDollar[1].TypeString
+		}
+	case 55:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:502
+		{
+			ASNVAL.TypeString = ASNDollar[1].TypeString
+		}
+	case 56:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:507
+		{
+			ASNVAL.TypeString = ASNDollar[1].TypeString
+		}
+	case 57:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:512
+		{
+			ASNVAL.TypeString = strconv.Itoa(ASNDollar[1].TypeInteger)
+		}
+	case 58:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:515
+		{
+			ASNVAL.TypeString = strconv.FormatFloat(ASNDollar[1].TypeFloat, 'f', -1, 64)
+		}
+	case 59:
+		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
+//line asn.y:520
+		{
+			ASNVAL.TypeString = Join(ASNDollar[1].TypeString, "(", ASNDollar[3].TypeString, ")")
+		}
+	case 60:
+		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
+//line asn.y:525
 		{
 			ASNVAL.TypeModuleExports = ModuleExports{
 				All:     false,
 				Symbols: ASNDollar[2].TypeListString,
 			}
 		}
-	case 40:
+	case 61:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:423
+//line asn.y:531
 		{
 			ASNVAL.TypeModuleExports = ModuleExports{
 				All: true,
 			}
 		}
-	case 41:
+	case 62:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:428
+//line asn.y:536
 		{
 			ASNVAL.TypeModuleExports = ModuleExports{
 				// Empty
 			}
 		}
-	case 42:
+	case 63:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:433
+//line asn.y:541
 		{
 			ASNVAL.TypeModuleExports = ModuleExports{
 				// Empty
 			}
 		}
-	case 43:
+	case 64:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:440
+//line asn.y:548
 		{
 			ASNVAL.TypeListString = []string{
 				ASNDollar[1].TypeString,
 			}
 		}
-	case 44:
+	case 65:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:445
+//line asn.y:553
 		{
 			ASNVAL.TypeListString = ASNDollar[1].TypeListString
 			ASNVAL.TypeListString = append(ASNVAL.TypeListString, ASNDollar[3].TypeString)
 		}
-	case 45:
+	case 66:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:451
+//line asn.y:559
 		{
 			ASNVAL.TypeString = ASNDollar[1].TypeString
 		}
-	case 46:
+	case 67:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:456
+//line asn.y:564
 		{
 			ASNVAL.TypeAssignments = []Assignment{
 				ASNDollar[1].TypeAssignment,
 			}
 		}
-	case 47:
+	case 68:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:461
+//line asn.y:569
 		{
 			ASNVAL.TypeAssignments = ASNDollar[1].TypeAssignments
 			ASNVAL.TypeAssignments = append(ASNVAL.TypeAssignments, ASNDollar[2].TypeAssignment)
 		}
-	case 48:
+	case 69:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:465
+//line asn.y:573
 		{
 			ASNVAL.TypeAssignments = []Assignment{
 				// Empty
 			}
 		}
-	case 49:
+	case 70:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:472
+//line asn.y:580
 		{
 			ASNVAL.TypeAssignment = Assignment{
 				// Empty

@@ -26,7 +26,8 @@ type ModuleExports struct {
 }
 
 type ModuleReference struct {
-	Identifier string
+	Identifier          string
+	AssignedIdentifiers string
 }
 
 type ModuleImport struct {
