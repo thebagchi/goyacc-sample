@@ -4,8 +4,12 @@ import (
     "bytes"
     "fmt"
     "encoding/json"
-    "strconv"
 )
+var code bytes.Buffer
+func AddLine(line string) {
+    code.WriteString(line)
+    code.WriteByte('\n')
+}
 
 func JSON(obj interface{}) string {
     data, err := json.MarshalIndent(obj, "", "    ")
@@ -28,33 +32,29 @@ func Join(values ...string) string {
     return buffer.String()
 }
 
-func SetResult(l ASNLexer, v ModuleDefinitions) {
-    l.(*Parser).Result = v
+func SetResult(l ASNLexer, v VALUE) {
+    l.(*Parser).Result = JSON(&v)
 }
 
-type Empty struct{}
+type Empty   struct{}
+type (
+    VALUE   interface{}
+    STRING  string
+    NUMBER  float64
+    BOOLEAN bool
+    LIST    []VALUE
+    MAP     map[string]VALUE
+)
 %}
 
 %union {
-    TypeModuleDefinitions     ModuleDefinitions
-    TypeModuleDefinition      ModuleDefinition
-    TypeModuleIdentifer       ModuleIdentifier
-    TypeDefinitiveIdentifiers DefinitiveIdentifiers
-    TypeDefinitiveIdentifier  DefinitiveIdentifier
-    TypeTagDefault            TagDefault
-    TypeModuleBody            ModuleBody
-    TypeModuleImports         ModuleImports
-    TypeModuleExports         ModuleExports
-    TypeModuleImport          ModuleImport
-    TypeModuleReference       ModuleReference
-    TypeAssignment            Assignment
-    TypeAssignments           Assignments
-    TypeToken                 Empty
-    TypeString                string
-    TypeInteger               int
-    TypeFloat                 float64
-    TypeBoolean               bool
-    TypeListString            []string
+    TypeToken   struct{}
+    TypeString  STRING
+    TypeNumber  NUMBER
+    TypeValue   VALUE
+    TypeBoolean BOOLEAN
+    TypeMap     MAP
+    TypeList    LIST
 }
 
 %token <TypeToken> CURLY_START
@@ -176,46 +176,43 @@ type Empty struct{}
 
 %token<TypeString>  TokenCapitalString
 %token<TypeString>  TokenString
-%token<TypeInteger> TokenInteger
-%token<TypeFloat>   TokenFloat
+%token<TypeNumber>  TokenNumber
 %token<TypeBoolean> TokenBoolean
 
-%type<TypeModuleDefinitions>     ParseModules
-%type<TypeModuleDefinition>      ParseModule
-%type<TypeModuleIdentifer>       ParseModuleIdentifier
-%type<TypeDefinitiveIdentifiers> ParseDefinitiveIdentification
-%type<TypeDefinitiveIdentifiers> ParseDefinitiveOID
-%type<TypeDefinitiveIdentifiers> ParseDefinitiveObjIdComponentList
-%type<TypeDefinitiveIdentifier>  ParseDefinitiveObjIdComponent
-%type<TypeDefinitiveIdentifier>  ParseDefinitiveNameForm
-%type<TypeDefinitiveIdentifier>  ParseDefinitiveNumberForm
-%type<TypeDefinitiveIdentifier>  ParseDefinitiveNameAndNumberForm
-%type<TypeAssignments>           ParseAssignments
-%type<TypeAssignment>            ParseAssignment
-%type<TypeModuleImports>         ParseImports
-%type<TypeModuleExports>         ParseExports
-%type<TypeString>                ParseAssignementSymbol
-%type<TypeTagDefault>            ParseTagDefault
-%type<TypeBoolean>               ParseExtensionDefault
-%type<TypeString>                ParseEncodingReferenceDefault
-%type<TypeModuleBody>            ParseModuleBody
-%type<TypeString>                ParseString
-%type<TypeString>                ParseStringOrNumber
-%type<TypeInteger>               ParseInteger
-%type<TypeFloat>                 ParseFloat
-%type<TypeListString>            ParseSymbols
-%type<TypeString>                ParseSymbol
-%type<TypeModuleImports>         ParseImportSymbols
-%type<TypeModuleImports>         ParseSymbolsFromModules
-%type<TypeModuleImport>          ParseSymbolsFromModule
-%type<TypeModuleReference>       ParseGlobalModuleReference
-%type<TypeString>                ParseAssignedIdentifier
-%type<TypeString>                ParseObjectIdentifierValue
-%type<TypeString>                ParseObjIdComponentsList
-%type<TypeString>                ParseObjIdComponents
-%type<TypeString>                ParseObjIdComponentsNameForm
-%type<TypeString>                ParseObjIdComponentsNumberForm
-%type<TypeString>                ParseObjIdComponentsNameAndNumberForm
+%type<TypeList>     ParseModules
+%type<TypeMap>      ParseModule
+%type<TypeMap>      ParseModuleIdentifier
+%type<TypeList>     ParseDefinitiveIdentification
+%type<TypeList>     ParseDefinitiveOID
+%type<TypeList>     ParseDefinitiveObjIdComponentList
+%type<TypeMap>      ParseDefinitiveObjIdComponent
+%type<TypeMap>      ParseDefinitiveNameForm
+%type<TypeMap>      ParseDefinitiveNumberForm
+%type<TypeMap>      ParseDefinitiveNameAndNumberForm
+%type<TypeString>   ParseTagDefault
+%type<TypeString>   ParseEncodingReferenceDefault
+%type<TypeBoolean>  ParseExtensionDefault
+%type<TypeMap>      ParseModuleBody
+%type<TypeList>     ParseImports
+%type<TypeMap>      ParseExports
+%type<TypeList>     ParseImportSymbols
+%type<TypeList>     ParseSymbolsFromModules
+%type<TypeMap>      ParseSymbolsFromModule
+%type<TypeList>     ParseSymbols
+%type<TypeString>   ParseSymbol
+%type<TypeMap>      ParseGlobalModuleReference
+%type<TypeList>     ParseAssignedIdentifier
+%type<TypeList>     ParseObjectIdentifierValue
+%type<TypeList>     ParseObjIdComponentsList
+%type<TypeMap>      ParseObjIdComponents
+%type<TypeMap>      ParseObjIdComponentsNameForm
+%type<TypeMap>      ParseObjIdComponentsNumberForm
+%type<TypeMap>      ParseObjIdComponentsNameAndNumberForm
+%type<TypeList>     ParseAssignments
+%type<TypeMap>      ParseAssignment
+%type<TypeString>   ParseAssignementSymbol
+%type<TypeString>   ParseString
+%type<TypeNumber>   ParseNumber
 
 %start ParseASN
 
@@ -230,50 +227,9 @@ ParseASN:
         Print("--------------------------------------------------------------------------------")
     }
 
-ParseString:
-    TokenCapitalString {
-        $$ = $1
-    }
-  | TokenString {
-        $$ = $1
-    }
-
-ParseStringOrNumber:
-    TokenInteger {
-        $$ = strconv.Itoa($1)
-    }
-  | MINUS TokenInteger {
-      $$ = strconv.Itoa((-1) * $2)
-    }
-  | TokenFloat {
-      $$ = strconv.FormatFloat($1, 'f', -1, 64)
-    }
-  | MINUS TokenFloat {
-      $$ = strconv.FormatFloat(((-1) * $2), 'f', -1, 64)
-    }
-  | ParseString {
-      $$ = $1
-    }
-
-ParseInteger:
-    TokenInteger {
-        $$ = $1
-    }
-  | MINUS TokenInteger {
-        $$ = (-1) * $2
-    }
-
-ParseFloat:
-    TokenFloat {
-        $$ = $1
-    }
-  | MINUS TokenFloat {
-        $$ = (-1) * $2
-    }
-
 ParseModules:
     ParseModule {
-        $$ = []ModuleDefinition {
+        $$ = LIST {
             $1,
         }
     }
@@ -293,25 +249,30 @@ ParseModule:
     ParseModuleBody                // 8
     END_SYMBOL                     // 9
     {
-        $$ = ModuleDefinition {
-            Identifier: $1,
-            Body:       $8,
+        $$ = MAP {
+            "identifier": $1,
+            "encoding":   $3,
+            "tag":        $4,
+            "body":       $8,
         }
-    }
-
-ParseAssignementSymbol:
-    COLON COLON EQUALITY {
-        $$ = "::="
     }
 
 ParseModuleIdentifier:
     ParseString
     ParseDefinitiveIdentification
     {
-        $$ = ModuleIdentifier {
-            Reference: $1,
-            DefinitiveIdentifiers: $2,
+        $$ = MAP {
+            "reference":             $1,
+            "definitiveIdentifiers": $2,
         }
+    }
+
+ParseEncodingReferenceDefault:
+    TokenCapitalString INSTRUCTIONS_SYMBOL {
+        $$ = $1
+    }
+  | /*EMPTY*/ {
+        $$ = ""
     }
 
 ParseDefinitiveIdentification:
@@ -319,7 +280,7 @@ ParseDefinitiveIdentification:
         $$ = $1
     }
   | /*EMPTY*/ {
-        $$ = make(DefinitiveIdentifiers, 0)
+        $$ = nil
     }
 
 ParseDefinitiveOID:
@@ -329,7 +290,7 @@ ParseDefinitiveOID:
 
 ParseDefinitiveObjIdComponentList:
     ParseDefinitiveObjIdComponent {
-        $$ = []DefinitiveIdentifier {
+        $$ = LIST {
             $1,
         }
     }
@@ -351,38 +312,38 @@ ParseDefinitiveObjIdComponent:
 
 ParseDefinitiveNameForm:
     TokenString {
-        $$ = DefinitiveIdentifier {
-            Name: $1,
+        $$ = MAP {
+            "name": $1,
         }
     }
 
 ParseDefinitiveNumberForm:
-    TokenInteger {
-        $$ = DefinitiveIdentifier {
-            Id: $1,
+    ParseNumber {
+        $$ = MAP {
+            "number": $1,
         }
     }
 
 ParseDefinitiveNameAndNumberForm:
-    TokenString ROUND_START TokenInteger ROUND_END {
-        $$ = DefinitiveIdentifier {
-            Name: $1,
-            Id: $3,
+    TokenString ROUND_START ParseNumber ROUND_END {
+        $$ = MAP {
+            "name": $1,
+            "number": $3,
         }
     }
 
 ParseTagDefault:
     IMPLICIT_SYMBOL TAGS_SYMBOL {
-        $$ = ImplicitTag
+        $$ = "Implicit"
     }
   | EXPLICIT_SYMBOL TAGS_SYMBOL {
-        $$ = ExplicitTag
+        $$ = "Explicit"
     }
   | AUTOMATIC_SYMBOL TAGS_SYMBOL {
-        $$ = AutomaticTag
+        $$ = "Automatic"
     }
   | /*EMPTY*/ {
-        $$ = ExplicitTag
+        $$ = "Explicit"
     }
 
 ParseExtensionDefault:
@@ -393,35 +354,66 @@ ParseExtensionDefault:
         $$ = false
     }
 
-ParseEncodingReferenceDefault:
-    TokenCapitalString INSTRUCTIONS_SYMBOL {
-        $$ = $1
-    }
-  | /*EMPTY*/ {
-        $$ = ""
-    }
-
 ParseModuleBody:
     ParseImports
     ParseExports
     ParseAssignments {
-      $$ = ModuleBody {
-          Imports: $1,
-          Exports: $2,
+      $$ = MAP {
+          "imports":     $1,
+          "exports":     $2,
+          "assignments": $3,
       }
     }
   | ParseExports
     ParseImports
     ParseAssignments {
-        $$ = ModuleBody {
-            Imports: $2,
-            Exports: $1,
+        $$ = MAP {
+            "imports":     $2,
+            "exports":     $1,
+            "assignments": $3,
         }
     }
   | /* EMPTY */ {
-      $$ = ModuleBody {
-          // Empty
+      $$ = nil
+    }
+
+ParseExports:
+    EXPORTS_SYMBOL ParseSymbols SEMI_COMMA {
+      $$ = MAP {
+          "all":     "false",
+          "symbols": $2,
       }
+    }
+  |  EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA {
+      $$ = MAP {
+          "all": "true",
+      }
+    }
+  | EXPORTS_SYMBOL SEMI_COMMA {
+      $$ = MAP {
+          "all": "false",
+      }
+    }
+  | /* EMPTY */ {
+      $$ = MAP {
+          "all": "true",
+      }
+  }
+
+ParseSymbols:
+    ParseSymbol {
+         $$ = LIST {
+             $1,
+         }
+    }
+  | ParseSymbols COMMA ParseSymbol {
+        $$ = $1
+        $$ = append($$, $3)
+    }
+
+ParseSymbol:
+    TokenString {
+        $$ = $1
     }
 
 ParseImports:
@@ -429,9 +421,7 @@ ParseImports:
       $$ = $2
     }
   | /* EMPTY */ {
-      $$ = []ModuleImport{
-          // EMPTY
-      }
+      $$ = nil
     }
 
 ParseImportSymbols:
@@ -439,14 +429,12 @@ ParseImportSymbols:
        $$ = $1
    }
  | /* EMPTY */ {
-       $$ = []ModuleImport{
-           // EMPTY
-       }
+       $$ = nil
    }
 
 ParseSymbolsFromModules:
     ParseSymbolsFromModule {
-        $$ = []ModuleImport{
+        $$ = LIST {
             $1,
         }
     }
@@ -457,17 +445,17 @@ ParseSymbolsFromModules:
 
 ParseSymbolsFromModule:
     ParseSymbols FROM_SYMBOL ParseGlobalModuleReference {
-        $$ = ModuleImport{
-            Symbols:   $1,
-            Reference: $3,
+        $$ = MAP {
+            "symbols":   $1,
+            "reference": $3,
         }
     }
 
 ParseGlobalModuleReference:
     ParseString ParseAssignedIdentifier {
-       $$ = ModuleReference{
-           Identifier:          $1,
-           AssignedIdentifiers: $2,
+       $$ = MAP {
+           "name":        $1,
+           "identifiers": $2,
        }
     }
 
@@ -475,21 +463,32 @@ ParseAssignedIdentifier:
     ParseObjectIdentifierValue {
         $$ = $1
     }
+  | ParseDefinedValue {
+        $$ = $1
+    }
   | /* EMPTY */ {
-        $$ = ""
+        $$ = nil
     }
 
 ParseObjectIdentifierValue:
     CURLY_START ParseObjIdComponentsList CURLY_END {
-        $$ = Join("{", $2, "}")
+        $$ = $2
+    }
+  | CURLY_START ParseDefinedValue ParseObjIdComponentsList CURLY_START {
+        $$ = $2
+    }
+  | CURLY_START CURLY_END {
+      $$ = nil
     }
 
 ParseObjIdComponentsList:
     ParseObjIdComponents {
-        $$ = Join("", $1)
+        $$ = LIST {
+            $1,
+        }
     }
-  | ParseObjIdComponents ParseObjIdComponentsList {
-        $$ = Join($1, " ", $2)
+  | ParseObjIdComponentsList ParseObjIdComponents  {
+        $$ = append($1, $2)
     }
 
 ParseObjIdComponents:
@@ -505,59 +504,29 @@ ParseObjIdComponents:
 
 ParseObjIdComponentsNameForm:
    ParseString {
-       $$ = $1
+       $$ = MAP {
+           "name": $1,
+       }
    }
 
 ParseObjIdComponentsNumberForm:
-    ParseInteger {
-        $$ = strconv.Itoa($1)
+    ParseNumber {
+        $$ = MAP {
+            "number": $1,
+        }
     }
-  | ParseFloat {
-        $$ = strconv.FormatFloat($1, 'f', -1, 64)
+  | ParseNumber {
+        $$ = MAP {
+            "number": $1,
+        }
     }
 
 ParseObjIdComponentsNameAndNumberForm:
-    ParseStringOrNumber ROUND_START ParseStringOrNumber ROUND_END {
-        $$ = Join($1, "(", $3, ")")
-    }
-
-ParseExports:
-    EXPORTS_SYMBOL ParseSymbols SEMI_COMMA {
-      $$ = ModuleExports {
-          All:     false,
-          Symbols: $2,
-      }
-    }
-  |  EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA {
-      $$ = ModuleExports {
-          All: true,
-      }
-    }
-  | EXPORTS_SYMBOL SEMI_COMMA {
-      $$ = ModuleExports {
-          // Empty
-      }
-    }
-  | /* EMPTY */ {
-      $$ = ModuleExports {
-          // Empty
-      }
-  }
-
-ParseSymbols:
-    ParseSymbol {
-         $$ = []string{
-             $1,
-         }
-    }
-  | ParseSymbols COMMA ParseSymbol {
-        $$ = $1
-        $$ = append($$, $3)
-    }
-
-ParseSymbol:
-    TokenString {
-        $$ = $1
+    ParseString ROUND_START ParseNumber ROUND_END {
+        $$ = MAP {
+            "name":   $1,
+            "number": $3,
+        }
     }
 
 ParseAssignments:
@@ -567,19 +536,189 @@ ParseAssignments:
         }
     }
   | ParseAssignments ParseAssignment {
-      $$ = $1
-      $$ = append($$, $2)
-    }
+        $$ = $1
+        $$ = append($$, $2)
+     }
   | /* EMPTY */ {
-      $$ = []Assignment{
-          // Empty
-      }
+        $$ = nil
     }
 
-ParseAssignment:
-    TokenString ParseAssignementSymbol {
-        $$ = Assignment{
-            // Empty
+ParseAssignment
+    ParseTypeAssignment {
+        $$ = $1
+    }
+  | ParseValueAssignment {
+        $$ = $1
+    }
+  | ParseXMLValueAssignment {
+        $$ = $1
+    }
+  | ParseValueSetTypeAssignment {
+        $$ = $1
+    }
+  | ParseObjectClassAssignment {
+        $$ = $1
+    }
+  | ParseObjectAssignment {
+        $$ = $1
+    }
+  | ParseObjectSetAssignment {
+        $$ = $1
+    }
+  | ParseParameterizedAssignment {
+        $$ = $1
+    }
+
+ParseTypeAssignment:
+    ParseString ParseAssignementSymbol ParseType {
+        $$ = MAP {
+            "assignment": "TYPE",
+            "reference":  $1,
+            "type":       $2,
         }
+    }
+
+ParseValueAssignment:
+    ParseString ParseType ParseAssignementSymbol ParseValue {
+        $$ = MAP {
+            "assignment": "VALUE",
+            "reference":  $1,
+            "type":       $2,
+            "value":      $4,
+        }
+    }
+
+ParseXMLValueAssignment:
+    ParseString ParseAssignementSymbol ParseXMLTypedValue {
+        $$ = MAP {
+            "assignment": "XML_VALUE",
+            "reference":  $1,
+            "value":      $3,
+        }
+    }
+
+ParseValueSetTypeAssignment:
+    ParseString ParseType ParseAssignementSymbol ParseValueSet {
+        $$ = MAP {
+            "assignment": "VALUE_SET",
+            "reference":  $1,
+            "type":       $2,
+            "values":     $4,
+        }
+    }
+
+ParseObjectClassAssignment:
+    ParseString ParseAssignementSymbol ParseObjectClass {
+        $$ = MAP {
+            "assignment": "OBJECT_CLASS",
+            "reference":  $1,
+            "class":      $3,
+        }
+    }
+
+ParseObjectAssignment:
+    ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObject {
+        $$ = MAP {
+            "assignment": "OBJECT",
+            "reference":  $1,
+            "class":      $2,
+            "value":      $4,
+        }
+    }
+
+ParseObjectSetAssignment:
+    ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObjectSet {
+        $$ = MAP {
+            "assignment": "OBJECT_SET",
+            "reference":  $1,
+            "class":      $2,
+            "values":     $4,
+        }
+    }
+
+ParseParameterizedAssignment:
+    ParseParameterizedTypeAssignment {
+        $$ = $1
+    }
+  | ParseParameterizedValueAssignment {
+        $$ = $1
+    }
+  | ParseParameterizedValueSetTypeAssignment {
+        $$ = $1
+    }
+  | ParseParameterizedObjectClassAssignment {
+        $$ = $1
+    }
+  | ParseParameterizedObjectAssignment {
+        $$ = $1
+    }
+  | ParseParameterizedObjectSetAssignment {
+        $$ = $1
+    }
+
+ParseType:
+    ParseBuiltinType {
+
+    }
+  | ParseReferencedType {
+
+    }
+  | ParseConstrainedType {
+
+    }
+
+ParseValue:
+
+ParseXMLTypedValue:
+
+ParseValueSet:
+
+ParseObjectClass:
+
+ParseDefinedObjectClass:
+
+ParseObject:
+
+ParseObjectSet:
+
+ParseParameterizedTypeAssignment:
+
+ParseParameterizedValueAssignment:
+
+ParseParameterizedValueSetTypeAssignment:
+
+ParseParameterizedObjectClassAssignment:
+
+ParseParameterizedObjectAssignment:
+
+ParseParameterizedObjectSetAssignment:
+
+ParseDefinedValue:
+
+ParseBuiltinType:
+
+ParseReferencedType:
+
+ParseConstrainedType:
+
+ParseString:
+    TokenCapitalString {
+        $$ = $1
+    }
+  | TokenString {
+        $$ = $1
+    }
+
+ParseNumber:
+    TokenNumber {
+        $$ = $1
+    }
+  | MINUS TokenNumber {
+        $$ = (-1) * $2
+    }
+
+ParseAssignementSymbol:
+    COLON COLON EQUALITY {
+        $$ = "::="
     }
 %%

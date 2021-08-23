@@ -73,9 +73,14 @@ BEGIN
 IMPORTS imported FROM ModuleName{1};
 END
 
-MyModule11 DEFINITIONS ::=
+MyModule12 DEFINITIONS ::=
 BEGIN
 IMPORTS imported FROM ModuleName{ieee(111) iso(1)};
+END
+
+MyModule13 DEFINITIONS ::=
+BEGIN
+IMPORTS imported FROM ModuleName{};
 END
 `
 		result, err := Parse([]byte(content))

@@ -295,7 +295,7 @@ var Tokens = map[int]string{
 type Parser struct {
 	Input    *bytes.Buffer
 	ErrorMsg error
-	Result   ModuleDefinitions
+	Result   string
 }
 
 func IsUpper(str string) bool {
@@ -337,7 +337,7 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 			if nil != err {
 				return 0
 			}
-			lval.TypeString = value
+			lval.TypeString = STRING(value)
 			if token, ok := Keywords[value]; ok {
 				return token
 			}
@@ -355,12 +355,8 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 			if nil != err {
 				return 0
 			}
-			if number == float64(int64(number)) {
-				lval.TypeInteger = int(number)
-				return TokenInteger
-			}
-			lval.TypeFloat = number
-			return TokenFloat
+			lval.TypeNumber = NUMBER(number)
+			return TokenNumber
 		}
 		switch b {
 		case '-':
@@ -471,7 +467,7 @@ func (p *Parser) Error(msg string) {
 	p.ErrorMsg = errors.New(msg)
 }
 
-func Parse(content []byte) (ModuleDefinitions, error) {
+func Parse(content []byte) (string, error) {
 
 	ASNDebug = 1
 	ASNErrorVerbose = true
