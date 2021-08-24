@@ -210,6 +210,58 @@ type (
 %type<TypeMap>      ParseObjIdComponentsNameAndNumberForm
 %type<TypeList>     ParseAssignments
 %type<TypeMap>      ParseAssignment
+%type<TypeMap>      ParseDefinedValue
+%type<TypeMap>      ParseTypeAssignment
+%type<TypeMap>      ParseValueAssignment
+%type<TypeMap>      ParseXMLValueAssignment
+%type<TypeMap>      ParseValueSetTypeAssignment
+%type<TypeMap>      ParseObjectClassAssignment
+%type<TypeMap>      ParseObjectAssignment
+%type<TypeMap>      ParseObjectSetAssignment
+%type<TypeMap>      ParseParameterizedAssignment
+%type<TypeMap>      ParseType
+%type<TypeMap>      ParseValue
+%type<TypeMap>      ParseValueSet
+%type<TypeMap>      ParseXMLTypedValue
+%type<TypeMap>      ParseObjectClass
+%type<TypeMap>      ParseDefinedObjectClass
+%type<TypeMap>      ParseObject
+%type<TypeMap>      ParseObjectSet
+%type<TypeMap>      ParseParameterizedTypeAssignment
+%type<TypeMap>      ParseParameterizedValueAssignment
+%type<TypeMap>      ParseParameterizedValueSetTypeAssignment
+%type<TypeMap>      ParseParameterizedObjectClassAssignment
+%type<TypeMap>      ParseParameterizedObjectAssignment
+%type<TypeMap>      ParseParameterizedObjectSetAssignment
+%type<TypeMap>      ParseReferencedType
+%type<TypeMap>      ParseConstrainedType
+%type<TypeMap>      ParseBitStringType
+%type<TypeMap>      ParseBooleanType
+%type<TypeMap>      ParseCharacterStringType
+%type<TypeMap>      ParseChoiceType
+%type<TypeMap>      ParseDateType
+%type<TypeMap>      ParseDateTimeType
+%type<TypeMap>      ParseDurationType
+%type<TypeMap>      ParseEmbeddedPDVType
+%type<TypeMap>      ParseExternalType
+%type<TypeMap>      ParseEnumeratedType
+%type<TypeMap>      ParseInstanceOfType
+%type<TypeMap>      ParseIntegerType
+%type<TypeMap>      ParseIRIType
+%type<TypeMap>      ParseNullType
+%type<TypeMap>      ParseObjectClassFieldType
+%type<TypeMap>      ParseObjectIdentifierType
+%type<TypeMap>      ParseOctetStringType
+%type<TypeMap>      ParseRealType
+%type<TypeMap>      ParseRelativeIRIType
+%type<TypeMap>      ParseRelativeOIDType
+%type<TypeMap>      ParseSequenceType
+%type<TypeMap>      ParseSequenceOfType
+%type<TypeMap>      ParseSetType
+%type<TypeMap>      ParseSetOfType
+%type<TypeMap>      ParsePrefixedType
+%type<TypeMap>      ParseTimeType
+%type<TypeMap>      ParseTimeOfDayType
 %type<TypeString>   ParseAssignementSymbol
 %type<TypeString>   ParseString
 %type<TypeNumber>   ParseNumber
@@ -464,7 +516,7 @@ ParseAssignedIdentifier:
         $$ = $1
     }
   | ParseDefinedValue {
-        $$ = $1
+        $$ = nil
     }
   | /* EMPTY */ {
         $$ = nil
@@ -475,7 +527,7 @@ ParseObjectIdentifierValue:
         $$ = $2
     }
   | CURLY_START ParseDefinedValue ParseObjIdComponentsList CURLY_START {
-        $$ = $2
+        $$ = $3
     }
   | CURLY_START CURLY_END {
       $$ = nil
@@ -531,7 +583,7 @@ ParseObjIdComponentsNameAndNumberForm:
 
 ParseAssignments:
     ParseAssignment {
-        $$ = []Assignment{
+        $$ = LIST {
             $1,
         }
     }
@@ -543,7 +595,7 @@ ParseAssignments:
         $$ = nil
     }
 
-ParseAssignment
+ParseAssignment:
     ParseTypeAssignment {
         $$ = $1
     }
@@ -668,38 +720,299 @@ ParseType:
     }
 
 ParseValue:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseXMLTypedValue:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseValueSet:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseObjectClass:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseDefinedObjectClass:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseObject:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseObjectSet:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseParameterizedTypeAssignment:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseParameterizedValueAssignment:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseParameterizedValueSetTypeAssignment:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseParameterizedObjectClassAssignment:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseParameterizedObjectAssignment:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseParameterizedObjectSetAssignment:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseDefinedValue:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseBuiltinType:
+    ParseBitStringType {
+
+    }
+  | ParseBooleanType {
+
+    }
+  | ParseCharacterStringType {
+
+    }
+  | ParseChoiceType {
+
+    }
+  | ParseDateType {
+
+    }
+  | ParseDateTimeType {
+
+    }
+  | ParseDurationType {
+
+    }
+  | ParseEmbeddedPDVType {
+
+    }
+  | ParseEnumeratedType {
+
+    }
+  | ParseExternalType {
+
+    }
+  | ParseInstanceOfType {
+
+    }
+  | ParseIntegerType {
+
+    }
+  | ParseIRIType {
+
+    }
+  | ParseNullType {
+
+    }
+  | ParseObjectClassFieldType {
+
+    }
+  | ParseObjectIdentifierType {
+
+    }
+  | ParseOctetStringType {
+
+    }
+  | ParseRealType {
+
+    }
+  | ParseRelativeIRIType {
+
+    }
+  | ParseRelativeOIDType {
+
+    }
+  | ParseSequenceType {
+
+    }
+  | ParseSequenceOfType {
+
+    }
+  | ParseSetType {
+
+    }
+  | ParseSetOfType {
+
+    }
+  | ParsePrefixedType {
+
+    }
+  | ParseTimeType {
+
+    }
+  | ParseTimeOfDayType {
+
+    }
 
 ParseReferencedType:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseConstrainedType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseBitStringType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseBooleanType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseCharacterStringType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+ParseChoiceType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseDateType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+ParseDateTimeType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+ParseDurationType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseEmbeddedPDVType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseEnumeratedType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseExternalType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseInstanceOfType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseIntegerType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseIRIType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseNullType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseObjectClassFieldType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseObjectIdentifierType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseOctetStringType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseRealType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseRelativeIRIType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseRelativeOIDType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSequenceType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSequenceOfType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSetType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSetOfType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParsePrefixedType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseTimeType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseTimeOfDayType:
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseString:
     TokenCapitalString {
