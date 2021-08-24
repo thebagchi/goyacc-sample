@@ -4,6 +4,7 @@ import (
     "bytes"
     "fmt"
     "encoding/json"
+    "strconv"
 )
 var code bytes.Buffer
 func AddLine(line string) {
@@ -62,6 +63,7 @@ type (
 %token <TypeToken> SQUARE_START
 %token <TypeToken> SQUARE_END
 %token <TypeToken> DOUBLE_QUOTE
+%token <TypeToken> SINGLE_QUOTE
 %token <TypeToken> COMMA
 %token <TypeToken> COLON
 %token <TypeToken> MINUS
@@ -79,6 +81,8 @@ type (
 %token <TypeToken> EXCLAMATION
 %token <TypeToken> CARET
 %token <TypeToken> SEMI_COMMA
+%token <TypeToken> SLASH_B
+%token <TypeToken> SLASH_H
 
 %token<TypeString>  ABSENT_SYMBOL
 %token<TypeString>  ABSTRACTSYNTAX_SYMBOL
@@ -780,35 +784,122 @@ ParseValue:
     }
 
 ParseBuiltinValue:
-    ParseBitStringValue
-  | ParseBooleanValue
-  | ParseCharacterStringValue
-  | ParseChoiceValue
-  | ParseEmbeddedPDVValue
-  | ParseEnumeratedValue
-  | ParseExternalValue
-  | ParseInstanceOfValue
-  | ParseIntegerValue
-  | ParseIRIValue
-  | ParseNullValue
-  | ParseObjectIdentifierValue
-  | ParseOctetStringValue
-  | ParseRealValue
-  | ParseRelativeIRIValue
-  | ParseRelativeOIDValue
-  | ParseSequenceValue
-  | ParseSequenceOfValue
-  | ParseSetValue
-  | ParseSetOfValue
-  | ParsePrefixedValue
+    ParseBitStringValue {
+        $$ = MAP {
+            "bitString": $1,
+        }
+    }
+  | ParseBooleanValue {
+        $$ = MAP {
+            "boolean": $1,
+        }
+    }
+  | ParseCharacterStringValue {
+        $$ = MAP {
+            "characterString": $1,
+        }
+    }
+  | ParseChoiceValue {
+        $$ = MAP {
+            "choice": $1,
+        }
+    }
+  | ParseEmbeddedPDVValue {
+        $$ = MAP {
+            "embeddedPDV": $1,
+        }
+    }
+  | ParseEnumeratedValue {
+        $$ = MAP {
+            "enumerated": $1,
+        }
+    }
+  | ParseExternalValue {
+        $$ = MAP {
+            "external": $1,
+        }
+    }
+  | ParseInstanceOfValue {
+        $$ = MAP {
+            "instanceOf": $1,
+        }
+    }
+  | ParseIntegerValue {
+        $$ = MAP {
+            "integer": $1,
+        }
+    }
+  | ParseIRIValue {
+        $$ = MAP {
+            "iri": $1,
+        }
+    }
+  | ParseNullValue {
+        $$ = MAP {
+            "null": $1,
+        }
+    }
+  | ParseObjectIdentifierValue {
+        $$ = MAP {
+            "objectIdentifier": $1,
+        }
+    }
+  | ParseOctetStringValue {
+        $$ = MAP {
+            "octetString": $1,
+        }
+    }
+  | ParseRealValue {
+        $$ = MAP {
+            "real": $1,
+        }
+    }
+  | ParseRelativeIRIValue {
+        $$ = MAP {
+            "relativeIRI": $1,
+        }
+    }
+  | ParseRelativeOIDValue {
+        $$ = MAP {
+            "relativeOID": $1,
+        }
+    }
+  | ParseSequenceValue {
+        $$ = MAP {
+            "sequence": $1,
+        }
+    }
+  | ParseSequenceOfValue {
+        $$ = MAP {
+            "sequenceOf": $1,
+        }
+    }
+  | ParseSetValue {
+        $$ = MAP {
+            "set": $1,
+        }
+    }
+  | ParseSetOfValue {
+        $$ = MAP {
+            "setOf": $1,
+        }
+    }
+  | ParsePrefixedValue {
+        $$ = MAP {
+            "prefixed": $1,
+        }
+    }
   | ParseTimeValue {
-        $$ = nil
+        $$ = MAP {
+            "time": $1,
+        }
     }
 
 ParseBitStringValue:
-  /* EMPTY*/ {
-    $$ = nil
-  }
+    APOSTROPHE ParseNumber SLASH_B {
+        $$ = strconv.FormatFloat($2.(float64), 'f', -1, 64)
+    }
+
 ParseBooleanValue:
   /* EMPTY*/ {
     $$ = nil

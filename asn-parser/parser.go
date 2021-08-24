@@ -390,6 +390,25 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 		case '/':
 			return SLASH
 		case '\'':
+			for {
+				b, err := p.Input.ReadByte()
+				if nil != err {
+					break
+				}
+				if b == 'B' {
+					return SLASH_B
+				}
+				if b == 'H' {
+					return SLASH_H
+				}
+				{
+					err := p.Input.UnreadByte()
+					if nil != err {
+						return 0
+					}
+				}
+				break
+			}
 			return APOSTROPHE
 		case ' ':
 			return SPACE
