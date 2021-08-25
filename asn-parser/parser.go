@@ -2,8 +2,11 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
+	"encoding/hex"
 	"errors"
+	"fmt"
 	"io"
 	"strconv"
 	"strings"
@@ -293,7 +296,7 @@ var Tokens = map[int]string{
 }
 
 type Parser struct {
-	Input    *bytes.Buffer
+	Input    *bufio.Reader
 	ErrorMsg error
 	Result   string
 }
@@ -328,6 +331,22 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 		if unicode.IsSpace(rune(b)) {
 			continue
 		}
+
+		{
+			value, err := p.ParseBinaryString()
+			if nil == err {
+				lval.TypeString = STRING(value)
+				return TokenBString
+			}
+		}
+		{
+			value, err := p.ParseHexString()
+			if nil == err {
+				lval.TypeString = STRING(value)
+				return TokenHString
+			}
+		}
+
 		if unicode.IsLetter(rune(b)) {
 			err := p.Input.UnreadByte()
 			if nil != err {
@@ -355,8 +374,16 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 			if nil != err {
 				return 0
 			}
+
+			//lval.TypeNumber = NUMBER(number)
+			//return TokenNumber
+
+			if number == float64(int64(number)) {
+				lval.TypeNumber = NUMBER(number)
+				return TokenInteger
+			}
 			lval.TypeNumber = NUMBER(number)
-			return TokenNumber
+			return TokenFloat
 		}
 		switch b {
 		case '-':
@@ -391,21 +418,17 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 			return SLASH
 		case '\'':
 			for {
-				b, err := p.Input.ReadByte()
+				bytes, err := p.Input.Peek(1)
 				if nil != err {
 					break
 				}
-				if b == 'B' {
+				if bytes[0] == 'B' {
+					_, _ = p.Input.Discard(1)
 					return SLASH_B
 				}
-				if b == 'H' {
+				if bytes[0] == 'H' {
+					_, _ = p.Input.Discard(1)
 					return SLASH_H
-				}
-				{
-					err := p.Input.UnreadByte()
-					if nil != err {
-						return 0
-					}
 				}
 				break
 			}
@@ -426,6 +449,60 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 		break
 	}
 	return 0
+}
+
+func (p *Parser) ParseBinaryString() (string, error) {
+	var (
+		buffer = strings.Builder{}
+		count  = 0
+	)
+	for {
+		b, err := p.Input.Peek(count + 1)
+		if nil == io.EOF {
+			break
+		}
+		if nil != err {
+			return "", err
+		}
+		if b[count] != 0 && b[count] != 1 {
+			if buffer.Len() > 0 {
+				break
+			}
+			return "", fmt.Errorf("encoding/binary: invalid byte: %#U", rune(b[count]))
+		}
+		buffer.WriteByte(b[count])
+		count++
+	}
+	_, _ = p.Input.Discard(count)
+	return buffer.String(), nil
+}
+
+func (p *Parser) ParseHexString() (string, error) {
+	var (
+		buffer = strings.Builder{}
+		count  = 0
+	)
+	for {
+		b, err := p.Input.Peek(count + 1)
+		if nil == io.EOF {
+			break
+		}
+		if nil != err {
+			return "", err
+		}
+		t, err := hex.DecodeString(string(b))
+		if nil == err {
+			if buffer.Len() > 0 {
+				break
+			}
+			return "", err
+		}
+		_ = t
+		buffer.WriteByte(b[count])
+		count++
+	}
+	_, _ = p.Input.Discard(count)
+	return buffer.String(), nil
 }
 
 func (p *Parser) ParseString() (string, error) {
@@ -492,7 +569,7 @@ func Parse(content []byte) (string, error) {
 	ASNErrorVerbose = true
 
 	parser := &Parser{
-		Input: bytes.NewBuffer(content),
+		Input: bufio.NewReader(bytes.NewReader(content)),
 	}
 	ASNParse(parser)
 	return parser.Result, parser.ErrorMsg

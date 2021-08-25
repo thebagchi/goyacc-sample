@@ -175,13 +175,17 @@ type (
 %token<TypeString>  VIDEOTEXSTRING_SYMBOL
 %token<TypeString>  VISIBLESTRING_SYMBOL
 %token<TypeString>  WITH_SYMBOL
-
 %token<TypeString>  ASSIGNMENT_SYMBOL
 
 %token<TypeString>  TokenCapitalString
 %token<TypeString>  TokenString
 %token<TypeNumber>  TokenNumber
+%token<TypeNumber>  TokenInteger
+%token<TypeNumber>  TokenFloat
 %token<TypeBoolean> TokenBoolean
+%token<TypeString>  TokenBString
+%token<TypeString>  TokenHString
+%token<TypeString>  TokenCString
 
 %type<TypeValue>      ParseModules
 %type<TypeValue>      ParseModule
@@ -296,9 +300,14 @@ type (
 %type<TypeValue>      ParseSetOfValue
 %type<TypeValue>      ParsePrefixedValue
 %type<TypeValue>      ParseTimeValue
+%type<TypeValue>      ParseRestrictedCharacterStringValue
+%type<TypeValue>      ParseUnrestrictedCharacterStringValue
+%type<TypeValue>      ParseIdentifierList
+%type<TypeValue>      ParseIdentifier
 %type<TypeValue>      ParseAssignementSymbol
 %type<TypeValue>      ParseString
 %type<TypeValue>      ParseNumber
+%type<TypeValue>      ParseBoolean
 
 %start ParseASN
 
@@ -896,18 +905,58 @@ ParseBuiltinValue:
     }
 
 ParseBitStringValue:
-    APOSTROPHE ParseNumber SLASH_B {
-        $$ = strconv.FormatFloat($2.(float64), 'f', -1, 64)
+    APOSTROPHE TokenBString SLASH_B {
+        $$ = $2
+    }
+  | APOSTROPHE TokenHString SLASH_H {
+        $$ = $2
+    }
+  | APOSTROPHE TokenBString SLASH_H {
+        $$ = $2
+  }
+  | CURLY_START ParseIdentifierList CURLY_END {
+        $$ = $2
+    }
+
+ParseIdentifierList:
+    ParseIdentifier {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseIdentifierList COMMA ParseIdentifier {
+        $$ = $1
+        $$ = append($$.(LIST), $2)
+    }
+
+ParseIdentifier:
+    ParseString {
+        $$ = $1
     }
 
 ParseBooleanValue:
-  /* EMPTY*/ {
-    $$ = nil
-  }
+    ParseBoolean {
+        $$ = $1
+    }
+
 ParseCharacterStringValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    ParseRestrictedCharacterStringValue {
+        $$ = nil
+    }
+  | ParseUnrestrictedCharacterStringValue {
+
+    }
+
+ParseRestrictedCharacterStringValue:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseUnrestrictedCharacterStringValue:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseChoiceValue:
   /* EMPTY */ {
     $$ = nil
@@ -1329,6 +1378,14 @@ ParseTimeOfDayType:
         $$ = nil
     }
 
+ParseBoolean:
+    TRUE_SYMBOL {
+        $$ = $1
+    }
+  | FALSE_SYMBOL {
+        $$ = $1
+    }
+
 ParseString:
     TokenCapitalString {
         $$ = $1
@@ -1338,10 +1395,16 @@ ParseString:
     }
 
 ParseNumber:
-    TokenNumber {
+    TokenInteger {
         $$ = $1
     }
-  | MINUS TokenNumber {
+  | MINUS TokenInteger {
+        $$ = (-1) * $2
+    }
+  | TokenFloat {
+        $$ = $1
+    }
+  | MINUS TokenFloat {
         $$ = (-1) * $2
     }
 
