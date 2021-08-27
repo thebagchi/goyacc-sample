@@ -25,7 +25,7 @@ state 2
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
-	.  reduce 1 (src line 312)
+	.  reduce 1 (src line 322)
 
 	ParseModule  goto 8
 	ParseModuleIdentifier  goto 4
@@ -34,7 +34,7 @@ state 2
 state 3
 	ParseModules:  ParseModule.    (2)
 
-	.  reduce 2 (src line 322)
+	.  reduce 2 (src line 332)
 
 
 state 4
@@ -49,27 +49,27 @@ state 5
 	ParseDefinitiveIdentification: .    (9)
 
 	CURLY_START  shift 12
-	.  reduce 9 (src line 374)
+	.  reduce 9 (src line 384)
 
 	ParseDefinitiveIdentification  goto 10
 	ParseDefinitiveOID  goto 11
 
 state 6
-	ParseString:  TokenCapitalString.    (222)
+	ParseString:  TokenCapitalString.    (239)
 
-	.  reduce 222 (src line 1389)
+	.  reduce 239 (src line 1492)
 
 
 state 7
-	ParseString:  TokenString.    (223)
+	ParseString:  TokenString.    (240)
 
-	.  reduce 223 (src line 1393)
+	.  reduce 240 (src line 1496)
 
 
 state 8
 	ParseModules:  ParseModules ParseModule.    (3)
 
-	.  reduce 3 (src line 328)
+	.  reduce 3 (src line 338)
 
 
 state 9
@@ -77,20 +77,20 @@ state 9
 	ParseEncodingReferenceDefault: .    (7)
 
 	TokenCapitalString  shift 14
-	.  reduce 7 (src line 366)
+	.  reduce 7 (src line 376)
 
 	ParseEncodingReferenceDefault  goto 13
 
 state 10
 	ParseModuleIdentifier:  ParseString ParseDefinitiveIdentification.    (5)
 
-	.  reduce 5 (src line 352)
+	.  reduce 5 (src line 362)
 
 
 state 11
 	ParseDefinitiveIdentification:  ParseDefinitiveOID.    (8)
 
-	.  reduce 8 (src line 370)
+	.  reduce 8 (src line 380)
 
 
 state 12
@@ -116,7 +116,7 @@ state 13
 	AUTOMATIC_SYMBOL  shift 28
 	EXPLICIT_SYMBOL  shift 27
 	IMPLICIT_SYMBOL  shift 26
-	.  reduce 22 (src line 437)
+	.  reduce 22 (src line 447)
 
 	ParseTagDefault  goto 25
 
@@ -147,25 +147,25 @@ state 15
 state 16
 	ParseDefinitiveObjIdComponentList:  ParseDefinitiveObjIdComponent.    (11)
 
-	.  reduce 11 (src line 383)
+	.  reduce 11 (src line 393)
 
 
 state 17
 	ParseDefinitiveObjIdComponent:  ParseDefinitiveNameForm.    (13)
 
-	.  reduce 13 (src line 394)
+	.  reduce 13 (src line 404)
 
 
 state 18
 	ParseDefinitiveObjIdComponent:  ParseDefinitiveNumberForm.    (14)
 
-	.  reduce 14 (src line 398)
+	.  reduce 14 (src line 408)
 
 
 state 19
 	ParseDefinitiveObjIdComponent:  ParseDefinitiveNameAndNumberForm.    (15)
 
-	.  reduce 15 (src line 401)
+	.  reduce 15 (src line 411)
 
 
 state 20
@@ -173,19 +173,19 @@ state 20
 	ParseDefinitiveNameAndNumberForm:  TokenString.ROUND_START ParseNumber ROUND_END 
 
 	ROUND_START  shift 32
-	.  reduce 16 (src line 405)
+	.  reduce 16 (src line 415)
 
 
 state 21
 	ParseDefinitiveNumberForm:  ParseNumber.    (17)
 
-	.  reduce 17 (src line 412)
+	.  reduce 17 (src line 422)
 
 
 state 22
-	ParseNumber:  TokenInteger.    (224)
+	ParseNumber:  TokenInteger.    (241)
 
-	.  reduce 224 (src line 1397)
+	.  reduce 241 (src line 1500)
 
 
 state 23
@@ -198,9 +198,9 @@ state 23
 
 
 state 24
-	ParseNumber:  TokenFloat.    (226)
+	ParseNumber:  TokenFloat.    (243)
 
-	.  reduce 226 (src line 1404)
+	.  reduce 243 (src line 1507)
 
 
 state 25
@@ -208,7 +208,7 @@ state 25
 	ParseExtensionDefault: .    (24)
 
 	EXTENSIBILITY_SYMBOL  shift 36
-	.  reduce 24 (src line 445)
+	.  reduce 24 (src line 455)
 
 	ParseExtensionDefault  goto 35
 
@@ -236,19 +236,19 @@ state 28
 state 29
 	ParseEncodingReferenceDefault:  TokenCapitalString INSTRUCTIONS_SYMBOL.    (6)
 
-	.  reduce 6 (src line 362)
+	.  reduce 6 (src line 372)
 
 
 state 30
 	ParseDefinitiveOID:  CURLY_START ParseDefinitiveObjIdComponentList CURLY_END.    (10)
 
-	.  reduce 10 (src line 378)
+	.  reduce 10 (src line 388)
 
 
 state 31
 	ParseDefinitiveObjIdComponentList:  ParseDefinitiveObjIdComponentList ParseDefinitiveObjIdComponent.    (12)
 
-	.  reduce 12 (src line 389)
+	.  reduce 12 (src line 399)
 
 
 state 32
@@ -262,15 +262,15 @@ state 32
 	ParseNumber  goto 40
 
 state 33
-	ParseNumber:  MINUS TokenInteger.    (225)
+	ParseNumber:  MINUS TokenInteger.    (242)
 
-	.  reduce 225 (src line 1401)
+	.  reduce 242 (src line 1504)
 
 
 state 34
-	ParseNumber:  MINUS TokenFloat.    (227)
+	ParseNumber:  MINUS TokenFloat.    (244)
 
-	.  reduce 227 (src line 1407)
+	.  reduce 244 (src line 1510)
 
 
 state 35
@@ -291,19 +291,19 @@ state 36
 state 37
 	ParseTagDefault:  IMPLICIT_SYMBOL TAGS_SYMBOL.    (19)
 
-	.  reduce 19 (src line 427)
+	.  reduce 19 (src line 437)
 
 
 state 38
 	ParseTagDefault:  EXPLICIT_SYMBOL TAGS_SYMBOL.    (20)
 
-	.  reduce 20 (src line 431)
+	.  reduce 20 (src line 441)
 
 
 state 39
 	ParseTagDefault:  AUTOMATIC_SYMBOL TAGS_SYMBOL.    (21)
 
-	.  reduce 21 (src line 434)
+	.  reduce 21 (src line 444)
 
 
 state 40
@@ -330,13 +330,13 @@ state 42
 state 43
 	ParseExtensionDefault:  EXTENSIBILITY_SYMBOL IMPLIED_SYMBOL.    (23)
 
-	.  reduce 23 (src line 441)
+	.  reduce 23 (src line 451)
 
 
 state 44
 	ParseDefinitiveNameAndNumberForm:  TokenString ROUND_START ParseNumber ROUND_END.    (18)
 
-	.  reduce 18 (src line 419)
+	.  reduce 18 (src line 429)
 
 
  45: reduce/reduce conflict  (red'ns 27 and 36) on END_SYMBOL
@@ -351,10 +351,10 @@ state 45
 	ParseImports: .    (36)
 	ParseExports: .    (31)
 
-	END_SYMBOL  reduce 27 (src line 468)
+	END_SYMBOL  reduce 27 (src line 478)
 	EXPORTS_SYMBOL  shift 51
 	IMPORTS_SYMBOL  shift 50
-	.  reduce 31 (src line 489)
+	.  reduce 31 (src line 499)
 
 	ParseModuleBody  goto 47
 	ParseImports  goto 48
@@ -379,7 +379,7 @@ state 48
 	ParseExports: .    (31)
 
 	EXPORTS_SYMBOL  shift 51
-	.  reduce 31 (src line 489)
+	.  reduce 31 (src line 499)
 
 	ParseExports  goto 54
 
@@ -388,7 +388,7 @@ state 49
 	ParseImports: .    (36)
 
 	IMPORTS_SYMBOL  shift 50
-	.  reduce 36 (src line 515)
+	.  reduce 36 (src line 525)
 
 	ParseImports  goto 55
 
@@ -397,7 +397,7 @@ state 50
 	ParseImportSymbols: .    (38)
 
 	TokenString  shift 61
-	.  reduce 38 (src line 523)
+	.  reduce 38 (src line 533)
 
 	ParseImportSymbols  goto 56
 	ParseSymbolsFromModules  goto 57
@@ -419,50 +419,50 @@ state 51
 	ParseSymbol  goto 60
 
 state 52
-	ParseAssignementSymbol:  COLON COLON EQUALITY.    (228)
+	ParseAssignementSymbol:  COLON COLON EQUALITY.    (245)
 
-	.  reduce 228 (src line 1411)
+	.  reduce 245 (src line 1514)
 
 
 state 53
 	ParseModule:  ParseModuleIdentifier DEFINITIONS_SYMBOL ParseEncodingReferenceDefault ParseTagDefault ParseExtensionDefault ParseAssignementSymbol BEGIN_SYMBOL ParseModuleBody END_SYMBOL.    (4)
 
-	.  reduce 4 (src line 333)
+	.  reduce 4 (src line 343)
 
 
-54: shift/reduce conflict (shift 6(0), red'n 60(0)) on TokenCapitalString
-54: shift/reduce conflict (shift 7(0), red'n 60(0)) on TokenString
- 54: reduce/reduce conflict  (red'ns 60 and 150) on END_SYMBOL
-54: shift/reduce conflict (shift 6(0), red'n 150(0)) on TokenCapitalString
-54: shift/reduce conflict (shift 7(0), red'n 150(0)) on TokenString
- 54: reduce/reduce conflict  (red'ns 60 and 151) on END_SYMBOL
-54: shift/reduce conflict (shift 6(0), red'n 151(0)) on TokenCapitalString
-54: shift/reduce conflict (shift 7(0), red'n 151(0)) on TokenString
- 54: reduce/reduce conflict  (red'ns 60 and 152) on END_SYMBOL
-54: shift/reduce conflict (shift 6(0), red'n 152(0)) on TokenCapitalString
-54: shift/reduce conflict (shift 7(0), red'n 152(0)) on TokenString
- 54: reduce/reduce conflict  (red'ns 60 and 153) on END_SYMBOL
-54: shift/reduce conflict (shift 6(0), red'n 153(0)) on TokenCapitalString
-54: shift/reduce conflict (shift 7(0), red'n 153(0)) on TokenString
- 54: reduce/reduce conflict  (red'ns 60 and 154) on END_SYMBOL
-54: shift/reduce conflict (shift 6(0), red'n 154(0)) on TokenCapitalString
-54: shift/reduce conflict (shift 7(0), red'n 154(0)) on TokenString
- 54: reduce/reduce conflict  (red'ns 60 and 155) on END_SYMBOL
-54: shift/reduce conflict (shift 6(0), red'n 155(0)) on TokenCapitalString
-54: shift/reduce conflict (shift 7(0), red'n 155(0)) on TokenString
+54: shift/reduce conflict (shift 6(0), red'n 59(0)) on TokenCapitalString
+54: shift/reduce conflict (shift 7(0), red'n 59(0)) on TokenString
+ 54: reduce/reduce conflict  (red'ns 59 and 167) on END_SYMBOL
+54: shift/reduce conflict (shift 6(0), red'n 167(0)) on TokenCapitalString
+54: shift/reduce conflict (shift 7(0), red'n 167(0)) on TokenString
+ 54: reduce/reduce conflict  (red'ns 59 and 168) on END_SYMBOL
+54: shift/reduce conflict (shift 6(0), red'n 168(0)) on TokenCapitalString
+54: shift/reduce conflict (shift 7(0), red'n 168(0)) on TokenString
+ 54: reduce/reduce conflict  (red'ns 59 and 169) on END_SYMBOL
+54: shift/reduce conflict (shift 6(0), red'n 169(0)) on TokenCapitalString
+54: shift/reduce conflict (shift 7(0), red'n 169(0)) on TokenString
+ 54: reduce/reduce conflict  (red'ns 59 and 170) on END_SYMBOL
+54: shift/reduce conflict (shift 6(0), red'n 170(0)) on TokenCapitalString
+54: shift/reduce conflict (shift 7(0), red'n 170(0)) on TokenString
+ 54: reduce/reduce conflict  (red'ns 59 and 171) on END_SYMBOL
+54: shift/reduce conflict (shift 6(0), red'n 171(0)) on TokenCapitalString
+54: shift/reduce conflict (shift 7(0), red'n 171(0)) on TokenString
+ 54: reduce/reduce conflict  (red'ns 59 and 172) on END_SYMBOL
+54: shift/reduce conflict (shift 6(0), red'n 172(0)) on TokenCapitalString
+54: shift/reduce conflict (shift 7(0), red'n 172(0)) on TokenString
 state 54
 	ParseModuleBody:  ParseImports ParseExports.ParseAssignments 
-	ParseAssignments: .    (60)
-	ParseParameterizedTypeAssignment: .    (150)
-	ParseParameterizedValueAssignment: .    (151)
-	ParseParameterizedValueSetTypeAssignment: .    (152)
-	ParseParameterizedObjectClassAssignment: .    (153)
-	ParseParameterizedObjectAssignment: .    (154)
-	ParseParameterizedObjectSetAssignment: .    (155)
+	ParseAssignments: .    (59)
+	ParseParameterizedTypeAssignment: .    (167)
+	ParseParameterizedValueAssignment: .    (168)
+	ParseParameterizedValueSetTypeAssignment: .    (169)
+	ParseParameterizedObjectClassAssignment: .    (170)
+	ParseParameterizedObjectAssignment: .    (171)
+	ParseParameterizedObjectSetAssignment: .    (172)
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
-	.  reduce 60 (src line 635)
+	.  reduce 59 (src line 640)
 
 	ParseAssignments  goto 65
 	ParseAssignment  goto 66
@@ -482,39 +482,39 @@ state 54
 	ParseParameterizedObjectSetAssignment  goto 81
 	ParseString  goto 75
 
-55: shift/reduce conflict (shift 6(0), red'n 60(0)) on TokenCapitalString
-55: shift/reduce conflict (shift 7(0), red'n 60(0)) on TokenString
- 55: reduce/reduce conflict  (red'ns 60 and 150) on END_SYMBOL
-55: shift/reduce conflict (shift 6(0), red'n 150(0)) on TokenCapitalString
-55: shift/reduce conflict (shift 7(0), red'n 150(0)) on TokenString
- 55: reduce/reduce conflict  (red'ns 60 and 151) on END_SYMBOL
-55: shift/reduce conflict (shift 6(0), red'n 151(0)) on TokenCapitalString
-55: shift/reduce conflict (shift 7(0), red'n 151(0)) on TokenString
- 55: reduce/reduce conflict  (red'ns 60 and 152) on END_SYMBOL
-55: shift/reduce conflict (shift 6(0), red'n 152(0)) on TokenCapitalString
-55: shift/reduce conflict (shift 7(0), red'n 152(0)) on TokenString
- 55: reduce/reduce conflict  (red'ns 60 and 153) on END_SYMBOL
-55: shift/reduce conflict (shift 6(0), red'n 153(0)) on TokenCapitalString
-55: shift/reduce conflict (shift 7(0), red'n 153(0)) on TokenString
- 55: reduce/reduce conflict  (red'ns 60 and 154) on END_SYMBOL
-55: shift/reduce conflict (shift 6(0), red'n 154(0)) on TokenCapitalString
-55: shift/reduce conflict (shift 7(0), red'n 154(0)) on TokenString
- 55: reduce/reduce conflict  (red'ns 60 and 155) on END_SYMBOL
-55: shift/reduce conflict (shift 6(0), red'n 155(0)) on TokenCapitalString
-55: shift/reduce conflict (shift 7(0), red'n 155(0)) on TokenString
+55: shift/reduce conflict (shift 6(0), red'n 59(0)) on TokenCapitalString
+55: shift/reduce conflict (shift 7(0), red'n 59(0)) on TokenString
+ 55: reduce/reduce conflict  (red'ns 59 and 167) on END_SYMBOL
+55: shift/reduce conflict (shift 6(0), red'n 167(0)) on TokenCapitalString
+55: shift/reduce conflict (shift 7(0), red'n 167(0)) on TokenString
+ 55: reduce/reduce conflict  (red'ns 59 and 168) on END_SYMBOL
+55: shift/reduce conflict (shift 6(0), red'n 168(0)) on TokenCapitalString
+55: shift/reduce conflict (shift 7(0), red'n 168(0)) on TokenString
+ 55: reduce/reduce conflict  (red'ns 59 and 169) on END_SYMBOL
+55: shift/reduce conflict (shift 6(0), red'n 169(0)) on TokenCapitalString
+55: shift/reduce conflict (shift 7(0), red'n 169(0)) on TokenString
+ 55: reduce/reduce conflict  (red'ns 59 and 170) on END_SYMBOL
+55: shift/reduce conflict (shift 6(0), red'n 170(0)) on TokenCapitalString
+55: shift/reduce conflict (shift 7(0), red'n 170(0)) on TokenString
+ 55: reduce/reduce conflict  (red'ns 59 and 171) on END_SYMBOL
+55: shift/reduce conflict (shift 6(0), red'n 171(0)) on TokenCapitalString
+55: shift/reduce conflict (shift 7(0), red'n 171(0)) on TokenString
+ 55: reduce/reduce conflict  (red'ns 59 and 172) on END_SYMBOL
+55: shift/reduce conflict (shift 6(0), red'n 172(0)) on TokenCapitalString
+55: shift/reduce conflict (shift 7(0), red'n 172(0)) on TokenString
 state 55
 	ParseModuleBody:  ParseExports ParseImports.ParseAssignments 
-	ParseAssignments: .    (60)
-	ParseParameterizedTypeAssignment: .    (150)
-	ParseParameterizedValueAssignment: .    (151)
-	ParseParameterizedValueSetTypeAssignment: .    (152)
-	ParseParameterizedObjectClassAssignment: .    (153)
-	ParseParameterizedObjectAssignment: .    (154)
-	ParseParameterizedObjectSetAssignment: .    (155)
+	ParseAssignments: .    (59)
+	ParseParameterizedTypeAssignment: .    (167)
+	ParseParameterizedValueAssignment: .    (168)
+	ParseParameterizedValueSetTypeAssignment: .    (169)
+	ParseParameterizedObjectClassAssignment: .    (170)
+	ParseParameterizedObjectAssignment: .    (171)
+	ParseParameterizedObjectSetAssignment: .    (172)
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
-	.  reduce 60 (src line 635)
+	.  reduce 59 (src line 640)
 
 	ParseAssignments  goto 82
 	ParseAssignment  goto 66
@@ -546,7 +546,7 @@ state 57
 	ParseSymbolsFromModules:  ParseSymbolsFromModules.ParseSymbolsFromModule 
 
 	TokenString  shift 61
-	.  reduce 37 (src line 519)
+	.  reduce 37 (src line 529)
 
 	ParseSymbolsFromModule  goto 84
 	ParseSymbols  goto 59
@@ -555,7 +555,7 @@ state 57
 state 58
 	ParseSymbolsFromModules:  ParseSymbolsFromModule.    (39)
 
-	.  reduce 39 (src line 527)
+	.  reduce 39 (src line 537)
 
 
 state 59
@@ -570,13 +570,13 @@ state 59
 state 60
 	ParseSymbols:  ParseSymbol.    (32)
 
-	.  reduce 32 (src line 495)
+	.  reduce 32 (src line 505)
 
 
 state 61
 	ParseSymbol:  TokenString.    (34)
 
-	.  reduce 34 (src line 506)
+	.  reduce 34 (src line 516)
 
 
 state 62
@@ -598,40 +598,40 @@ state 63
 state 64
 	ParseExports:  EXPORTS_SYMBOL SEMI_COMMA.    (30)
 
-	.  reduce 30 (src line 484)
+	.  reduce 30 (src line 494)
 
 
- 65: reduce/reduce conflict  (red'ns 25 and 150) on END_SYMBOL
-65: shift/reduce conflict (shift 6(0), red'n 150(0)) on TokenCapitalString
-65: shift/reduce conflict (shift 7(0), red'n 150(0)) on TokenString
- 65: reduce/reduce conflict  (red'ns 25 and 151) on END_SYMBOL
-65: shift/reduce conflict (shift 6(0), red'n 151(0)) on TokenCapitalString
-65: shift/reduce conflict (shift 7(0), red'n 151(0)) on TokenString
- 65: reduce/reduce conflict  (red'ns 25 and 152) on END_SYMBOL
-65: shift/reduce conflict (shift 6(0), red'n 152(0)) on TokenCapitalString
-65: shift/reduce conflict (shift 7(0), red'n 152(0)) on TokenString
- 65: reduce/reduce conflict  (red'ns 25 and 153) on END_SYMBOL
-65: shift/reduce conflict (shift 6(0), red'n 153(0)) on TokenCapitalString
-65: shift/reduce conflict (shift 7(0), red'n 153(0)) on TokenString
- 65: reduce/reduce conflict  (red'ns 25 and 154) on END_SYMBOL
-65: shift/reduce conflict (shift 6(0), red'n 154(0)) on TokenCapitalString
-65: shift/reduce conflict (shift 7(0), red'n 154(0)) on TokenString
- 65: reduce/reduce conflict  (red'ns 25 and 155) on END_SYMBOL
-65: shift/reduce conflict (shift 6(0), red'n 155(0)) on TokenCapitalString
-65: shift/reduce conflict (shift 7(0), red'n 155(0)) on TokenString
+ 65: reduce/reduce conflict  (red'ns 25 and 167) on END_SYMBOL
+65: shift/reduce conflict (shift 6(0), red'n 167(0)) on TokenCapitalString
+65: shift/reduce conflict (shift 7(0), red'n 167(0)) on TokenString
+ 65: reduce/reduce conflict  (red'ns 25 and 168) on END_SYMBOL
+65: shift/reduce conflict (shift 6(0), red'n 168(0)) on TokenCapitalString
+65: shift/reduce conflict (shift 7(0), red'n 168(0)) on TokenString
+ 65: reduce/reduce conflict  (red'ns 25 and 169) on END_SYMBOL
+65: shift/reduce conflict (shift 6(0), red'n 169(0)) on TokenCapitalString
+65: shift/reduce conflict (shift 7(0), red'n 169(0)) on TokenString
+ 65: reduce/reduce conflict  (red'ns 25 and 170) on END_SYMBOL
+65: shift/reduce conflict (shift 6(0), red'n 170(0)) on TokenCapitalString
+65: shift/reduce conflict (shift 7(0), red'n 170(0)) on TokenString
+ 65: reduce/reduce conflict  (red'ns 25 and 171) on END_SYMBOL
+65: shift/reduce conflict (shift 6(0), red'n 171(0)) on TokenCapitalString
+65: shift/reduce conflict (shift 7(0), red'n 171(0)) on TokenString
+ 65: reduce/reduce conflict  (red'ns 25 and 172) on END_SYMBOL
+65: shift/reduce conflict (shift 6(0), red'n 172(0)) on TokenCapitalString
+65: shift/reduce conflict (shift 7(0), red'n 172(0)) on TokenString
 state 65
 	ParseModuleBody:  ParseImports ParseExports ParseAssignments.    (25)
 	ParseAssignments:  ParseAssignments.ParseAssignment 
-	ParseParameterizedTypeAssignment: .    (150)
-	ParseParameterizedValueAssignment: .    (151)
-	ParseParameterizedValueSetTypeAssignment: .    (152)
-	ParseParameterizedObjectClassAssignment: .    (153)
-	ParseParameterizedObjectAssignment: .    (154)
-	ParseParameterizedObjectSetAssignment: .    (155)
+	ParseParameterizedTypeAssignment: .    (167)
+	ParseParameterizedValueAssignment: .    (168)
+	ParseParameterizedValueSetTypeAssignment: .    (169)
+	ParseParameterizedObjectClassAssignment: .    (170)
+	ParseParameterizedObjectAssignment: .    (171)
+	ParseParameterizedObjectSetAssignment: .    (172)
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
-	.  reduce 25 (src line 449)
+	.  reduce 25 (src line 459)
 
 	ParseAssignment  goto 89
 	ParseTypeAssignment  goto 67
@@ -651,77 +651,60 @@ state 65
 	ParseString  goto 75
 
 state 66
-	ParseAssignments:  ParseAssignment.    (58)
+	ParseAssignments:  ParseAssignment.    (57)
 
-	.  reduce 58 (src line 625)
+	.  reduce 57 (src line 630)
 
 
 state 67
-	ParseAssignment:  ParseTypeAssignment.    (61)
+	ParseAssignment:  ParseTypeAssignment.    (60)
 
-	.  reduce 61 (src line 639)
+	.  reduce 60 (src line 644)
 
 
 state 68
-	ParseAssignment:  ParseValueAssignment.    (62)
+	ParseAssignment:  ParseValueAssignment.    (61)
 
-	.  reduce 62 (src line 643)
+	.  reduce 61 (src line 648)
 
 
 state 69
-	ParseAssignment:  ParseXMLValueAssignment.    (63)
+	ParseAssignment:  ParseXMLValueAssignment.    (62)
 
-	.  reduce 63 (src line 646)
+	.  reduce 62 (src line 651)
 
 
 state 70
-	ParseAssignment:  ParseValueSetTypeAssignment.    (64)
+	ParseAssignment:  ParseValueSetTypeAssignment.    (63)
 
-	.  reduce 64 (src line 649)
+	.  reduce 63 (src line 654)
 
 
 state 71
-	ParseAssignment:  ParseObjectClassAssignment.    (65)
+	ParseAssignment:  ParseObjectClassAssignment.    (64)
 
-	.  reduce 65 (src line 652)
+	.  reduce 64 (src line 657)
 
 
 state 72
-	ParseAssignment:  ParseObjectAssignment.    (66)
+	ParseAssignment:  ParseObjectAssignment.    (65)
 
-	.  reduce 66 (src line 655)
+	.  reduce 65 (src line 660)
 
 
 state 73
-	ParseAssignment:  ParseObjectSetAssignment.    (67)
+	ParseAssignment:  ParseObjectSetAssignment.    (66)
 
-	.  reduce 67 (src line 658)
+	.  reduce 66 (src line 663)
 
 
 state 74
-	ParseAssignment:  ParseParameterizedAssignment.    (68)
+	ParseAssignment:  ParseParameterizedAssignment.    (67)
 
-	.  reduce 68 (src line 661)
+	.  reduce 67 (src line 666)
 
 
-75: shift/reduce conflict (shift 42(0), red'n 147(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 191(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 192(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 193(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 194(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 195(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 196(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 197(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 198(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 199(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 200(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 201(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 202(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 203(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 204(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 205(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 206(0)) on COLON
-75: shift/reduce conflict (shift 42(0), red'n 207(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 164(0)) on COLON
 75: shift/reduce conflict (shift 42(0), red'n 208(0)) on COLON
 75: shift/reduce conflict (shift 42(0), red'n 209(0)) on COLON
 75: shift/reduce conflict (shift 42(0), red'n 210(0)) on COLON
@@ -734,6 +717,23 @@ state 74
 75: shift/reduce conflict (shift 42(0), red'n 217(0)) on COLON
 75: shift/reduce conflict (shift 42(0), red'n 218(0)) on COLON
 75: shift/reduce conflict (shift 42(0), red'n 219(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 220(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 221(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 222(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 223(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 224(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 225(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 226(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 227(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 228(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 229(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 230(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 231(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 232(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 233(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 234(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 235(0)) on COLON
+75: shift/reduce conflict (shift 42(0), red'n 236(0)) on COLON
 state 75
 	ParseTypeAssignment:  ParseString.ParseAssignementSymbol ParseType 
 	ParseValueAssignment:  ParseString.ParseType ParseAssignementSymbol ParseValue 
@@ -742,36 +742,36 @@ state 75
 	ParseObjectClassAssignment:  ParseString.ParseAssignementSymbol ParseObjectClass 
 	ParseObjectAssignment:  ParseString.ParseDefinedObjectClass ParseAssignementSymbol ParseObject 
 	ParseObjectSetAssignment:  ParseString.ParseDefinedObjectClass ParseAssignementSymbol ParseObjectSet 
-	ParseDefinedObjectClass: .    (147)
-	ParseReferencedType: .    (191)
-	ParseConstrainedType: .    (192)
-	ParseBitStringType: .    (193)
-	ParseBooleanType: .    (194)
-	ParseCharacterStringType: .    (195)
-	ParseChoiceType: .    (196)
-	ParseDateType: .    (197)
-	ParseDateTimeType: .    (198)
-	ParseDurationType: .    (199)
-	ParseEmbeddedPDVType: .    (200)
-	ParseEnumeratedType: .    (201)
-	ParseExternalType: .    (202)
-	ParseInstanceOfType: .    (203)
-	ParseIntegerType: .    (204)
-	ParseIRIType: .    (205)
-	ParseNullType: .    (206)
-	ParseObjectClassFieldType: .    (207)
-	ParseObjectIdentifierType: .    (208)
-	ParseOctetStringType: .    (209)
-	ParseRealType: .    (210)
-	ParseRelativeIRIType: .    (211)
-	ParseRelativeOIDType: .    (212)
-	ParseSequenceType: .    (213)
-	ParseSequenceOfType: .    (214)
-	ParseSetType: .    (215)
-	ParseSetOfType: .    (216)
-	ParsePrefixedType: .    (217)
-	ParseTimeType: .    (218)
-	ParseTimeOfDayType: .    (219)
+	ParseDefinedObjectClass: .    (164)
+	ParseReferencedType: .    (208)
+	ParseConstrainedType: .    (209)
+	ParseBitStringType: .    (210)
+	ParseBooleanType: .    (211)
+	ParseCharacterStringType: .    (212)
+	ParseChoiceType: .    (213)
+	ParseDateType: .    (214)
+	ParseDateTimeType: .    (215)
+	ParseDurationType: .    (216)
+	ParseEmbeddedPDVType: .    (217)
+	ParseEnumeratedType: .    (218)
+	ParseExternalType: .    (219)
+	ParseInstanceOfType: .    (220)
+	ParseIntegerType: .    (221)
+	ParseIRIType: .    (222)
+	ParseNullType: .    (223)
+	ParseObjectClassFieldType: .    (224)
+	ParseObjectIdentifierType: .    (225)
+	ParseOctetStringType: .    (226)
+	ParseRealType: .    (227)
+	ParseRelativeIRIType: .    (228)
+	ParseRelativeOIDType: .    (229)
+	ParseSequenceType: .    (230)
+	ParseSequenceOfType: .    (231)
+	ParseSetType: .    (232)
+	ParseSetOfType: .    (233)
+	ParsePrefixedType: .    (234)
+	ParseTimeType: .    (235)
+	ParseTimeOfDayType: .    (236)
 
 	COLON  shift 42
 	.  error
@@ -811,72 +811,72 @@ state 75
 	ParseAssignementSymbol  goto 90
 
 state 76
-	ParseParameterizedAssignment:  ParseParameterizedTypeAssignment.    (76)
+	ParseParameterizedAssignment:  ParseParameterizedTypeAssignment.    (75)
 
-	.  reduce 76 (src line 732)
+	.  reduce 75 (src line 737)
 
 
 state 77
-	ParseParameterizedAssignment:  ParseParameterizedValueAssignment.    (77)
+	ParseParameterizedAssignment:  ParseParameterizedValueAssignment.    (76)
 
-	.  reduce 77 (src line 736)
+	.  reduce 76 (src line 741)
 
 
 state 78
-	ParseParameterizedAssignment:  ParseParameterizedValueSetTypeAssignment.    (78)
+	ParseParameterizedAssignment:  ParseParameterizedValueSetTypeAssignment.    (77)
 
-	.  reduce 78 (src line 739)
+	.  reduce 77 (src line 744)
 
 
 state 79
-	ParseParameterizedAssignment:  ParseParameterizedObjectClassAssignment.    (79)
+	ParseParameterizedAssignment:  ParseParameterizedObjectClassAssignment.    (78)
 
-	.  reduce 79 (src line 742)
+	.  reduce 78 (src line 747)
 
 
 state 80
-	ParseParameterizedAssignment:  ParseParameterizedObjectAssignment.    (80)
+	ParseParameterizedAssignment:  ParseParameterizedObjectAssignment.    (79)
 
-	.  reduce 80 (src line 745)
+	.  reduce 79 (src line 750)
 
 
 state 81
-	ParseParameterizedAssignment:  ParseParameterizedObjectSetAssignment.    (81)
+	ParseParameterizedAssignment:  ParseParameterizedObjectSetAssignment.    (80)
 
-	.  reduce 81 (src line 748)
+	.  reduce 80 (src line 753)
 
 
- 82: reduce/reduce conflict  (red'ns 26 and 150) on END_SYMBOL
-82: shift/reduce conflict (shift 6(0), red'n 150(0)) on TokenCapitalString
-82: shift/reduce conflict (shift 7(0), red'n 150(0)) on TokenString
- 82: reduce/reduce conflict  (red'ns 26 and 151) on END_SYMBOL
-82: shift/reduce conflict (shift 6(0), red'n 151(0)) on TokenCapitalString
-82: shift/reduce conflict (shift 7(0), red'n 151(0)) on TokenString
- 82: reduce/reduce conflict  (red'ns 26 and 152) on END_SYMBOL
-82: shift/reduce conflict (shift 6(0), red'n 152(0)) on TokenCapitalString
-82: shift/reduce conflict (shift 7(0), red'n 152(0)) on TokenString
- 82: reduce/reduce conflict  (red'ns 26 and 153) on END_SYMBOL
-82: shift/reduce conflict (shift 6(0), red'n 153(0)) on TokenCapitalString
-82: shift/reduce conflict (shift 7(0), red'n 153(0)) on TokenString
- 82: reduce/reduce conflict  (red'ns 26 and 154) on END_SYMBOL
-82: shift/reduce conflict (shift 6(0), red'n 154(0)) on TokenCapitalString
-82: shift/reduce conflict (shift 7(0), red'n 154(0)) on TokenString
- 82: reduce/reduce conflict  (red'ns 26 and 155) on END_SYMBOL
-82: shift/reduce conflict (shift 6(0), red'n 155(0)) on TokenCapitalString
-82: shift/reduce conflict (shift 7(0), red'n 155(0)) on TokenString
+ 82: reduce/reduce conflict  (red'ns 26 and 167) on END_SYMBOL
+82: shift/reduce conflict (shift 6(0), red'n 167(0)) on TokenCapitalString
+82: shift/reduce conflict (shift 7(0), red'n 167(0)) on TokenString
+ 82: reduce/reduce conflict  (red'ns 26 and 168) on END_SYMBOL
+82: shift/reduce conflict (shift 6(0), red'n 168(0)) on TokenCapitalString
+82: shift/reduce conflict (shift 7(0), red'n 168(0)) on TokenString
+ 82: reduce/reduce conflict  (red'ns 26 and 169) on END_SYMBOL
+82: shift/reduce conflict (shift 6(0), red'n 169(0)) on TokenCapitalString
+82: shift/reduce conflict (shift 7(0), red'n 169(0)) on TokenString
+ 82: reduce/reduce conflict  (red'ns 26 and 170) on END_SYMBOL
+82: shift/reduce conflict (shift 6(0), red'n 170(0)) on TokenCapitalString
+82: shift/reduce conflict (shift 7(0), red'n 170(0)) on TokenString
+ 82: reduce/reduce conflict  (red'ns 26 and 171) on END_SYMBOL
+82: shift/reduce conflict (shift 6(0), red'n 171(0)) on TokenCapitalString
+82: shift/reduce conflict (shift 7(0), red'n 171(0)) on TokenString
+ 82: reduce/reduce conflict  (red'ns 26 and 172) on END_SYMBOL
+82: shift/reduce conflict (shift 6(0), red'n 172(0)) on TokenCapitalString
+82: shift/reduce conflict (shift 7(0), red'n 172(0)) on TokenString
 state 82
 	ParseModuleBody:  ParseExports ParseImports ParseAssignments.    (26)
 	ParseAssignments:  ParseAssignments.ParseAssignment 
-	ParseParameterizedTypeAssignment: .    (150)
-	ParseParameterizedValueAssignment: .    (151)
-	ParseParameterizedValueSetTypeAssignment: .    (152)
-	ParseParameterizedObjectClassAssignment: .    (153)
-	ParseParameterizedObjectAssignment: .    (154)
-	ParseParameterizedObjectSetAssignment: .    (155)
+	ParseParameterizedTypeAssignment: .    (167)
+	ParseParameterizedValueAssignment: .    (168)
+	ParseParameterizedValueSetTypeAssignment: .    (169)
+	ParseParameterizedObjectClassAssignment: .    (170)
+	ParseParameterizedObjectAssignment: .    (171)
+	ParseParameterizedObjectSetAssignment: .    (172)
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
-	.  reduce 26 (src line 459)
+	.  reduce 26 (src line 469)
 
 	ParseAssignment  goto 89
 	ParseTypeAssignment  goto 67
@@ -898,13 +898,13 @@ state 82
 state 83
 	ParseImports:  IMPORTS_SYMBOL ParseImportSymbols SEMI_COMMA.    (35)
 
-	.  reduce 35 (src line 511)
+	.  reduce 35 (src line 521)
 
 
 state 84
 	ParseSymbolsFromModules:  ParseSymbolsFromModules ParseSymbolsFromModule.    (40)
 
-	.  reduce 40 (src line 533)
+	.  reduce 40 (src line 543)
 
 
 state 85
@@ -928,148 +928,148 @@ state 86
 state 87
 	ParseExports:  EXPORTS_SYMBOL ParseSymbols SEMI_COMMA.    (28)
 
-	.  reduce 28 (src line 472)
+	.  reduce 28 (src line 482)
 
 
 state 88
 	ParseExports:  EXPORTS_SYMBOL ALL_SYMBOL SEMI_COMMA.    (29)
 
-	.  reduce 29 (src line 479)
+	.  reduce 29 (src line 489)
 
 
 state 89
-	ParseAssignments:  ParseAssignments ParseAssignment.    (59)
+	ParseAssignments:  ParseAssignments ParseAssignment.    (58)
 
-	.  reduce 59 (src line 631)
+	.  reduce 58 (src line 636)
 
 
- 90: reduce/reduce conflict  (red'ns 144 and 146) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 146) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 146) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 191) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 191) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 191) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 192) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 192) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 192) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 193) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 193) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 193) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 194) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 194) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 194) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 195) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 195) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 195) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 196) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 196) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 196) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 197) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 197) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 197) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 198) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 198) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 198) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 199) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 199) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 199) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 200) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 200) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 200) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 201) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 201) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 201) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 202) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 202) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 202) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 203) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 203) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 203) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 204) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 204) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 204) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 205) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 205) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 205) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 206) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 206) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 206) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 207) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 207) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 207) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 208) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 208) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 208) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 209) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 209) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 209) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 210) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 210) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 210) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 211) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 211) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 211) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 212) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 212) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 212) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 213) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 213) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 213) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 214) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 214) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 214) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 215) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 215) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 215) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 216) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 216) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 216) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 217) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 217) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 217) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 218) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 218) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 218) on TokenString
- 90: reduce/reduce conflict  (red'ns 144 and 219) on END_SYMBOL
- 90: reduce/reduce conflict  (red'ns 144 and 219) on TokenCapitalString
- 90: reduce/reduce conflict  (red'ns 144 and 219) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 163) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 163) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 163) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 208) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 208) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 208) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 209) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 209) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 209) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 210) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 210) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 210) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 211) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 211) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 211) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 212) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 212) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 212) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 213) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 213) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 213) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 214) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 214) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 214) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 215) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 215) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 215) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 216) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 216) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 216) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 217) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 217) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 217) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 218) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 218) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 218) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 219) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 219) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 219) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 220) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 220) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 220) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 221) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 221) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 221) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 222) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 222) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 222) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 223) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 223) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 223) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 224) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 224) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 224) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 225) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 225) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 225) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 226) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 226) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 226) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 227) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 227) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 227) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 228) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 228) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 228) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 229) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 229) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 229) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 230) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 230) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 230) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 231) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 231) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 231) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 232) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 232) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 232) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 233) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 233) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 233) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 234) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 234) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 234) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 235) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 235) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 235) on TokenString
+ 90: reduce/reduce conflict  (red'ns 161 and 236) on END_SYMBOL
+ 90: reduce/reduce conflict  (red'ns 161 and 236) on TokenCapitalString
+ 90: reduce/reduce conflict  (red'ns 161 and 236) on TokenString
 state 90
 	ParseTypeAssignment:  ParseString ParseAssignementSymbol.ParseType 
 	ParseXMLValueAssignment:  ParseString ParseAssignementSymbol.ParseXMLTypedValue 
 	ParseObjectClassAssignment:  ParseString ParseAssignementSymbol.ParseObjectClass 
-	ParseXMLTypedValue: .    (144)
-	ParseObjectClass: .    (146)
-	ParseReferencedType: .    (191)
-	ParseConstrainedType: .    (192)
-	ParseBitStringType: .    (193)
-	ParseBooleanType: .    (194)
-	ParseCharacterStringType: .    (195)
-	ParseChoiceType: .    (196)
-	ParseDateType: .    (197)
-	ParseDateTimeType: .    (198)
-	ParseDurationType: .    (199)
-	ParseEmbeddedPDVType: .    (200)
-	ParseEnumeratedType: .    (201)
-	ParseExternalType: .    (202)
-	ParseInstanceOfType: .    (203)
-	ParseIntegerType: .    (204)
-	ParseIRIType: .    (205)
-	ParseNullType: .    (206)
-	ParseObjectClassFieldType: .    (207)
-	ParseObjectIdentifierType: .    (208)
-	ParseOctetStringType: .    (209)
-	ParseRealType: .    (210)
-	ParseRelativeIRIType: .    (211)
-	ParseRelativeOIDType: .    (212)
-	ParseSequenceType: .    (213)
-	ParseSequenceOfType: .    (214)
-	ParseSetType: .    (215)
-	ParseSetOfType: .    (216)
-	ParsePrefixedType: .    (217)
-	ParseTimeType: .    (218)
-	ParseTimeOfDayType: .    (219)
+	ParseXMLTypedValue: .    (161)
+	ParseObjectClass: .    (163)
+	ParseReferencedType: .    (208)
+	ParseConstrainedType: .    (209)
+	ParseBitStringType: .    (210)
+	ParseBooleanType: .    (211)
+	ParseCharacterStringType: .    (212)
+	ParseChoiceType: .    (213)
+	ParseDateType: .    (214)
+	ParseDateTimeType: .    (215)
+	ParseDurationType: .    (216)
+	ParseEmbeddedPDVType: .    (217)
+	ParseEnumeratedType: .    (218)
+	ParseExternalType: .    (219)
+	ParseInstanceOfType: .    (220)
+	ParseIntegerType: .    (221)
+	ParseIRIType: .    (222)
+	ParseNullType: .    (223)
+	ParseObjectClassFieldType: .    (224)
+	ParseObjectIdentifierType: .    (225)
+	ParseOctetStringType: .    (226)
+	ParseRealType: .    (227)
+	ParseRelativeIRIType: .    (228)
+	ParseRelativeOIDType: .    (229)
+	ParseSequenceType: .    (230)
+	ParseSequenceOfType: .    (231)
+	ParseSetType: .    (232)
+	ParseSetOfType: .    (233)
+	ParsePrefixedType: .    (234)
+	ParseTimeType: .    (235)
+	ParseTimeOfDayType: .    (236)
 
-	.  reduce 144 (src line 1047)
+	.  reduce 161 (src line 1150)
 
 	ParseType  goto 126
 	ParseXMLTypedValue  goto 127
@@ -1124,207 +1124,204 @@ state 92
 	ParseAssignementSymbol  goto 130
 
 state 93
-	ParseType:  ParseBuiltinType.    (82)
+	ParseType:  ParseBuiltinType.    (81)
 
-	.  reduce 82 (src line 752)
+	.  reduce 81 (src line 757)
 
 
 state 94
-	ParseType:  ParseReferencedType.    (83)
+	ParseType:  ParseReferencedType.    (82)
 
-	.  reduce 83 (src line 759)
+	.  reduce 82 (src line 764)
 
 
 state 95
-	ParseType:  ParseConstrainedType.    (84)
+	ParseType:  ParseConstrainedType.    (83)
 
-	.  reduce 84 (src line 765)
+	.  reduce 83 (src line 770)
 
 
 state 96
-	ParseBuiltinType:  ParseBitStringType.    (164)
+	ParseBuiltinType:  ParseBitStringType.    (181)
 
-	.  reduce 164 (src line 1156)
+	.  reduce 181 (src line 1259)
 
 
 state 97
-	ParseBuiltinType:  ParseBooleanType.    (165)
+	ParseBuiltinType:  ParseBooleanType.    (182)
 
-	.  reduce 165 (src line 1160)
+	.  reduce 182 (src line 1263)
 
 
 state 98
-	ParseBuiltinType:  ParseCharacterStringType.    (166)
+	ParseBuiltinType:  ParseCharacterStringType.    (183)
 
-	.  reduce 166 (src line 1163)
+	.  reduce 183 (src line 1266)
 
 
 state 99
-	ParseBuiltinType:  ParseChoiceType.    (167)
+	ParseBuiltinType:  ParseChoiceType.    (184)
 
-	.  reduce 167 (src line 1166)
+	.  reduce 184 (src line 1269)
 
 
 state 100
-	ParseBuiltinType:  ParseDateType.    (168)
+	ParseBuiltinType:  ParseDateType.    (185)
 
-	.  reduce 168 (src line 1169)
+	.  reduce 185 (src line 1272)
 
 
 state 101
-	ParseBuiltinType:  ParseDateTimeType.    (169)
+	ParseBuiltinType:  ParseDateTimeType.    (186)
 
-	.  reduce 169 (src line 1172)
+	.  reduce 186 (src line 1275)
 
 
 state 102
-	ParseBuiltinType:  ParseDurationType.    (170)
+	ParseBuiltinType:  ParseDurationType.    (187)
 
-	.  reduce 170 (src line 1175)
+	.  reduce 187 (src line 1278)
 
 
 state 103
-	ParseBuiltinType:  ParseEmbeddedPDVType.    (171)
+	ParseBuiltinType:  ParseEmbeddedPDVType.    (188)
 
-	.  reduce 171 (src line 1178)
+	.  reduce 188 (src line 1281)
 
 
 state 104
-	ParseBuiltinType:  ParseEnumeratedType.    (172)
+	ParseBuiltinType:  ParseEnumeratedType.    (189)
 
-	.  reduce 172 (src line 1181)
+	.  reduce 189 (src line 1284)
 
 
 state 105
-	ParseBuiltinType:  ParseExternalType.    (173)
+	ParseBuiltinType:  ParseExternalType.    (190)
 
-	.  reduce 173 (src line 1184)
+	.  reduce 190 (src line 1287)
 
 
 state 106
-	ParseBuiltinType:  ParseInstanceOfType.    (174)
+	ParseBuiltinType:  ParseInstanceOfType.    (191)
 
-	.  reduce 174 (src line 1187)
+	.  reduce 191 (src line 1290)
 
 
 state 107
-	ParseBuiltinType:  ParseIntegerType.    (175)
+	ParseBuiltinType:  ParseIntegerType.    (192)
 
-	.  reduce 175 (src line 1190)
+	.  reduce 192 (src line 1293)
 
 
 state 108
-	ParseBuiltinType:  ParseIRIType.    (176)
+	ParseBuiltinType:  ParseIRIType.    (193)
 
-	.  reduce 176 (src line 1193)
+	.  reduce 193 (src line 1296)
 
 
 state 109
-	ParseBuiltinType:  ParseNullType.    (177)
+	ParseBuiltinType:  ParseNullType.    (194)
 
-	.  reduce 177 (src line 1196)
+	.  reduce 194 (src line 1299)
 
 
 state 110
-	ParseBuiltinType:  ParseObjectClassFieldType.    (178)
+	ParseBuiltinType:  ParseObjectClassFieldType.    (195)
 
-	.  reduce 178 (src line 1199)
+	.  reduce 195 (src line 1302)
 
 
 state 111
-	ParseBuiltinType:  ParseObjectIdentifierType.    (179)
+	ParseBuiltinType:  ParseObjectIdentifierType.    (196)
 
-	.  reduce 179 (src line 1202)
+	.  reduce 196 (src line 1305)
 
 
 state 112
-	ParseBuiltinType:  ParseOctetStringType.    (180)
+	ParseBuiltinType:  ParseOctetStringType.    (197)
 
-	.  reduce 180 (src line 1205)
+	.  reduce 197 (src line 1308)
 
 
 state 113
-	ParseBuiltinType:  ParseRealType.    (181)
+	ParseBuiltinType:  ParseRealType.    (198)
 
-	.  reduce 181 (src line 1208)
+	.  reduce 198 (src line 1311)
 
 
 state 114
-	ParseBuiltinType:  ParseRelativeIRIType.    (182)
+	ParseBuiltinType:  ParseRelativeIRIType.    (199)
 
-	.  reduce 182 (src line 1211)
+	.  reduce 199 (src line 1314)
 
 
 state 115
-	ParseBuiltinType:  ParseRelativeOIDType.    (183)
+	ParseBuiltinType:  ParseRelativeOIDType.    (200)
 
-	.  reduce 183 (src line 1214)
+	.  reduce 200 (src line 1317)
 
 
 state 116
-	ParseBuiltinType:  ParseSequenceType.    (184)
+	ParseBuiltinType:  ParseSequenceType.    (201)
 
-	.  reduce 184 (src line 1217)
+	.  reduce 201 (src line 1320)
 
 
 state 117
-	ParseBuiltinType:  ParseSequenceOfType.    (185)
+	ParseBuiltinType:  ParseSequenceOfType.    (202)
 
-	.  reduce 185 (src line 1220)
+	.  reduce 202 (src line 1323)
 
 
 state 118
-	ParseBuiltinType:  ParseSetType.    (186)
+	ParseBuiltinType:  ParseSetType.    (203)
 
-	.  reduce 186 (src line 1223)
+	.  reduce 203 (src line 1326)
 
 
 state 119
-	ParseBuiltinType:  ParseSetOfType.    (187)
+	ParseBuiltinType:  ParseSetOfType.    (204)
 
-	.  reduce 187 (src line 1226)
+	.  reduce 204 (src line 1329)
 
 
 state 120
-	ParseBuiltinType:  ParsePrefixedType.    (188)
+	ParseBuiltinType:  ParsePrefixedType.    (205)
 
-	.  reduce 188 (src line 1229)
+	.  reduce 205 (src line 1332)
 
 
 state 121
-	ParseBuiltinType:  ParseTimeType.    (189)
+	ParseBuiltinType:  ParseTimeType.    (206)
 
-	.  reduce 189 (src line 1232)
+	.  reduce 206 (src line 1335)
 
 
 state 122
-	ParseBuiltinType:  ParseTimeOfDayType.    (190)
+	ParseBuiltinType:  ParseTimeOfDayType.    (207)
 
-	.  reduce 190 (src line 1235)
+	.  reduce 207 (src line 1338)
 
 
 state 123
 	ParseSymbols:  ParseSymbols COMMA ParseSymbol.    (33)
 
-	.  reduce 33 (src line 501)
+	.  reduce 33 (src line 511)
 
 
 state 124
 	ParseSymbolsFromModule:  ParseSymbols FROM_SYMBOL ParseGlobalModuleReference.    (41)
 
-	.  reduce 41 (src line 538)
+	.  reduce 41 (src line 548)
 
 
 125: shift/reduce conflict (shift 7(0), red'n 45(0)) on TokenString
- 125: reduce/reduce conflict  (red'ns 45 and 131) on SEMI_COMMA
-125: shift/reduce conflict (shift 7(0), red'n 131(0)) on TokenString
- 125: reduce/reduce conflict  (red'ns 45 and 162) on SEMI_COMMA
-125: shift/reduce conflict (shift 7(0), red'n 162(0)) on TokenString
+ 125: reduce/reduce conflict  (red'ns 45 and 179) on SEMI_COMMA
+125: shift/reduce conflict (shift 7(0), red'n 179(0)) on TokenString
 state 125
 	ParseGlobalModuleReference:  ParseString.ParseAssignedIdentifier 
 	ParseAssignedIdentifier: .    (45)
-	ParseObjectIdentifierValue: .    (131)
-	ParseSimpleDefinedValue: .    (162)
+	ParseSimpleDefinedValue: .    (179)
 
 	CURLY_START  shift 134
 	MINUS  shift 23
@@ -1332,7 +1329,7 @@ state 125
 	TokenString  shift 7
 	TokenInteger  shift 22
 	TokenFloat  shift 24
-	.  reduce 45 (src line 561)
+	.  reduce 45 (src line 571)
 
 	ParseAssignedIdentifier  goto 131
 	ParseObjectIdentifierValue  goto 132
@@ -1344,127 +1341,100 @@ state 125
 	ParseNumber  goto 137
 
 state 126
-	ParseTypeAssignment:  ParseString ParseAssignementSymbol ParseType.    (69)
+	ParseTypeAssignment:  ParseString ParseAssignementSymbol ParseType.    (68)
 
-	.  reduce 69 (src line 665)
+	.  reduce 68 (src line 670)
 
 
 state 127
-	ParseXMLValueAssignment:  ParseString ParseAssignementSymbol ParseXMLTypedValue.    (71)
+	ParseXMLValueAssignment:  ParseString ParseAssignementSymbol ParseXMLTypedValue.    (70)
 
-	.  reduce 71 (src line 684)
+	.  reduce 70 (src line 689)
 
 
 state 128
-	ParseObjectClassAssignment:  ParseString ParseAssignementSymbol ParseObjectClass.    (73)
+	ParseObjectClassAssignment:  ParseString ParseAssignementSymbol ParseObjectClass.    (72)
 
-	.  reduce 73 (src line 703)
+	.  reduce 72 (src line 708)
 
 
- 129: reduce/reduce conflict  (red'ns 145 and 142) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 145 and 142) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 145 and 142) on TokenString
- 129: reduce/reduce conflict  (red'ns 142 and 143) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 142 and 143) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 142 and 143) on TokenString
- 129: reduce/reduce conflict  (red'ns 142 and 123) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 142 and 123) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 142 and 123) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 124) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 124) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 124) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 125) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 125) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 125) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 126) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 126) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 126) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 127) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 127) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 127) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 128) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 128) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 128) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 129) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 129) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 129) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 130) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 130) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 130) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 131) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 131) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 131) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 132) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 132) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 132) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 133) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 133) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 133) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 134) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 134) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 134) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 135) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 135) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 135) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 136) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 136) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 136) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 137) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 137) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 137) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 138) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 138) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 138) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 139) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 139) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 139) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 140) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 140) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 140) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 141) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 141) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 141) on TokenString
- 129: reduce/reduce conflict  (red'ns 123 and 121) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 123 and 121) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 123 and 121) on TokenString
- 129: reduce/reduce conflict  (red'ns 121 and 122) on END_SYMBOL
- 129: reduce/reduce conflict  (red'ns 121 and 122) on TokenCapitalString
- 129: reduce/reduce conflict  (red'ns 121 and 122) on TokenString
+129: shift/reduce conflict (shift 6(0), red'n 162(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 162(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 162 and 159) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 159(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 159(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 159 and 160) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 160(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 160(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 159 and 144) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 144(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 144(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 147) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 147(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 147(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 149) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 149(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 149(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 150) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 150(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 150(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 151) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 151(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 151(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 152) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 152(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 152(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 153) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 153(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 153(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 154) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 154(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 154(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 155) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 155(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 155(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 156) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 156(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 156(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 157) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 157(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 157(0)) on TokenString
+ 129: reduce/reduce conflict  (red'ns 144 and 158) on END_SYMBOL
+129: shift/reduce conflict (shift 6(0), red'n 158(0)) on TokenCapitalString
+129: shift/reduce conflict (shift 7(0), red'n 158(0)) on TokenString
 state 129
 	ParseValueAssignment:  ParseString ParseType ParseAssignementSymbol.ParseValue 
 	ParseValueSetTypeAssignment:  ParseString ParseType ParseAssignementSymbol.ParseValueSet 
-	ParseValueSet: .    (145)
-	ParseReferencedValue: .    (142)
-	ParseObjectClassFieldValue: .    (143)
-	ParseChoiceValue: .    (123)
-	ParseEmbeddedPDVValue: .    (124)
-	ParseEnumeratedValue: .    (125)
-	ParseExternalValue: .    (126)
-	ParseInstanceOfValue: .    (127)
-	ParseIntegerValue: .    (128)
-	ParseIRIValue: .    (129)
-	ParseNullValue: .    (130)
-	ParseObjectIdentifierValue: .    (131)
-	ParseOctetStringValue: .    (132)
-	ParseRealValue: .    (133)
-	ParseRelativeIRIValue: .    (134)
-	ParseRelativeOIDValue: .    (135)
-	ParseSequenceValue: .    (136)
-	ParseSequenceOfValue: .    (137)
-	ParseSetValue: .    (138)
-	ParseSetOfValue: .    (139)
-	ParsePrefixedValue: .    (140)
-	ParseTimeValue: .    (141)
-	ParseRestrictedCharacterStringValue: .    (121)
-	ParseUnrestrictedCharacterStringValue: .    (122)
+	ParseValueSet: .    (162)
+	ParseReferencedValue: .    (159)
+	ParseObjectClassFieldValue: .    (160)
+	ParseInstanceOfValue: .    (144)
+	ParseIRIValue: .    (147)
+	ParseOctetStringValue: .    (149)
+	ParseRealValue: .    (150)
+	ParseRelativeIRIValue: .    (151)
+	ParseRelativeOIDValue: .    (152)
+	ParseSequenceValue: .    (153)
+	ParseSequenceOfValue: .    (154)
+	ParseSetValue: .    (155)
+	ParseSetOfValue: .    (156)
+	ParsePrefixedValue: .    (157)
+	ParseTimeValue: .    (158)
 
 	CURLY_START  shift 169
+	MINUS  shift 23
 	CONTAINING_SYMBOL  shift 170
-	FALSE_SYMBOL  shift 175
-	TRUE_SYMBOL  shift 174
+	FALSE_SYMBOL  shift 178
+	NULL_SYMBOL  shift 176
+	TRUE_SYMBOL  shift 177
+	TokenCapitalString  shift 6
+	TokenString  shift 7
+	TokenInteger  shift 22
+	TokenFloat  shift 24
 	TokenBString  shift 167
 	TokenHString  shift 168
-	.  reduce 121 (src line 950)
+	TokenCString  shift 179
+	.  reduce 144 (src line 1075)
 
 	ParseObjectIdentifierValue  goto 156
 	ParseValue  goto 140
@@ -1495,52 +1465,57 @@ state 129
 	ParseTimeValue  goto 166
 	ParseRestrictedCharacterStringValue  goto 172
 	ParseUnrestrictedCharacterStringValue  goto 173
+	ParseCharacterStringList  goto 180
+	ParseQuadruple  goto 181
+	ParseTuple  goto 182
+	ParseString  goto 174
+	ParseNumber  goto 175
 	ParseBoolean  goto 171
 
- 130: reduce/reduce conflict  (red'ns 148 and 149) on END_SYMBOL
- 130: reduce/reduce conflict  (red'ns 148 and 149) on TokenCapitalString
- 130: reduce/reduce conflict  (red'ns 148 and 149) on TokenString
+ 130: reduce/reduce conflict  (red'ns 165 and 166) on END_SYMBOL
+ 130: reduce/reduce conflict  (red'ns 165 and 166) on TokenCapitalString
+ 130: reduce/reduce conflict  (red'ns 165 and 166) on TokenString
 state 130
 	ParseObjectAssignment:  ParseString ParseDefinedObjectClass ParseAssignementSymbol.ParseObject 
 	ParseObjectSetAssignment:  ParseString ParseDefinedObjectClass ParseAssignementSymbol.ParseObjectSet 
-	ParseObject: .    (148)
-	ParseObjectSet: .    (149)
+	ParseObject: .    (165)
+	ParseObjectSet: .    (166)
 
-	.  reduce 148 (src line 1067)
+	.  reduce 165 (src line 1170)
 
-	ParseObject  goto 176
-	ParseObjectSet  goto 177
+	ParseObject  goto 183
+	ParseObjectSet  goto 184
 
 state 131
 	ParseGlobalModuleReference:  ParseString ParseAssignedIdentifier.    (42)
 
-	.  reduce 42 (src line 546)
+	.  reduce 42 (src line 556)
 
 
 state 132
 	ParseAssignedIdentifier:  ParseObjectIdentifierValue.    (43)
 
-	.  reduce 43 (src line 554)
+	.  reduce 43 (src line 564)
 
 
 state 133
 	ParseAssignedIdentifier:  ParseDefinedValue.    (44)
 
-	.  reduce 44 (src line 558)
+	.  reduce 44 (src line 568)
 
 
-134: shift/reduce conflict (shift 23(0), red'n 162(0)) on MINUS
-134: shift/reduce conflict (shift 6(0), red'n 162(0)) on TokenCapitalString
-134: shift/reduce conflict (shift 7(0), red'n 162(0)) on TokenString
-134: shift/reduce conflict (shift 22(0), red'n 162(0)) on TokenInteger
-134: shift/reduce conflict (shift 24(0), red'n 162(0)) on TokenFloat
+134: shift/reduce conflict (shift 23(0), red'n 179(0)) on MINUS
+134: shift/reduce conflict (shift 6(0), red'n 179(0)) on TokenCapitalString
+134: shift/reduce conflict (shift 7(0), red'n 179(0)) on TokenString
+134: shift/reduce conflict (shift 22(0), red'n 179(0)) on TokenInteger
+134: shift/reduce conflict (shift 24(0), red'n 179(0)) on TokenFloat
 state 134
 	ParseObjectIdentifierValue:  CURLY_START.ParseObjIdComponentsList CURLY_END 
 	ParseObjectIdentifierValue:  CURLY_START.ParseDefinedValue ParseObjIdComponentsList CURLY_START 
 	ParseObjectIdentifierValue:  CURLY_START.CURLY_END 
-	ParseSimpleDefinedValue: .    (162)
+	ParseSimpleDefinedValue: .    (179)
 
-	CURLY_END  shift 180
+	CURLY_END  shift 187
 	MINUS  shift 23
 	TokenCapitalString  shift 6
 	TokenString  shift 7
@@ -1548,363 +1523,360 @@ state 134
 	TokenFloat  shift 24
 	.  error
 
-	ParseObjIdComponentsList  goto 178
-	ParseObjIdComponents  goto 181
-	ParseObjIdComponentsNameForm  goto 184
-	ParseObjIdComponentsNumberForm  goto 185
-	ParseObjIdComponentsNameAndNumberForm  goto 186
-	ParseDefinedValue  goto 179
+	ParseObjIdComponentsList  goto 185
+	ParseObjIdComponents  goto 188
+	ParseObjIdComponentsNameForm  goto 191
+	ParseObjIdComponentsNumberForm  goto 192
+	ParseObjIdComponentsNameAndNumberForm  goto 193
+	ParseDefinedValue  goto 186
 	ParseExternalValueReference  goto 135
 	ParseParameterizedValue  goto 138
 	ParseSimpleDefinedValue  goto 139
-	ParseString  goto 182
-	ParseNumber  goto 183
+	ParseString  goto 189
+	ParseNumber  goto 190
 
 state 135
-	ParseDefinedValue:  ParseExternalValueReference.    (156)
+	ParseDefinedValue:  ParseExternalValueReference.    (173)
 
-	.  reduce 156 (src line 1107)
+	.  reduce 173 (src line 1210)
 
 
 state 136
-	ParseDefinedValue:  ParseString.    (157)
+	ParseDefinedValue:  ParseString.    (174)
 	ParseExternalValueReference:  ParseString.DOT ParseString 
 
-	DOT  shift 187
-	.  reduce 157 (src line 1114)
+	DOT  shift 194
+	.  reduce 174 (src line 1217)
 
 
 state 137
-	ParseDefinedValue:  ParseNumber.    (158)
+	ParseDefinedValue:  ParseNumber.    (175)
 
-	.  reduce 158 (src line 1120)
+	.  reduce 175 (src line 1223)
 
 
 state 138
-	ParseDefinedValue:  ParseParameterizedValue.    (159)
+	ParseDefinedValue:  ParseParameterizedValue.    (176)
 
-	.  reduce 159 (src line 1126)
+	.  reduce 176 (src line 1229)
 
 
 state 139
 	ParseParameterizedValue:  ParseSimpleDefinedValue.ParseActualParameterList 
-	ParseActualParameterList: .    (163)
+	ParseActualParameterList: .    (180)
 
-	.  reduce 163 (src line 1151)
+	.  reduce 180 (src line 1254)
 
-	ParseActualParameterList  goto 188
+	ParseActualParameterList  goto 195
 
 state 140
-	ParseValueAssignment:  ParseString ParseType ParseAssignementSymbol ParseValue.    (70)
+	ParseValueAssignment:  ParseString ParseType ParseAssignementSymbol ParseValue.    (69)
 
-	.  reduce 70 (src line 674)
+	.  reduce 69 (src line 679)
 
 
 state 141
-	ParseValueSetTypeAssignment:  ParseString ParseType ParseAssignementSymbol ParseValueSet.    (72)
+	ParseValueSetTypeAssignment:  ParseString ParseType ParseAssignementSymbol ParseValueSet.    (71)
 
-	.  reduce 72 (src line 693)
+	.  reduce 71 (src line 698)
 
 
 state 142
-	ParseValue:  ParseBuiltinValue.    (85)
+	ParseValue:  ParseBuiltinValue.    (84)
 
-	.  reduce 85 (src line 772)
+	.  reduce 84 (src line 777)
 
 
 state 143
-	ParseValue:  ParseReferencedValue.    (86)
+	ParseValue:  ParseReferencedValue.    (85)
 
-	.  reduce 86 (src line 779)
+	.  reduce 85 (src line 784)
 
 
 state 144
-	ParseValue:  ParseObjectClassFieldValue.    (87)
+	ParseValue:  ParseObjectClassFieldValue.    (86)
 
-	.  reduce 87 (src line 785)
+	.  reduce 86 (src line 790)
 
 
 state 145
-	ParseBuiltinValue:  ParseBitStringValue.    (88)
+	ParseBuiltinValue:  ParseBitStringValue.    (87)
 
-	.  reduce 88 (src line 792)
+	.  reduce 87 (src line 797)
 
 
 state 146
-	ParseBuiltinValue:  ParseBooleanValue.    (89)
+	ParseBuiltinValue:  ParseBooleanValue.    (88)
 
-	.  reduce 89 (src line 798)
+	.  reduce 88 (src line 803)
 
 
 state 147
-	ParseBuiltinValue:  ParseCharacterStringValue.    (90)
+	ParseBuiltinValue:  ParseCharacterStringValue.    (89)
 
-	.  reduce 90 (src line 803)
+	.  reduce 89 (src line 808)
 
 
 state 148
-	ParseBuiltinValue:  ParseChoiceValue.    (91)
+	ParseBuiltinValue:  ParseChoiceValue.    (90)
 
-	.  reduce 91 (src line 808)
+	.  reduce 90 (src line 813)
 
 
 state 149
-	ParseBuiltinValue:  ParseEmbeddedPDVValue.    (92)
+	ParseBuiltinValue:  ParseEmbeddedPDVValue.    (91)
 
-	.  reduce 92 (src line 813)
+	.  reduce 91 (src line 818)
 
 
 state 150
-	ParseBuiltinValue:  ParseEnumeratedValue.    (93)
+	ParseBuiltinValue:  ParseEnumeratedValue.    (92)
 
-	.  reduce 93 (src line 818)
+	.  reduce 92 (src line 823)
 
 
 state 151
-	ParseBuiltinValue:  ParseExternalValue.    (94)
+	ParseBuiltinValue:  ParseExternalValue.    (93)
 
-	.  reduce 94 (src line 823)
+	.  reduce 93 (src line 828)
 
 
 state 152
-	ParseBuiltinValue:  ParseInstanceOfValue.    (95)
+	ParseBuiltinValue:  ParseInstanceOfValue.    (94)
 
-	.  reduce 95 (src line 828)
+	.  reduce 94 (src line 833)
 
 
 state 153
-	ParseBuiltinValue:  ParseIntegerValue.    (96)
+	ParseBuiltinValue:  ParseIntegerValue.    (95)
 
-	.  reduce 96 (src line 833)
+	.  reduce 95 (src line 838)
 
 
 state 154
-	ParseBuiltinValue:  ParseIRIValue.    (97)
+	ParseBuiltinValue:  ParseIRIValue.    (96)
 
-	.  reduce 97 (src line 838)
+	.  reduce 96 (src line 843)
 
 
 state 155
-	ParseBuiltinValue:  ParseNullValue.    (98)
+	ParseBuiltinValue:  ParseNullValue.    (97)
 
-	.  reduce 98 (src line 843)
+	.  reduce 97 (src line 848)
 
 
 state 156
-	ParseBuiltinValue:  ParseObjectIdentifierValue.    (99)
+	ParseBuiltinValue:  ParseObjectIdentifierValue.    (98)
 
-	.  reduce 99 (src line 848)
+	.  reduce 98 (src line 853)
 
 
 state 157
-	ParseBuiltinValue:  ParseOctetStringValue.    (100)
+	ParseBuiltinValue:  ParseOctetStringValue.    (99)
 
-	.  reduce 100 (src line 853)
+	.  reduce 99 (src line 858)
 
 
 state 158
-	ParseBuiltinValue:  ParseRealValue.    (101)
+	ParseBuiltinValue:  ParseRealValue.    (100)
 
-	.  reduce 101 (src line 858)
+	.  reduce 100 (src line 863)
 
 
 state 159
-	ParseBuiltinValue:  ParseRelativeIRIValue.    (102)
+	ParseBuiltinValue:  ParseRelativeIRIValue.    (101)
 
-	.  reduce 102 (src line 863)
+	.  reduce 101 (src line 868)
 
 
 state 160
-	ParseBuiltinValue:  ParseRelativeOIDValue.    (103)
+	ParseBuiltinValue:  ParseRelativeOIDValue.    (102)
 
-	.  reduce 103 (src line 868)
+	.  reduce 102 (src line 873)
 
 
+ 161: reduce/reduce conflict  (red'ns 103 and 139) on END_SYMBOL
+ 161: reduce/reduce conflict  (red'ns 103 and 139) on TokenCapitalString
+ 161: reduce/reduce conflict  (red'ns 103 and 139) on TokenString
+ 161: reduce/reduce conflict  (red'ns 103 and 141) on END_SYMBOL
+ 161: reduce/reduce conflict  (red'ns 103 and 141) on TokenCapitalString
+ 161: reduce/reduce conflict  (red'ns 103 and 141) on TokenString
+ 161: reduce/reduce conflict  (red'ns 103 and 143) on END_SYMBOL
+ 161: reduce/reduce conflict  (red'ns 103 and 143) on TokenCapitalString
+ 161: reduce/reduce conflict  (red'ns 103 and 143) on TokenString
 state 161
-	ParseBuiltinValue:  ParseSequenceValue.    (104)
+	ParseBuiltinValue:  ParseSequenceValue.    (103)
+	ParseUnrestrictedCharacterStringValue:  ParseSequenceValue.    (139)
+	ParseEmbeddedPDVValue:  ParseSequenceValue.    (141)
+	ParseExternalValue:  ParseSequenceValue.    (143)
 
-	.  reduce 104 (src line 873)
+	.  reduce 103 (src line 878)
 
 
 state 162
-	ParseBuiltinValue:  ParseSequenceOfValue.    (105)
+	ParseBuiltinValue:  ParseSequenceOfValue.    (104)
 
-	.  reduce 105 (src line 878)
+	.  reduce 104 (src line 883)
 
 
 state 163
-	ParseBuiltinValue:  ParseSetValue.    (106)
+	ParseBuiltinValue:  ParseSetValue.    (105)
 
-	.  reduce 106 (src line 883)
+	.  reduce 105 (src line 888)
 
 
 state 164
-	ParseBuiltinValue:  ParseSetOfValue.    (107)
+	ParseBuiltinValue:  ParseSetOfValue.    (106)
 
-	.  reduce 107 (src line 888)
+	.  reduce 106 (src line 893)
 
 
 state 165
-	ParseBuiltinValue:  ParsePrefixedValue.    (108)
+	ParseBuiltinValue:  ParsePrefixedValue.    (107)
 
-	.  reduce 108 (src line 893)
+	.  reduce 107 (src line 898)
 
 
 state 166
-	ParseBuiltinValue:  ParseTimeValue.    (109)
+	ParseBuiltinValue:  ParseTimeValue.    (108)
 
-	.  reduce 109 (src line 898)
+	.  reduce 108 (src line 903)
 
 
 state 167
-	ParseBitStringValue:  TokenBString.    (110)
+	ParseBitStringValue:  TokenBString.    (109)
 
-	.  reduce 110 (src line 904)
+	.  reduce 109 (src line 909)
 
 
 state 168
-	ParseBitStringValue:  TokenHString.    (111)
+	ParseBitStringValue:  TokenHString.    (110)
 
-	.  reduce 111 (src line 908)
+	.  reduce 110 (src line 913)
 
 
-169: shift/reduce conflict (shift 23(0), red'n 162(0)) on MINUS
-169: shift/reduce conflict (shift 6(0), red'n 162(0)) on TokenCapitalString
-169: shift/reduce conflict (shift 7(0), red'n 162(0)) on TokenString
-169: shift/reduce conflict (shift 22(0), red'n 162(0)) on TokenInteger
-169: shift/reduce conflict (shift 24(0), red'n 162(0)) on TokenFloat
+169: shift/reduce conflict (shift 197(0), red'n 179(0)) on CURLY_END
+169: shift/reduce conflict (shift 23(0), red'n 179(0)) on MINUS
+169: shift/reduce conflict (shift 6(0), red'n 179(0)) on TokenCapitalString
+169: shift/reduce conflict (shift 7(0), red'n 179(0)) on TokenString
+169: shift/reduce conflict (shift 22(0), red'n 179(0)) on TokenInteger
+169: shift/reduce conflict (shift 24(0), red'n 179(0)) on TokenFloat
 state 169
 	ParseObjectIdentifierValue:  CURLY_START.ParseObjIdComponentsList CURLY_END 
 	ParseObjectIdentifierValue:  CURLY_START.ParseDefinedValue ParseObjIdComponentsList CURLY_START 
 	ParseObjectIdentifierValue:  CURLY_START.CURLY_END 
 	ParseBitStringValue:  CURLY_START.ParseIdentifierList CURLY_END 
 	ParseBitStringValue:  CURLY_START.CURLY_END 
-	ParseSimpleDefinedValue: .    (162)
+	ParseCharacterStringList:  CURLY_START.ParseCharSyms CURLY_END 
+	ParseQuadruple:  CURLY_START.ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END 
+	ParseTuple:  CURLY_START.ParseTableColumn COMMA ParseTableRow CURLY_END 
+	ParseSimpleDefinedValue: .    (179)
 
-	CURLY_END  shift 189
+	CURLY_START  shift 209
+	CURLY_END  shift 197
 	MINUS  shift 23
 	TokenCapitalString  shift 6
 	TokenString  shift 7
 	TokenInteger  shift 22
 	TokenFloat  shift 24
-	.  error
+	TokenCString  shift 206
+	.  reduce 179 (src line 1249)
 
-	ParseObjIdComponentsList  goto 178
-	ParseObjIdComponents  goto 181
-	ParseObjIdComponentsNameForm  goto 184
-	ParseObjIdComponentsNumberForm  goto 185
-	ParseObjIdComponentsNameAndNumberForm  goto 186
-	ParseDefinedValue  goto 179
+	ParseObjIdComponentsList  goto 185
+	ParseObjIdComponents  goto 188
+	ParseObjIdComponentsNameForm  goto 191
+	ParseObjIdComponentsNumberForm  goto 192
+	ParseObjIdComponentsNameAndNumberForm  goto 193
+	ParseDefinedValue  goto 196
 	ParseExternalValueReference  goto 135
 	ParseParameterizedValue  goto 138
 	ParseSimpleDefinedValue  goto 139
-	ParseIdentifierList  goto 190
-	ParseIdentifier  goto 192
-	ParseString  goto 191
-	ParseNumber  goto 183
+	ParseIdentifierList  goto 198
+	ParseIdentifier  goto 204
+	ParseQuadruple  goto 207
+	ParseTuple  goto 208
+	ParseCharSyms  goto 199
+	ParseCharsDefn  goto 205
+	ParseGroup  goto 200
+	ParseTableColumn  goto 201
+	ParseString  goto 202
+	ParseNumber  goto 203
 
- 170: reduce/reduce conflict  (red'ns 142 and 143) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 142 and 143) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 142 and 143) on TokenString
- 170: reduce/reduce conflict  (red'ns 142 and 123) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 142 and 123) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 142 and 123) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 124) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 124) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 124) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 125) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 125) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 125) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 126) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 126) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 126) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 127) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 127) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 127) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 128) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 128) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 128) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 129) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 129) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 129) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 130) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 130) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 130) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 131) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 131) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 131) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 132) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 132) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 132) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 133) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 133) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 133) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 134) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 134) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 134) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 135) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 135) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 135) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 136) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 136) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 136) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 137) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 137) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 137) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 138) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 138) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 138) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 139) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 139) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 139) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 140) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 140) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 140) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 141) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 141) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 141) on TokenString
- 170: reduce/reduce conflict  (red'ns 123 and 121) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 123 and 121) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 123 and 121) on TokenString
- 170: reduce/reduce conflict  (red'ns 121 and 122) on END_SYMBOL
- 170: reduce/reduce conflict  (red'ns 121 and 122) on TokenCapitalString
- 170: reduce/reduce conflict  (red'ns 121 and 122) on TokenString
+170: shift/reduce conflict (shift 6(0), red'n 159(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 159(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 159 and 160) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 160(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 160(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 159 and 144) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 144(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 144(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 147) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 147(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 147(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 149) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 149(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 149(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 150) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 150(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 150(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 151) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 151(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 151(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 152) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 152(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 152(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 153) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 153(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 153(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 154) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 154(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 154(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 155) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 155(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 155(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 156) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 156(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 156(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 157) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 157(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 157(0)) on TokenString
+ 170: reduce/reduce conflict  (red'ns 144 and 158) on END_SYMBOL
+170: shift/reduce conflict (shift 6(0), red'n 158(0)) on TokenCapitalString
+170: shift/reduce conflict (shift 7(0), red'n 158(0)) on TokenString
 state 170
 	ParseBitStringValue:  CONTAINING_SYMBOL.ParseValue 
-	ParseReferencedValue: .    (142)
-	ParseObjectClassFieldValue: .    (143)
-	ParseChoiceValue: .    (123)
-	ParseEmbeddedPDVValue: .    (124)
-	ParseEnumeratedValue: .    (125)
-	ParseExternalValue: .    (126)
-	ParseInstanceOfValue: .    (127)
-	ParseIntegerValue: .    (128)
-	ParseIRIValue: .    (129)
-	ParseNullValue: .    (130)
-	ParseObjectIdentifierValue: .    (131)
-	ParseOctetStringValue: .    (132)
-	ParseRealValue: .    (133)
-	ParseRelativeIRIValue: .    (134)
-	ParseRelativeOIDValue: .    (135)
-	ParseSequenceValue: .    (136)
-	ParseSequenceOfValue: .    (137)
-	ParseSetValue: .    (138)
-	ParseSetOfValue: .    (139)
-	ParsePrefixedValue: .    (140)
-	ParseTimeValue: .    (141)
-	ParseRestrictedCharacterStringValue: .    (121)
-	ParseUnrestrictedCharacterStringValue: .    (122)
+	ParseReferencedValue: .    (159)
+	ParseObjectClassFieldValue: .    (160)
+	ParseInstanceOfValue: .    (144)
+	ParseIRIValue: .    (147)
+	ParseOctetStringValue: .    (149)
+	ParseRealValue: .    (150)
+	ParseRelativeIRIValue: .    (151)
+	ParseRelativeOIDValue: .    (152)
+	ParseSequenceValue: .    (153)
+	ParseSequenceOfValue: .    (154)
+	ParseSetValue: .    (155)
+	ParseSetOfValue: .    (156)
+	ParsePrefixedValue: .    (157)
+	ParseTimeValue: .    (158)
 
 	CURLY_START  shift 169
+	MINUS  shift 23
 	CONTAINING_SYMBOL  shift 170
-	FALSE_SYMBOL  shift 175
-	TRUE_SYMBOL  shift 174
+	FALSE_SYMBOL  shift 178
+	NULL_SYMBOL  shift 176
+	TRUE_SYMBOL  shift 177
+	TokenCapitalString  shift 6
+	TokenString  shift 7
+	TokenInteger  shift 22
+	TokenFloat  shift 24
 	TokenBString  shift 167
 	TokenHString  shift 168
-	.  reduce 121 (src line 950)
+	TokenCString  shift 179
+	.  reduce 144 (src line 1075)
 
 	ParseObjectIdentifierValue  goto 156
-	ParseValue  goto 193
+	ParseValue  goto 210
 	ParseBuiltinValue  goto 142
 	ParseReferencedValue  goto 143
 	ParseObjectClassFieldValue  goto 144
@@ -1931,55 +1903,108 @@ state 170
 	ParseTimeValue  goto 166
 	ParseRestrictedCharacterStringValue  goto 172
 	ParseUnrestrictedCharacterStringValue  goto 173
+	ParseCharacterStringList  goto 180
+	ParseQuadruple  goto 181
+	ParseTuple  goto 182
+	ParseString  goto 174
+	ParseNumber  goto 175
 	ParseBoolean  goto 171
 
 state 171
-	ParseBooleanValue:  ParseBoolean.    (118)
+	ParseBooleanValue:  ParseBoolean.    (117)
 
-	.  reduce 118 (src line 937)
+	.  reduce 117 (src line 942)
 
 
 state 172
-	ParseCharacterStringValue:  ParseRestrictedCharacterStringValue.    (119)
+	ParseCharacterStringValue:  ParseRestrictedCharacterStringValue.    (118)
 
-	.  reduce 119 (src line 942)
+	.  reduce 118 (src line 947)
 
 
 state 173
-	ParseCharacterStringValue:  ParseUnrestrictedCharacterStringValue.    (120)
+	ParseCharacterStringValue:  ParseUnrestrictedCharacterStringValue.    (119)
 
-	.  reduce 120 (src line 946)
+	.  reduce 119 (src line 951)
 
 
+ 174: reduce/reduce conflict  (red'ns 142 and 146) on END_SYMBOL
+ 174: reduce/reduce conflict  (red'ns 142 and 146) on TokenCapitalString
+ 174: reduce/reduce conflict  (red'ns 142 and 146) on TokenString
 state 174
-	ParseBoolean:  TRUE_SYMBOL.    (220)
+	ParseChoiceValue:  ParseString.COLON ParseValue 
+	ParseEnumeratedValue:  ParseString.    (142)
+	ParseIntegerValue:  ParseString.    (146)
 
-	.  reduce 220 (src line 1381)
+	COLON  shift 211
+	.  reduce 142 (src line 1065)
 
 
 state 175
-	ParseBoolean:  FALSE_SYMBOL.    (221)
+	ParseIntegerValue:  ParseNumber.    (145)
 
-	.  reduce 221 (src line 1385)
+	.  reduce 145 (src line 1080)
 
 
 state 176
-	ParseObjectAssignment:  ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObject.    (74)
+	ParseNullValue:  NULL_SYMBOL.    (148)
 
-	.  reduce 74 (src line 712)
+	.  reduce 148 (src line 1093)
 
 
 state 177
-	ParseObjectSetAssignment:  ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObjectSet.    (75)
+	ParseBoolean:  TRUE_SYMBOL.    (237)
 
-	.  reduce 75 (src line 722)
+	.  reduce 237 (src line 1484)
 
 
 state 178
+	ParseBoolean:  FALSE_SYMBOL.    (238)
+
+	.  reduce 238 (src line 1488)
+
+
+state 179
+	ParseRestrictedCharacterStringValue:  TokenCString.    (120)
+
+	.  reduce 120 (src line 955)
+
+
+state 180
+	ParseRestrictedCharacterStringValue:  ParseCharacterStringList.    (121)
+
+	.  reduce 121 (src line 959)
+
+
+state 181
+	ParseRestrictedCharacterStringValue:  ParseQuadruple.    (122)
+
+	.  reduce 122 (src line 962)
+
+
+state 182
+	ParseRestrictedCharacterStringValue:  ParseTuple.    (123)
+
+	.  reduce 123 (src line 965)
+
+
+state 183
+	ParseObjectAssignment:  ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObject.    (73)
+
+	.  reduce 73 (src line 717)
+
+
+state 184
+	ParseObjectSetAssignment:  ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObjectSet.    (74)
+
+	.  reduce 74 (src line 727)
+
+
+state 185
 	ParseObjectIdentifierValue:  CURLY_START ParseObjIdComponentsList.CURLY_END 
 	ParseObjIdComponentsList:  ParseObjIdComponentsList.ParseObjIdComponents 
 
-	CURLY_END  shift 194
+	CURLY_END  shift 212
 	MINUS  shift 23
 	TokenCapitalString  shift 6
 	TokenString  shift 7
@@ -1987,14 +2012,14 @@ state 178
 	TokenFloat  shift 24
 	.  error
 
-	ParseObjIdComponents  goto 195
-	ParseObjIdComponentsNameForm  goto 184
-	ParseObjIdComponentsNumberForm  goto 185
-	ParseObjIdComponentsNameAndNumberForm  goto 186
-	ParseString  goto 196
-	ParseNumber  goto 197
+	ParseObjIdComponents  goto 213
+	ParseObjIdComponentsNameForm  goto 191
+	ParseObjIdComponentsNumberForm  goto 192
+	ParseObjIdComponentsNameAndNumberForm  goto 193
+	ParseString  goto 214
+	ParseNumber  goto 215
 
-state 179
+state 186
 	ParseObjectIdentifierValue:  CURLY_START ParseDefinedValue.ParseObjIdComponentsList CURLY_START 
 
 	MINUS  shift 23
@@ -2004,183 +2029,375 @@ state 179
 	TokenFloat  shift 24
 	.  error
 
-	ParseObjIdComponentsList  goto 198
-	ParseObjIdComponents  goto 181
-	ParseObjIdComponentsNameForm  goto 184
-	ParseObjIdComponentsNumberForm  goto 185
-	ParseObjIdComponentsNameAndNumberForm  goto 186
-	ParseString  goto 196
-	ParseNumber  goto 197
-
-state 180
-	ParseObjectIdentifierValue:  CURLY_START CURLY_END.    (48)
-
-	.  reduce 48 (src line 572)
-
-
-state 181
-	ParseObjIdComponentsList:  ParseObjIdComponents.    (49)
-
-	.  reduce 49 (src line 576)
-
-
- 182: reduce/reduce conflict  (red'ns 54 and 157) on MINUS
- 182: reduce/reduce conflict  (red'ns 54 and 157) on TokenCapitalString
- 182: reduce/reduce conflict  (red'ns 54 and 157) on TokenString
- 182: reduce/reduce conflict  (red'ns 54 and 157) on TokenInteger
- 182: reduce/reduce conflict  (red'ns 54 and 157) on TokenFloat
-state 182
-	ParseObjIdComponentsNameForm:  ParseString.    (54)
-	ParseObjIdComponentsNameAndNumberForm:  ParseString.ROUND_START ParseNumber ROUND_END 
-	ParseDefinedValue:  ParseString.    (157)
-	ParseExternalValueReference:  ParseString.DOT ParseString 
-
-	DOT  shift 187
-	ROUND_START  shift 199
-	.  reduce 54 (src line 598)
-
-
- 183: reduce/reduce conflict  (red'ns 55 and 56) on CURLY_END
- 183: reduce/reduce conflict  (red'ns 55 and 56) on MINUS
- 183: reduce/reduce conflict  (red'ns 55 and 56) on TokenCapitalString
- 183: reduce/reduce conflict  (red'ns 55 and 56) on TokenString
- 183: reduce/reduce conflict  (red'ns 55 and 56) on TokenInteger
- 183: reduce/reduce conflict  (red'ns 55 and 56) on TokenFloat
- 183: reduce/reduce conflict  (red'ns 55 and 158) on MINUS
- 183: reduce/reduce conflict  (red'ns 55 and 158) on TokenCapitalString
- 183: reduce/reduce conflict  (red'ns 55 and 158) on TokenString
- 183: reduce/reduce conflict  (red'ns 55 and 158) on TokenInteger
- 183: reduce/reduce conflict  (red'ns 55 and 158) on TokenFloat
-state 183
-	ParseObjIdComponentsNumberForm:  ParseNumber.    (55)
-	ParseObjIdComponentsNumberForm:  ParseNumber.    (56)
-	ParseDefinedValue:  ParseNumber.    (158)
-
-	.  reduce 55 (src line 605)
-
-
-state 184
-	ParseObjIdComponents:  ParseObjIdComponentsNameForm.    (51)
-
-	.  reduce 51 (src line 587)
-
-
-state 185
-	ParseObjIdComponents:  ParseObjIdComponentsNumberForm.    (52)
-
-	.  reduce 52 (src line 591)
-
-
-state 186
-	ParseObjIdComponents:  ParseObjIdComponentsNameAndNumberForm.    (53)
-
-	.  reduce 53 (src line 594)
-
+	ParseObjIdComponentsList  goto 216
+	ParseObjIdComponents  goto 188
+	ParseObjIdComponentsNameForm  goto 191
+	ParseObjIdComponentsNumberForm  goto 192
+	ParseObjIdComponentsNameAndNumberForm  goto 193
+	ParseString  goto 214
+	ParseNumber  goto 215
 
 state 187
+	ParseObjectIdentifierValue:  CURLY_START CURLY_END.    (48)
+
+	.  reduce 48 (src line 582)
+
+
+state 188
+	ParseObjIdComponentsList:  ParseObjIdComponents.    (49)
+
+	.  reduce 49 (src line 586)
+
+
+ 189: reduce/reduce conflict  (red'ns 54 and 174) on MINUS
+ 189: reduce/reduce conflict  (red'ns 54 and 174) on TokenCapitalString
+ 189: reduce/reduce conflict  (red'ns 54 and 174) on TokenString
+ 189: reduce/reduce conflict  (red'ns 54 and 174) on TokenInteger
+ 189: reduce/reduce conflict  (red'ns 54 and 174) on TokenFloat
+state 189
+	ParseObjIdComponentsNameForm:  ParseString.    (54)
+	ParseObjIdComponentsNameAndNumberForm:  ParseString.ROUND_START ParseNumber ROUND_END 
+	ParseDefinedValue:  ParseString.    (174)
+	ParseExternalValueReference:  ParseString.DOT ParseString 
+
+	DOT  shift 194
+	ROUND_START  shift 217
+	.  reduce 54 (src line 608)
+
+
+ 190: reduce/reduce conflict  (red'ns 55 and 175) on MINUS
+ 190: reduce/reduce conflict  (red'ns 55 and 175) on TokenCapitalString
+ 190: reduce/reduce conflict  (red'ns 55 and 175) on TokenString
+ 190: reduce/reduce conflict  (red'ns 55 and 175) on TokenInteger
+ 190: reduce/reduce conflict  (red'ns 55 and 175) on TokenFloat
+state 190
+	ParseObjIdComponentsNumberForm:  ParseNumber.    (55)
+	ParseDefinedValue:  ParseNumber.    (175)
+
+	.  reduce 55 (src line 615)
+
+
+state 191
+	ParseObjIdComponents:  ParseObjIdComponentsNameForm.    (51)
+
+	.  reduce 51 (src line 597)
+
+
+state 192
+	ParseObjIdComponents:  ParseObjIdComponentsNumberForm.    (52)
+
+	.  reduce 52 (src line 601)
+
+
+state 193
+	ParseObjIdComponents:  ParseObjIdComponentsNameAndNumberForm.    (53)
+
+	.  reduce 53 (src line 604)
+
+
+state 194
 	ParseExternalValueReference:  ParseString DOT.ParseString 
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
 	.  error
 
-	ParseString  goto 200
-
-state 188
-	ParseParameterizedValue:  ParseSimpleDefinedValue ParseActualParameterList.    (161)
-
-	.  reduce 161 (src line 1141)
-
-
- 189: reduce/reduce conflict  (red'ns 48 and 113) on END_SYMBOL
- 189: reduce/reduce conflict  (red'ns 48 and 113) on TokenCapitalString
- 189: reduce/reduce conflict  (red'ns 48 and 113) on TokenString
-state 189
-	ParseObjectIdentifierValue:  CURLY_START CURLY_END.    (48)
-	ParseBitStringValue:  CURLY_START CURLY_END.    (113)
-
-	.  reduce 48 (src line 572)
-
-
-state 190
-	ParseBitStringValue:  CURLY_START ParseIdentifierList.CURLY_END 
-	ParseIdentifierList:  ParseIdentifierList.COMMA ParseIdentifier 
-
-	CURLY_END  shift 201
-	COMMA  shift 202
-	.  error
-
-
- 191: reduce/reduce conflict  (red'ns 54 and 117) on CURLY_END
- 191: reduce/reduce conflict  (red'ns 54 and 157) on MINUS
- 191: reduce/reduce conflict  (red'ns 54 and 157) on TokenCapitalString
- 191: reduce/reduce conflict  (red'ns 54 and 157) on TokenString
- 191: reduce/reduce conflict  (red'ns 54 and 157) on TokenInteger
- 191: reduce/reduce conflict  (red'ns 54 and 157) on TokenFloat
-state 191
-	ParseObjIdComponentsNameForm:  ParseString.    (54)
-	ParseObjIdComponentsNameAndNumberForm:  ParseString.ROUND_START ParseNumber ROUND_END 
-	ParseIdentifier:  ParseString.    (117)
-	ParseDefinedValue:  ParseString.    (157)
-	ParseExternalValueReference:  ParseString.DOT ParseString 
-
-	COMMA  reduce 117 (src line 932)
-	DOT  shift 187
-	ROUND_START  shift 199
-	.  reduce 54 (src line 598)
-
-
-state 192
-	ParseIdentifierList:  ParseIdentifier.    (115)
-
-	.  reduce 115 (src line 921)
-
-
-state 193
-	ParseBitStringValue:  CONTAINING_SYMBOL ParseValue.    (114)
-
-	.  reduce 114 (src line 917)
-
-
-state 194
-	ParseObjectIdentifierValue:  CURLY_START ParseObjIdComponentsList CURLY_END.    (46)
-
-	.  reduce 46 (src line 565)
-
+	ParseString  goto 218
 
 state 195
-	ParseObjIdComponentsList:  ParseObjIdComponentsList ParseObjIdComponents.    (50)
+	ParseParameterizedValue:  ParseSimpleDefinedValue ParseActualParameterList.    (178)
 
-	.  reduce 50 (src line 582)
+	.  reduce 178 (src line 1244)
 
 
 state 196
-	ParseObjIdComponentsNameForm:  ParseString.    (54)
-	ParseObjIdComponentsNameAndNumberForm:  ParseString.ROUND_START ParseNumber ROUND_END 
+	ParseObjectIdentifierValue:  CURLY_START ParseDefinedValue.ParseObjIdComponentsList CURLY_START 
+	ParseCharsDefn:  ParseDefinedValue.    (130)
 
-	ROUND_START  shift 199
-	.  reduce 54 (src line 598)
+	MINUS  shift 23
+	TokenCapitalString  shift 6
+	TokenString  shift 7
+	TokenInteger  shift 22
+	TokenFloat  shift 24
+	.  reduce 130 (src line 995)
 
+	ParseObjIdComponentsList  goto 216
+	ParseObjIdComponents  goto 188
+	ParseObjIdComponentsNameForm  goto 191
+	ParseObjIdComponentsNumberForm  goto 192
+	ParseObjIdComponentsNameAndNumberForm  goto 193
+	ParseString  goto 214
+	ParseNumber  goto 215
 
- 197: reduce/reduce conflict  (red'ns 55 and 56) on CURLY_START
- 197: reduce/reduce conflict  (red'ns 55 and 56) on CURLY_END
- 197: reduce/reduce conflict  (red'ns 55 and 56) on MINUS
- 197: reduce/reduce conflict  (red'ns 55 and 56) on TokenCapitalString
- 197: reduce/reduce conflict  (red'ns 55 and 56) on TokenString
- 197: reduce/reduce conflict  (red'ns 55 and 56) on TokenInteger
- 197: reduce/reduce conflict  (red'ns 55 and 56) on TokenFloat
+ 197: reduce/reduce conflict  (red'ns 48 and 112) on END_SYMBOL
+ 197: reduce/reduce conflict  (red'ns 48 and 112) on TokenCapitalString
+ 197: reduce/reduce conflict  (red'ns 48 and 112) on TokenString
 state 197
-	ParseObjIdComponentsNumberForm:  ParseNumber.    (55)
-	ParseObjIdComponentsNumberForm:  ParseNumber.    (56)
+	ParseObjectIdentifierValue:  CURLY_START CURLY_END.    (48)
+	ParseBitStringValue:  CURLY_START CURLY_END.    (112)
 
-	.  reduce 55 (src line 605)
+	.  reduce 48 (src line 582)
 
 
 state 198
+	ParseBitStringValue:  CURLY_START ParseIdentifierList.CURLY_END 
+	ParseIdentifierList:  ParseIdentifierList.COMMA ParseIdentifier 
+
+	CURLY_END  shift 219
+	COMMA  shift 220
+	.  error
+
+
+state 199
+	ParseCharacterStringList:  CURLY_START ParseCharSyms.CURLY_END 
+	ParseCharSyms:  ParseCharSyms.COMMA ParseCharsDefn 
+
+	CURLY_END  shift 221
+	COMMA  shift 222
+	.  error
+
+
+state 200
+	ParseQuadruple:  CURLY_START ParseGroup.COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END 
+
+	COMMA  shift 223
+	.  error
+
+
+state 201
+	ParseTuple:  CURLY_START ParseTableColumn.COMMA ParseTableRow CURLY_END 
+
+	COMMA  shift 224
+	.  error
+
+
+ 202: reduce/reduce conflict  (red'ns 54 and 116) on CURLY_END
+ 202: reduce/reduce conflict  (red'ns 54 and 174) on CURLY_END
+ 202: reduce/reduce conflict  (red'ns 116 and 174) on COMMA
+ 202: reduce/reduce conflict  (red'ns 54 and 174) on MINUS
+ 202: reduce/reduce conflict  (red'ns 54 and 174) on TokenCapitalString
+ 202: reduce/reduce conflict  (red'ns 54 and 174) on TokenString
+ 202: reduce/reduce conflict  (red'ns 54 and 174) on TokenInteger
+ 202: reduce/reduce conflict  (red'ns 54 and 174) on TokenFloat
+state 202
+	ParseObjIdComponentsNameForm:  ParseString.    (54)
+	ParseObjIdComponentsNameAndNumberForm:  ParseString.ROUND_START ParseNumber ROUND_END 
+	ParseIdentifier:  ParseString.    (116)
+	ParseDefinedValue:  ParseString.    (174)
+	ParseExternalValueReference:  ParseString.DOT ParseString 
+
+	COMMA  reduce 116 (src line 937)
+	DOT  shift 194
+	ROUND_START  shift 217
+	.  reduce 54 (src line 608)
+
+
+ 203: reduce/reduce conflict  (red'ns 132 and 137) on COMMA
+ 203: reduce/reduce conflict  (red'ns 55 and 175) on CURLY_END
+ 203: reduce/reduce conflict  (red'ns 132 and 175) on COMMA
+ 203: reduce/reduce conflict  (red'ns 55 and 175) on MINUS
+ 203: reduce/reduce conflict  (red'ns 55 and 175) on TokenCapitalString
+ 203: reduce/reduce conflict  (red'ns 55 and 175) on TokenString
+ 203: reduce/reduce conflict  (red'ns 55 and 175) on TokenInteger
+ 203: reduce/reduce conflict  (red'ns 55 and 175) on TokenFloat
+state 203
+	ParseObjIdComponentsNumberForm:  ParseNumber.    (55)
+	ParseGroup:  ParseNumber.    (132)
+	ParseTableColumn:  ParseNumber.    (137)
+	ParseDefinedValue:  ParseNumber.    (175)
+
+	COMMA  reduce 132 (src line 1009)
+	.  reduce 55 (src line 615)
+
+
+state 204
+	ParseIdentifierList:  ParseIdentifier.    (114)
+
+	.  reduce 114 (src line 926)
+
+
+state 205
+	ParseCharSyms:  ParseCharsDefn.    (125)
+
+	.  reduce 125 (src line 974)
+
+
+state 206
+	ParseCharsDefn:  TokenCString.    (127)
+
+	.  reduce 127 (src line 985)
+
+
+state 207
+	ParseCharsDefn:  ParseQuadruple.    (128)
+
+	.  reduce 128 (src line 989)
+
+
+state 208
+	ParseCharsDefn:  ParseTuple.    (129)
+
+	.  reduce 129 (src line 992)
+
+
+state 209
+	ParseQuadruple:  CURLY_START.ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END 
+	ParseTuple:  CURLY_START.ParseTableColumn COMMA ParseTableRow CURLY_END 
+
+	MINUS  shift 23
+	TokenInteger  shift 22
+	TokenFloat  shift 24
+	.  error
+
+	ParseGroup  goto 200
+	ParseTableColumn  goto 201
+	ParseNumber  goto 225
+
+state 210
+	ParseBitStringValue:  CONTAINING_SYMBOL ParseValue.    (113)
+
+	.  reduce 113 (src line 922)
+
+
+211: shift/reduce conflict (shift 6(0), red'n 159(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 159(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 159 and 160) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 160(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 160(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 159 and 144) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 144(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 144(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 147) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 147(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 147(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 149) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 149(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 149(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 150) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 150(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 150(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 151) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 151(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 151(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 152) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 152(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 152(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 153) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 153(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 153(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 154) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 154(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 154(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 155) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 155(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 155(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 156) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 156(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 156(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 157) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 157(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 157(0)) on TokenString
+ 211: reduce/reduce conflict  (red'ns 144 and 158) on END_SYMBOL
+211: shift/reduce conflict (shift 6(0), red'n 158(0)) on TokenCapitalString
+211: shift/reduce conflict (shift 7(0), red'n 158(0)) on TokenString
+state 211
+	ParseChoiceValue:  ParseString COLON.ParseValue 
+	ParseReferencedValue: .    (159)
+	ParseObjectClassFieldValue: .    (160)
+	ParseInstanceOfValue: .    (144)
+	ParseIRIValue: .    (147)
+	ParseOctetStringValue: .    (149)
+	ParseRealValue: .    (150)
+	ParseRelativeIRIValue: .    (151)
+	ParseRelativeOIDValue: .    (152)
+	ParseSequenceValue: .    (153)
+	ParseSequenceOfValue: .    (154)
+	ParseSetValue: .    (155)
+	ParseSetOfValue: .    (156)
+	ParsePrefixedValue: .    (157)
+	ParseTimeValue: .    (158)
+
+	CURLY_START  shift 169
+	MINUS  shift 23
+	CONTAINING_SYMBOL  shift 170
+	FALSE_SYMBOL  shift 178
+	NULL_SYMBOL  shift 176
+	TRUE_SYMBOL  shift 177
+	TokenCapitalString  shift 6
+	TokenString  shift 7
+	TokenInteger  shift 22
+	TokenFloat  shift 24
+	TokenBString  shift 167
+	TokenHString  shift 168
+	TokenCString  shift 179
+	.  reduce 144 (src line 1075)
+
+	ParseObjectIdentifierValue  goto 156
+	ParseValue  goto 226
+	ParseBuiltinValue  goto 142
+	ParseReferencedValue  goto 143
+	ParseObjectClassFieldValue  goto 144
+	ParseBitStringValue  goto 145
+	ParseBooleanValue  goto 146
+	ParseCharacterStringValue  goto 147
+	ParseChoiceValue  goto 148
+	ParseEmbeddedPDVValue  goto 149
+	ParseEnumeratedValue  goto 150
+	ParseExternalValue  goto 151
+	ParseInstanceOfValue  goto 152
+	ParseIntegerValue  goto 153
+	ParseIRIValue  goto 154
+	ParseNullValue  goto 155
+	ParseOctetStringValue  goto 157
+	ParseRealValue  goto 158
+	ParseRelativeIRIValue  goto 159
+	ParseRelativeOIDValue  goto 160
+	ParseSequenceValue  goto 161
+	ParseSequenceOfValue  goto 162
+	ParseSetValue  goto 163
+	ParseSetOfValue  goto 164
+	ParsePrefixedValue  goto 165
+	ParseTimeValue  goto 166
+	ParseRestrictedCharacterStringValue  goto 172
+	ParseUnrestrictedCharacterStringValue  goto 173
+	ParseCharacterStringList  goto 180
+	ParseQuadruple  goto 181
+	ParseTuple  goto 182
+	ParseString  goto 174
+	ParseNumber  goto 175
+	ParseBoolean  goto 171
+
+state 212
+	ParseObjectIdentifierValue:  CURLY_START ParseObjIdComponentsList CURLY_END.    (46)
+
+	.  reduce 46 (src line 575)
+
+
+state 213
+	ParseObjIdComponentsList:  ParseObjIdComponentsList ParseObjIdComponents.    (50)
+
+	.  reduce 50 (src line 592)
+
+
+state 214
+	ParseObjIdComponentsNameForm:  ParseString.    (54)
+	ParseObjIdComponentsNameAndNumberForm:  ParseString.ROUND_START ParseNumber ROUND_END 
+
+	ROUND_START  shift 217
+	.  reduce 54 (src line 608)
+
+
+state 215
+	ParseObjIdComponentsNumberForm:  ParseNumber.    (55)
+
+	.  reduce 55 (src line 615)
+
+
+state 216
 	ParseObjectIdentifierValue:  CURLY_START ParseDefinedValue ParseObjIdComponentsList.CURLY_START 
 	ParseObjIdComponentsList:  ParseObjIdComponentsList.ParseObjIdComponents 
 
-	CURLY_START  shift 203
+	CURLY_START  shift 227
 	MINUS  shift 23
 	TokenCapitalString  shift 6
 	TokenString  shift 7
@@ -2188,14 +2405,14 @@ state 198
 	TokenFloat  shift 24
 	.  error
 
-	ParseObjIdComponents  goto 195
-	ParseObjIdComponentsNameForm  goto 184
-	ParseObjIdComponentsNumberForm  goto 185
-	ParseObjIdComponentsNameAndNumberForm  goto 186
-	ParseString  goto 196
-	ParseNumber  goto 197
+	ParseObjIdComponents  goto 213
+	ParseObjIdComponentsNameForm  goto 191
+	ParseObjIdComponentsNumberForm  goto 192
+	ParseObjIdComponentsNameAndNumberForm  goto 193
+	ParseString  goto 214
+	ParseNumber  goto 215
 
-state 199
+state 217
 	ParseObjIdComponentsNameAndNumberForm:  ParseString ROUND_START.ParseNumber ROUND_END 
 
 	MINUS  shift 23
@@ -2203,72 +2420,230 @@ state 199
 	TokenFloat  shift 24
 	.  error
 
-	ParseNumber  goto 204
+	ParseNumber  goto 228
 
-state 200
-	ParseExternalValueReference:  ParseString DOT ParseString.    (160)
+state 218
+	ParseExternalValueReference:  ParseString DOT ParseString.    (177)
 
-	.  reduce 160 (src line 1133)
-
-
-state 201
-	ParseBitStringValue:  CURLY_START ParseIdentifierList CURLY_END.    (112)
-
-	.  reduce 112 (src line 911)
+	.  reduce 177 (src line 1236)
 
 
-state 202
+state 219
+	ParseBitStringValue:  CURLY_START ParseIdentifierList CURLY_END.    (111)
+
+	.  reduce 111 (src line 916)
+
+
+state 220
 	ParseIdentifierList:  ParseIdentifierList COMMA.ParseIdentifier 
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
 	.  error
 
-	ParseIdentifier  goto 205
-	ParseString  goto 206
+	ParseIdentifier  goto 229
+	ParseString  goto 230
 
-state 203
+state 221
+	ParseCharacterStringList:  CURLY_START ParseCharSyms CURLY_END.    (124)
+
+	.  reduce 124 (src line 969)
+
+
+state 222
+	ParseCharSyms:  ParseCharSyms COMMA.ParseCharsDefn 
+	ParseSimpleDefinedValue: .    (179)
+
+	CURLY_START  shift 209
+	MINUS  shift 23
+	TokenCapitalString  shift 6
+	TokenString  shift 7
+	TokenInteger  shift 22
+	TokenFloat  shift 24
+	TokenCString  shift 206
+	.  reduce 179 (src line 1249)
+
+	ParseDefinedValue  goto 232
+	ParseExternalValueReference  goto 135
+	ParseParameterizedValue  goto 138
+	ParseSimpleDefinedValue  goto 139
+	ParseQuadruple  goto 207
+	ParseTuple  goto 208
+	ParseCharsDefn  goto 231
+	ParseString  goto 136
+	ParseNumber  goto 137
+
+state 223
+	ParseQuadruple:  CURLY_START ParseGroup COMMA.ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END 
+
+	MINUS  shift 23
+	TokenInteger  shift 22
+	TokenFloat  shift 24
+	.  error
+
+	ParsePlane  goto 233
+	ParseNumber  goto 234
+
+state 224
+	ParseTuple:  CURLY_START ParseTableColumn COMMA.ParseTableRow CURLY_END 
+
+	MINUS  shift 23
+	TokenInteger  shift 22
+	TokenFloat  shift 24
+	.  error
+
+	ParseTableRow  goto 235
+	ParseNumber  goto 236
+
+ 225: reduce/reduce conflict  (red'ns 132 and 137) on COMMA
+state 225
+	ParseGroup:  ParseNumber.    (132)
+	ParseTableColumn:  ParseNumber.    (137)
+
+	.  reduce 132 (src line 1009)
+
+
+state 226
+	ParseChoiceValue:  ParseString COLON ParseValue.    (140)
+
+	.  reduce 140 (src line 1052)
+
+
+state 227
 	ParseObjectIdentifierValue:  CURLY_START ParseDefinedValue ParseObjIdComponentsList CURLY_START.    (47)
 
-	.  reduce 47 (src line 569)
+	.  reduce 47 (src line 579)
 
 
-state 204
+state 228
 	ParseObjIdComponentsNameAndNumberForm:  ParseString ROUND_START ParseNumber.ROUND_END 
 
-	ROUND_END  shift 207
+	ROUND_END  shift 237
 	.  error
 
 
-state 205
-	ParseIdentifierList:  ParseIdentifierList COMMA ParseIdentifier.    (116)
+state 229
+	ParseIdentifierList:  ParseIdentifierList COMMA ParseIdentifier.    (115)
 
-	.  reduce 116 (src line 927)
-
-
-state 206
-	ParseIdentifier:  ParseString.    (117)
-
-	.  reduce 117 (src line 932)
+	.  reduce 115 (src line 932)
 
 
-state 207
-	ParseObjIdComponentsNameAndNumberForm:  ParseString ROUND_START ParseNumber ROUND_END.    (57)
+state 230
+	ParseIdentifier:  ParseString.    (116)
 
-	.  reduce 57 (src line 617)
+	.  reduce 116 (src line 937)
 
-Rule not reduced: ParseObjIdComponentsNumberForm:  ParseNumber 
+
+state 231
+	ParseCharSyms:  ParseCharSyms COMMA ParseCharsDefn.    (126)
+
+	.  reduce 126 (src line 980)
+
+
+state 232
+	ParseCharsDefn:  ParseDefinedValue.    (130)
+
+	.  reduce 130 (src line 995)
+
+
+state 233
+	ParseQuadruple:  CURLY_START ParseGroup COMMA ParsePlane.COMMA ParseRow COMMA ParseCell CURLY_END 
+
+	COMMA  shift 238
+	.  error
+
+
+state 234
+	ParsePlane:  ParseNumber.    (133)
+
+	.  reduce 133 (src line 1014)
+
+
+state 235
+	ParseTuple:  CURLY_START ParseTableColumn COMMA ParseTableRow.CURLY_END 
+
+	CURLY_END  shift 239
+	.  error
+
+
+state 236
+	ParseTableRow:  ParseNumber.    (138)
+
+	.  reduce 138 (src line 1042)
+
+
+state 237
+	ParseObjIdComponentsNameAndNumberForm:  ParseString ROUND_START ParseNumber ROUND_END.    (56)
+
+	.  reduce 56 (src line 622)
+
+
+state 238
+	ParseQuadruple:  CURLY_START ParseGroup COMMA ParsePlane COMMA.ParseRow COMMA ParseCell CURLY_END 
+
+	MINUS  shift 23
+	TokenInteger  shift 22
+	TokenFloat  shift 24
+	.  error
+
+	ParseRow  goto 240
+	ParseNumber  goto 241
+
+state 239
+	ParseTuple:  CURLY_START ParseTableColumn COMMA ParseTableRow CURLY_END.    (136)
+
+	.  reduce 136 (src line 1029)
+
+
+state 240
+	ParseQuadruple:  CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow.COMMA ParseCell CURLY_END 
+
+	COMMA  shift 242
+	.  error
+
+
+state 241
+	ParseRow:  ParseNumber.    (134)
+
+	.  reduce 134 (src line 1019)
+
+
+state 242
+	ParseQuadruple:  CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow COMMA.ParseCell CURLY_END 
+
+	MINUS  shift 23
+	TokenInteger  shift 22
+	TokenFloat  shift 24
+	.  error
+
+	ParseCell  goto 243
+	ParseNumber  goto 244
+
+state 243
+	ParseQuadruple:  CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell.CURLY_END 
+
+	CURLY_END  shift 245
+	.  error
+
+
+state 244
+	ParseCell:  ParseNumber.    (135)
+
+	.  reduce 135 (src line 1024)
+
+
+state 245
+	ParseQuadruple:  CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END.    (131)
+
+	.  reduce 131 (src line 999)
+
 Rule not reduced: ParseBitStringValue:  CURLY_START CURLY_END 
-Rule not reduced: ParseUnrestrictedCharacterStringValue:  
-Rule not reduced: ParseChoiceValue:  
-Rule not reduced: ParseEmbeddedPDVValue:  
-Rule not reduced: ParseEnumeratedValue:  
-Rule not reduced: ParseExternalValue:  
-Rule not reduced: ParseInstanceOfValue:  
-Rule not reduced: ParseIntegerValue:  
+Rule not reduced: ParseTableColumn:  ParseNumber 
+Rule not reduced: ParseUnrestrictedCharacterStringValue:  ParseSequenceValue 
+Rule not reduced: ParseEmbeddedPDVValue:  ParseSequenceValue 
+Rule not reduced: ParseExternalValue:  ParseSequenceValue 
+Rule not reduced: ParseIntegerValue:  ParseString 
 Rule not reduced: ParseIRIValue:  
-Rule not reduced: ParseNullValue:  
-Rule not reduced: ParseObjectIdentifierValue:  
 Rule not reduced: ParseOctetStringValue:  
 Rule not reduced: ParseRealValue:  
 Rule not reduced: ParseRelativeIRIValue:  
@@ -2291,7 +2666,6 @@ Rule not reduced: ParseParameterizedValueSetTypeAssignment:
 Rule not reduced: ParseParameterizedObjectClassAssignment:  
 Rule not reduced: ParseParameterizedObjectAssignment:  
 Rule not reduced: ParseParameterizedObjectSetAssignment:  
-Rule not reduced: ParseSimpleDefinedValue:  
 Rule not reduced: ParseReferencedType:  
 Rule not reduced: ParseConstrainedType:  
 Rule not reduced: ParseBitStringType:  
@@ -2322,15 +2696,15 @@ Rule not reduced: ParsePrefixedType:
 Rule not reduced: ParseTimeType:  
 Rule not reduced: ParseTimeOfDayType:  
 
-127 terminals, 122 nonterminals
-229 grammar rules, 208/16000 states
-97 shift/reduce, 290 reduce/reduce conflicts reported
-171 working sets used
-memory: parser 396/240000
-11 extra closures
-129 shift entries, 3 exceptions
-160 goto entries
-135 entries saved by goto default
-Optimizer space used: output 257/240000
-257 table entries, 0 zero
-maximum spread: 126, maximum offset: 202
+127 terminals, 133 nonterminals
+246 grammar rules, 246/16000 states
+183 shift/reduce, 204 reduce/reduce conflicts reported
+182 working sets used
+memory: parser 548/240000
+31 extra closures
+194 shift entries, 4 exceptions
+194 goto entries
+178 entries saved by goto default
+Optimizer space used: output 316/240000
+316 table entries, 0 zero
+maximum spread: 127, maximum offset: 242

@@ -184,127 +184,137 @@ type (
 %token<TypeString>  TokenHString
 %token<TypeString>  TokenCString
 
-%type<TypeValue>      ParseModules
-%type<TypeValue>      ParseModule
-%type<TypeValue>      ParseModuleIdentifier
-%type<TypeValue>      ParseDefinitiveIdentification
-%type<TypeValue>      ParseDefinitiveOID
-%type<TypeValue>      ParseDefinitiveObjIdComponentList
-%type<TypeValue>      ParseDefinitiveObjIdComponent
-%type<TypeValue>      ParseDefinitiveNameForm
-%type<TypeValue>      ParseDefinitiveNumberForm
-%type<TypeValue>      ParseDefinitiveNameAndNumberForm
-%type<TypeValue>      ParseTagDefault
-%type<TypeValue>      ParseEncodingReferenceDefault
-%type<TypeValue>      ParseExtensionDefault
-%type<TypeValue>      ParseModuleBody
-%type<TypeValue>      ParseImports
-%type<TypeValue>      ParseExports
-%type<TypeValue>      ParseImportSymbols
-%type<TypeValue>      ParseSymbolsFromModules
-%type<TypeValue>      ParseSymbolsFromModule
-%type<TypeValue>      ParseSymbols
-%type<TypeValue>      ParseSymbol
-%type<TypeValue>      ParseGlobalModuleReference
-%type<TypeValue>      ParseAssignedIdentifier
-%type<TypeValue>      ParseObjectIdentifierValue
-%type<TypeValue>      ParseObjIdComponentsList
-%type<TypeValue>      ParseObjIdComponents
-%type<TypeValue>      ParseObjIdComponentsNameForm
-%type<TypeValue>      ParseObjIdComponentsNumberForm
-%type<TypeValue>      ParseObjIdComponentsNameAndNumberForm
-%type<TypeValue>      ParseAssignments
-%type<TypeValue>      ParseAssignment
-%type<TypeValue>      ParseDefinedValue
-%type<TypeValue>      ParseTypeAssignment
-%type<TypeValue>      ParseValueAssignment
-%type<TypeValue>      ParseXMLValueAssignment
-%type<TypeValue>      ParseValueSetTypeAssignment
-%type<TypeValue>      ParseObjectClassAssignment
-%type<TypeValue>      ParseObjectAssignment
-%type<TypeValue>      ParseObjectSetAssignment
-%type<TypeValue>      ParseParameterizedAssignment
-%type<TypeValue>      ParseType
-%type<TypeValue>      ParseValue
-%type<TypeValue>      ParseValueSet
-%type<TypeValue>      ParseXMLTypedValue
-%type<TypeValue>      ParseObjectClass
-%type<TypeValue>      ParseDefinedObjectClass
-%type<TypeValue>      ParseObject
-%type<TypeValue>      ParseObjectSet
-%type<TypeValue>      ParseParameterizedTypeAssignment
-%type<TypeValue>      ParseParameterizedValueAssignment
-%type<TypeValue>      ParseParameterizedValueSetTypeAssignment
-%type<TypeValue>      ParseParameterizedObjectClassAssignment
-%type<TypeValue>      ParseParameterizedObjectAssignment
-%type<TypeValue>      ParseParameterizedObjectSetAssignment
-%type<TypeValue>      ParseBuiltinType
-%type<TypeValue>      ParseReferencedType
-%type<TypeValue>      ParseConstrainedType
-%type<TypeValue>      ParseBitStringType
-%type<TypeValue>      ParseBooleanType
-%type<TypeValue>      ParseCharacterStringType
-%type<TypeValue>      ParseChoiceType
-%type<TypeValue>      ParseDateType
-%type<TypeValue>      ParseDateTimeType
-%type<TypeValue>      ParseDurationType
-%type<TypeValue>      ParseEmbeddedPDVType
-%type<TypeValue>      ParseExternalType
-%type<TypeValue>      ParseEnumeratedType
-%type<TypeValue>      ParseInstanceOfType
-%type<TypeValue>      ParseIntegerType
-%type<TypeValue>      ParseIRIType
-%type<TypeValue>      ParseNullType
-%type<TypeValue>      ParseObjectClassFieldType
-%type<TypeValue>      ParseObjectIdentifierType
-%type<TypeValue>      ParseOctetStringType
-%type<TypeValue>      ParseRealType
-%type<TypeValue>      ParseRelativeIRIType
-%type<TypeValue>      ParseRelativeOIDType
-%type<TypeValue>      ParseSequenceType
-%type<TypeValue>      ParseSequenceOfType
-%type<TypeValue>      ParseSetType
-%type<TypeValue>      ParseSetOfType
-%type<TypeValue>      ParsePrefixedType
-%type<TypeValue>      ParseTimeType
-%type<TypeValue>      ParseTimeOfDayType
-%type<TypeValue>      ParseExternalValueReference
-%type<TypeValue>      ParseParameterizedValue
-%type<TypeValue>      ParseSimpleDefinedValue
-%type<TypeValue>      ParseActualParameterList
-%type<TypeValue>      ParseBuiltinValue
-%type<TypeValue>      ParseReferencedValue
-%type<TypeValue>      ParseObjectClassFieldValue
-%type<TypeValue>      ParseBitStringValue
-%type<TypeValue>      ParseBooleanValue
-%type<TypeValue>      ParseCharacterStringValue
-%type<TypeValue>      ParseChoiceValue
-%type<TypeValue>      ParseEmbeddedPDVValue
-%type<TypeValue>      ParseEnumeratedValue
-%type<TypeValue>      ParseExternalValue
-%type<TypeValue>      ParseInstanceOfValue
-%type<TypeValue>      ParseIntegerValue
-%type<TypeValue>      ParseIRIValue
-%type<TypeValue>      ParseNullValue
-%type<TypeValue>      ParseObjectIdentifierValue
-%type<TypeValue>      ParseOctetStringValue
-%type<TypeValue>      ParseRealValue
-%type<TypeValue>      ParseRelativeIRIValue
-%type<TypeValue>      ParseRelativeOIDValue
-%type<TypeValue>      ParseSequenceValue
-%type<TypeValue>      ParseSequenceOfValue
-%type<TypeValue>      ParseSetValue
-%type<TypeValue>      ParseSetOfValue
-%type<TypeValue>      ParsePrefixedValue
-%type<TypeValue>      ParseTimeValue
-%type<TypeValue>      ParseRestrictedCharacterStringValue
-%type<TypeValue>      ParseUnrestrictedCharacterStringValue
-%type<TypeValue>      ParseIdentifierList
-%type<TypeValue>      ParseIdentifier
-%type<TypeValue>      ParseAssignementSymbol
-%type<TypeValue>      ParseString
-%type<TypeValue>      ParseNumber
-%type<TypeValue>      ParseBoolean
+%type<TypeValue>    ParseModules
+%type<TypeValue>    ParseModule
+%type<TypeValue>    ParseModuleIdentifier
+%type<TypeValue>    ParseDefinitiveIdentification
+%type<TypeValue>    ParseDefinitiveOID
+%type<TypeValue>    ParseDefinitiveObjIdComponentList
+%type<TypeValue>    ParseDefinitiveObjIdComponent
+%type<TypeValue>    ParseDefinitiveNameForm
+%type<TypeValue>    ParseDefinitiveNumberForm
+%type<TypeValue>    ParseDefinitiveNameAndNumberForm
+%type<TypeValue>    ParseTagDefault
+%type<TypeValue>    ParseEncodingReferenceDefault
+%type<TypeValue>    ParseExtensionDefault
+%type<TypeValue>    ParseModuleBody
+%type<TypeValue>    ParseImports
+%type<TypeValue>    ParseExports
+%type<TypeValue>    ParseImportSymbols
+%type<TypeValue>    ParseSymbolsFromModules
+%type<TypeValue>    ParseSymbolsFromModule
+%type<TypeValue>    ParseSymbols
+%type<TypeValue>    ParseSymbol
+%type<TypeValue>    ParseGlobalModuleReference
+%type<TypeValue>    ParseAssignedIdentifier
+%type<TypeValue>    ParseObjectIdentifierValue
+%type<TypeValue>    ParseObjIdComponentsList
+%type<TypeValue>    ParseObjIdComponents
+%type<TypeValue>    ParseObjIdComponentsNameForm
+%type<TypeValue>    ParseObjIdComponentsNumberForm
+%type<TypeValue>    ParseObjIdComponentsNameAndNumberForm
+%type<TypeValue>    ParseAssignments
+%type<TypeValue>    ParseAssignment
+%type<TypeValue>    ParseDefinedValue
+%type<TypeValue>    ParseTypeAssignment
+%type<TypeValue>    ParseValueAssignment
+%type<TypeValue>    ParseXMLValueAssignment
+%type<TypeValue>    ParseValueSetTypeAssignment
+%type<TypeValue>    ParseObjectClassAssignment
+%type<TypeValue>    ParseObjectAssignment
+%type<TypeValue>    ParseObjectSetAssignment
+%type<TypeValue>    ParseParameterizedAssignment
+%type<TypeValue>    ParseType
+%type<TypeValue>    ParseValue
+%type<TypeValue>    ParseValueSet
+%type<TypeValue>    ParseXMLTypedValue
+%type<TypeValue>    ParseObjectClass
+%type<TypeValue>    ParseDefinedObjectClass
+%type<TypeValue>    ParseObject
+%type<TypeValue>    ParseObjectSet
+%type<TypeValue>    ParseParameterizedTypeAssignment
+%type<TypeValue>    ParseParameterizedValueAssignment
+%type<TypeValue>    ParseParameterizedValueSetTypeAssignment
+%type<TypeValue>    ParseParameterizedObjectClassAssignment
+%type<TypeValue>    ParseParameterizedObjectAssignment
+%type<TypeValue>    ParseParameterizedObjectSetAssignment
+%type<TypeValue>    ParseBuiltinType
+%type<TypeValue>    ParseReferencedType
+%type<TypeValue>    ParseConstrainedType
+%type<TypeValue>    ParseBitStringType
+%type<TypeValue>    ParseBooleanType
+%type<TypeValue>    ParseCharacterStringType
+%type<TypeValue>    ParseChoiceType
+%type<TypeValue>    ParseDateType
+%type<TypeValue>    ParseDateTimeType
+%type<TypeValue>    ParseDurationType
+%type<TypeValue>    ParseEmbeddedPDVType
+%type<TypeValue>    ParseExternalType
+%type<TypeValue>    ParseEnumeratedType
+%type<TypeValue>    ParseInstanceOfType
+%type<TypeValue>    ParseIntegerType
+%type<TypeValue>    ParseIRIType
+%type<TypeValue>    ParseNullType
+%type<TypeValue>    ParseObjectClassFieldType
+%type<TypeValue>    ParseObjectIdentifierType
+%type<TypeValue>    ParseOctetStringType
+%type<TypeValue>    ParseRealType
+%type<TypeValue>    ParseRelativeIRIType
+%type<TypeValue>    ParseRelativeOIDType
+%type<TypeValue>    ParseSequenceType
+%type<TypeValue>    ParseSequenceOfType
+%type<TypeValue>    ParseSetType
+%type<TypeValue>    ParseSetOfType
+%type<TypeValue>    ParsePrefixedType
+%type<TypeValue>    ParseTimeType
+%type<TypeValue>    ParseTimeOfDayType
+%type<TypeValue>    ParseExternalValueReference
+%type<TypeValue>    ParseParameterizedValue
+%type<TypeValue>    ParseSimpleDefinedValue
+%type<TypeValue>    ParseActualParameterList
+%type<TypeValue>    ParseBuiltinValue
+%type<TypeValue>    ParseReferencedValue
+%type<TypeValue>    ParseObjectClassFieldValue
+%type<TypeValue>    ParseBitStringValue
+%type<TypeValue>    ParseBooleanValue
+%type<TypeValue>    ParseCharacterStringValue
+%type<TypeValue>    ParseChoiceValue
+%type<TypeValue>    ParseEmbeddedPDVValue
+%type<TypeValue>    ParseEnumeratedValue
+%type<TypeValue>    ParseExternalValue
+%type<TypeValue>    ParseInstanceOfValue
+%type<TypeValue>    ParseIntegerValue
+%type<TypeValue>    ParseIRIValue
+%type<TypeValue>    ParseNullValue
+%type<TypeValue>    ParseOctetStringValue
+%type<TypeValue>    ParseRealValue
+%type<TypeValue>    ParseRelativeIRIValue
+%type<TypeValue>    ParseRelativeOIDValue
+%type<TypeValue>    ParseSequenceValue
+%type<TypeValue>    ParseSequenceOfValue
+%type<TypeValue>    ParseSetValue
+%type<TypeValue>    ParseSetOfValue
+%type<TypeValue>    ParsePrefixedValue
+%type<TypeValue>    ParseTimeValue
+%type<TypeValue>    ParseRestrictedCharacterStringValue
+%type<TypeValue>    ParseUnrestrictedCharacterStringValue
+%type<TypeValue>    ParseIdentifierList
+%type<TypeValue>    ParseIdentifier
+%type<TypeValue>    ParseCharacterStringList
+%type<TypeValue>    ParseQuadruple
+%type<TypeValue>    ParseTuple
+%type<TypeValue>    ParseCharSyms
+%type<TypeValue>    ParseCharsDefn
+%type<TypeValue>    ParseGroup
+%type<TypeValue>    ParsePlane
+%type<TypeValue>    ParseRow
+%type<TypeValue>    ParseCell
+%type<TypeValue>    ParseTableColumn
+%type<TypeValue>    ParseTableRow
+%type<TypeValue>    ParseAssignementSymbol
+%type<TypeValue>    ParseString
+%type<TypeValue>    ParseNumber
+%type<TypeValue>    ParseBoolean
 
 %start ParseASN
 
@@ -604,11 +614,6 @@ ParseObjIdComponentsNameForm:
 
 ParseObjIdComponentsNumberForm:
     ParseNumber {
-        $$ = MAP {
-            "number": $1,
-        }
-    }
-  | ParseNumber {
         $$ = MAP {
             "number": $1,
         }
@@ -948,55 +953,159 @@ ParseCharacterStringValue:
     }
 
 ParseRestrictedCharacterStringValue:
-    /* EMPTY */ {
+    TokenCString {
+        $$ = $1
+    }
+  | ParseCharacterStringList {
+        $$ = $1
+    }
+  | ParseQuadruple {
+        $$ = $1
+    }
+  | ParseTuple {
+        $$ = $1
+    }
+
+ParseCharacterStringList:
+    CURLY_START ParseCharSyms CURLY_END {
         $$ = nil
+    }
+
+ParseCharSyms:
+    ParseCharsDefn {
+        $$ = LIST{
+            $1,
+        }
+    }
+  | ParseCharSyms COMMA ParseCharsDefn {
+        $$ = $1
+        $$ = append($$.(LIST), $2)
+    }
+
+ParseCharsDefn:
+    TokenCString {
+        $$ = $1
+    }
+  | ParseQuadruple {
+        $$ = $1
+    }
+  | ParseTuple {
+        $$ = $1
+    }
+  | ParseDefinedValue {
+        $$ = $1
+    }
+
+ParseQuadruple:
+    CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END {
+        $$ = MAP {
+            "group": $2,
+            "plane": $4,
+            "row":   $6,
+            "cell":  $8,
+        }
+    }
+
+ParseGroup:
+    ParseNumber {
+        $$ = $1
+    }
+
+ParsePlane:
+    ParseNumber {
+        $$ = $1
+    }
+
+ParseRow:
+    ParseNumber {
+        $$ = $1
+    }
+
+ParseCell:
+    ParseNumber {
+        $$ = $1
+    }
+
+ParseTuple:
+    CURLY_START ParseTableColumn COMMA ParseTableRow CURLY_END {
+        $$ = Map {
+            "tableColumn": $2,
+            "tableRow":    $4,
+        }
+    }
+
+ParseTableColumn:
+    ParseNumber {
+        $$ = $1
+    }
+
+ParseTableRow:
+    ParseNumber {
+        $$ = $1
     }
 
 ParseUnrestrictedCharacterStringValue:
+    ParseSequenceValue {
+        $$ = $1
+    }
+
+ParseChoiceValue:
+    ParseString COLON ParseValue {
+        $$ = Map {
+            "identifier": $1,
+            "value":      $2,
+        }
+    }
+
+ParseEmbeddedPDVValue:
+    ParseSequenceValue {
+        $$ = nil
+    }
+
+ParseEnumeratedValue:
+    ParseString {
+        $$ = $1
+    }
+
+ParseExternalValue:
+    ParseSequenceValue {
+        $$ = $1
+    }
+
+ParseInstanceOfValue:
     /* EMPTY */ {
         $$ = nil
     }
 
-ParseChoiceValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
-ParseEmbeddedPDVValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
-ParseEnumeratedValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
-ParseExternalValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
-ParseInstanceOfValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
 ParseIntegerValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    ParseNumber {
+        $$ = $1
+    }
+  | ParseString {
+        $$ = $1
+    }
+
 ParseIRIValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseNullValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
-ParseObjectIdentifierValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    NULL_SYMBOL {
+        $$ = "NULL"
+    }
+
 ParseOctetStringValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    TokenBString {
+        $$ = $1
+    }
+  | TokenHString {
+        $$ = $1
+    }
+  CONTAINING_SYMBOL ParseValue {
+        $$ = $1
+    }
+
 ParseRealValue:
   /* EMPTY */ {
     $$ = nil
