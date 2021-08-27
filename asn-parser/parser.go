@@ -4,7 +4,6 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -331,22 +330,6 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 		if unicode.IsSpace(rune(b)) {
 			continue
 		}
-
-		{
-			value, err := p.ParseBinaryString()
-			if nil == err {
-				lval.TypeString = STRING(value)
-				return TokenBString
-			}
-		}
-		{
-			value, err := p.ParseHexString()
-			if nil == err {
-				lval.TypeString = STRING(value)
-				return TokenHString
-			}
-		}
-
 		if unicode.IsLetter(rune(b)) {
 			err := p.Input.UnreadByte()
 			if nil != err {
@@ -405,6 +388,10 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 		case ':':
 			return COLON
 		case '"':
+			if value, err := p.CanBeCharString(); nil == err {
+				lval.TypeString = STRING(value)
+				return TokenCString
+			}
 			return DOUBLE_QUOTE
 		case '>':
 			return GREATER_THAN
@@ -417,20 +404,13 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 		case '/':
 			return SLASH
 		case '\'':
-			for {
-				bytes, err := p.Input.Peek(1)
-				if nil != err {
-					break
-				}
-				if bytes[0] == 'B' {
-					_, _ = p.Input.Discard(1)
-					return SLASH_B
-				}
-				if bytes[0] == 'H' {
-					_, _ = p.Input.Discard(1)
-					return SLASH_H
-				}
-				break
+			if value, err := p.CanBeBinaryString(); nil == err {
+				lval.TypeString = STRING(value)
+				return TokenBString
+			}
+			if value, err := p.CanBeHexString(); nil == err {
+				lval.TypeString = STRING(value)
+				return TokenHString
 			}
 			return APOSTROPHE
 		case ' ':
@@ -451,57 +431,103 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 	return 0
 }
 
-func (p *Parser) ParseBinaryString() (string, error) {
+func (p *Parser) CanBeCharString() (string, error) {
 	var (
 		buffer = strings.Builder{}
 		count  = 0
 	)
 	for {
 		b, err := p.Input.Peek(count + 1)
-		if nil == io.EOF {
-			break
-		}
 		if nil != err {
 			return "", err
 		}
-		if b[count] != 0 && b[count] != 1 {
-			if buffer.Len() > 0 {
+		if bytes.HasSuffix(b, []byte("\"")) {
+			count++
+			b, err := p.Input.Peek(count + 1)
+			if nil != err || !bytes.HasSuffix(b, []byte("\"\"")) {
 				break
 			}
-			return "", fmt.Errorf("encoding/binary: invalid byte: %#U", rune(b[count]))
 		}
-		buffer.WriteByte(b[count])
 		count++
 	}
+	for i := 0; i < count-1; i++ {
+		b, err := p.Input.Peek(i + 1)
+		if nil != err {
+			return "", err
+		}
+		buffer.WriteByte(b[i])
+	}
 	_, _ = p.Input.Discard(count)
+	return strings.ReplaceAll(buffer.String(), "\"\"", "\""), nil
+}
+
+func (p *Parser) CanBeBinaryString() (string, error) {
+	var (
+		buffer = strings.Builder{}
+		count  = 0
+	)
+	for {
+		b, err := p.Input.Peek(count + 2)
+		if nil != err {
+			return "", err
+		}
+		if bytes.HasSuffix(b, []byte("'B")) {
+			break
+		}
+		count++
+	}
+	for i := 0; i < count; i++ {
+		b, err := p.Input.Peek(i + 1)
+		if nil != err {
+			return "", err
+		}
+		if b[i] != '0' && b[i] != '1' {
+			return "", fmt.Errorf("encoding/binary: invalid byte: %#U", rune(b[count]))
+		}
+		buffer.WriteByte(b[i])
+	}
+	_, _ = p.Input.Discard(count + 2)
 	return buffer.String(), nil
 }
 
-func (p *Parser) ParseHexString() (string, error) {
+func (p *Parser) IsHexDigit(c byte) bool {
+	switch {
+	case '0' <= c && c <= '9':
+		return true
+	case 'a' <= c && c <= 'f':
+		return true
+	case 'A' <= c && c <= 'F':
+		return true
+	}
+	return false
+}
+
+func (p *Parser) CanBeHexString() (string, error) {
 	var (
 		buffer = strings.Builder{}
 		count  = 0
 	)
 	for {
-		b, err := p.Input.Peek(count + 1)
-		if nil == io.EOF {
-			break
-		}
+		b, err := p.Input.Peek(count + 2)
 		if nil != err {
 			return "", err
 		}
-		t, err := hex.DecodeString(string(b))
-		if nil == err {
-			if buffer.Len() > 0 {
-				break
-			}
-			return "", err
+		if bytes.HasSuffix(b, []byte("'H")) {
+			break
 		}
-		_ = t
-		buffer.WriteByte(b[count])
 		count++
 	}
-	_, _ = p.Input.Discard(count)
+	for i := 0; i < count; i++ {
+		b, err := p.Input.Peek(i + 1)
+		if nil != err {
+			return "", err
+		}
+		if !p.IsHexDigit(b[i]) {
+			return "", fmt.Errorf("encoding/hex: invalid byte: %#U", rune(b[count]))
+		}
+		buffer.WriteByte(b[i])
+	}
+	_, _ = p.Input.Discard(count + 2)
 	return buffer.String(), nil
 }
 

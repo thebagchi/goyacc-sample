@@ -4,7 +4,6 @@ import (
     "bytes"
     "fmt"
     "encoding/json"
-    "strconv"
 )
 var code bytes.Buffer
 func AddLine(line string) {
@@ -81,8 +80,6 @@ type (
 %token <TypeToken> EXCLAMATION
 %token <TypeToken> CARET
 %token <TypeToken> SEMI_COMMA
-%token <TypeToken> SLASH_B
-%token <TypeToken> SLASH_H
 
 %token<TypeString>  ABSENT_SYMBOL
 %token<TypeString>  ABSTRACTSYNTAX_SYMBOL
@@ -905,16 +902,19 @@ ParseBuiltinValue:
     }
 
 ParseBitStringValue:
-    APOSTROPHE TokenBString SLASH_B {
-        $$ = $2
+    TokenBString {
+        $$ = $1
     }
-  | APOSTROPHE TokenHString SLASH_H {
-        $$ = $2
+  | TokenHString {
+        $$ = $1
     }
-  | APOSTROPHE TokenBString SLASH_H {
-        $$ = $2
-  }
   | CURLY_START ParseIdentifierList CURLY_END {
+        $$ = $2
+    }
+  | CURLY_START CURLY_END {
+        $$ = nil
+    }
+  | CONTAINING_SYMBOL ParseValue {
         $$ = $2
     }
 
