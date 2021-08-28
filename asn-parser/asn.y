@@ -1028,7 +1028,7 @@ ParseCell:
 
 ParseTuple:
     CURLY_START ParseTableColumn COMMA ParseTableRow CURLY_END {
-        $$ = Map {
+        $$ = MAP {
             "tableColumn": $2,
             "tableRow":    $4,
         }
@@ -1051,7 +1051,7 @@ ParseUnrestrictedCharacterStringValue:
 
 ParseChoiceValue:
     ParseString COLON ParseValue {
-        $$ = Map {
+        $$ = MAP {
             "identifier": $1,
             "value":      $2,
         }
@@ -1107,41 +1107,49 @@ ParseOctetStringValue:
     }
 
 ParseRealValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseRelativeIRIValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseRelativeOIDValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseSequenceValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseSequenceOfValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseSetValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseSetOfValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParsePrefixedValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseTimeValue:
-  /* EMPTY */ {
-    $$ = nil
-  }
+    /* EMPTY */ {
+        $$ = nil
+    }
 
 ParseReferencedValue:
     /* EMPTY */ {
