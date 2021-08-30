@@ -311,6 +311,8 @@ type (
 %type<TypeValue>    ParseCell
 %type<TypeValue>    ParseTableColumn
 %type<TypeValue>    ParseTableRow
+%type<TypeValue>    ParseNumericRealValue
+%type<TypeValue>    ParseSpecialRealValue
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -1095,6 +1097,7 @@ ParseNullValue:
         $$ = "NULL"
     }
 
+// Conflicts with ParseBitStringValue
 ParseOctetStringValue:
     TokenBString {
         $$ = $1
@@ -1107,7 +1110,29 @@ ParseOctetStringValue:
     }
 
 ParseRealValue:
-    /* EMPTY */ {
+    ParseNumericRealValue {
+        $$ = $1
+    }
+  | ParseSpecialRealValue {
+        $$ = nil
+    }
+
+ParseNumericRealValue:
+    ParseNumber {
+        $$ = $1
+    }
+  | ParseSequenceValue {
+        $$ = $1
+    }
+
+ParseSpecialRealValue:
+    PLUSINFINITY_SYMBOL {
+        $$ = nil
+    }
+  | MINUSINFINITY_SYMBOL {
+        $$ = nil
+    }
+  | NOTANUMBER_SYMBOL {
         $$ = nil
     }
 

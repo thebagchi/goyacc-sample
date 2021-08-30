@@ -572,7 +572,7 @@ func (p *Parser) ParseNumber() (float64, error) {
 		if nil != err {
 			return 0, err
 		}
-		if unicode.IsDigit(rune(b)) || b == '.' {
+		if unicode.IsDigit(rune(b)) || b == '.' || b == 'e' || b == 'E' {
 			buffer.WriteByte(b)
 		} else {
 			err := p.Input.UnreadByte()
