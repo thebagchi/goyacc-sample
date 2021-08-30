@@ -313,6 +313,11 @@ type (
 %type<TypeValue>    ParseTableRow
 %type<TypeValue>    ParseNumericRealValue
 %type<TypeValue>    ParseSpecialRealValue
+%type<TypeValue>    ParseRelativeOIDComponentsList
+%type<TypeValue>    ParseRelativeOIDComponents
+%type<TypeValue>    ParseNameAndNumberForm
+%type<TypeValue>    ParseNumberForm
+%type<TypeValue>    ParseNameForm
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -1087,11 +1092,6 @@ ParseIntegerValue:
         $$ = $1
     }
 
-ParseIRIValue:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
 ParseNullValue:
     NULL_SYMBOL {
         $$ = "NULL"
@@ -1136,15 +1136,51 @@ ParseSpecialRealValue:
         $$ = nil
     }
 
+ParseIRIValue:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
 ParseRelativeIRIValue:
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseRelativeOIDValue:
-    /* EMPTY */ {
+    CURLY_START ParseRelativeOIDComponentsList CURLY_END {
         $$ = nil
     }
+
+ParseRelativeOIDComponentsList:
+    ParseRelativeOIDComponents {
+        $$ = nil
+    }
+  | ParseRelativeOIDComponentsList ParseRelativeOIDComponents {
+        $$ = nil
+    }
+
+ParseRelativeOIDComponents:
+    ParseNumberForm {
+        $$ = nil
+    }
+  | ParseNameAndNumberForm {
+        $$ = nil
+    }
+  | ParseDefinedValue {
+        $$ = nil
+    }
+
+ParseNameForm: {
+
+}
+
+ParseNumberForm: {
+
+}
+
+ParseNameAndNumberForm: {
+
+}
 
 ParseSequenceValue:
     /* EMPTY */ {

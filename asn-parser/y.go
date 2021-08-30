@@ -328,7 +328,7 @@ const ASNEofCode = 1
 const ASNErrCode = 2
 const ASNInitialStackSize = 16
 
-//line asn.y:1557
+//line asn.y:1593
 
 //line yacctab:1
 var ASNExca = [...]int{
@@ -339,104 +339,107 @@ var ASNExca = [...]int{
 	52, 27,
 	-2, 31,
 	-1, 168,
-	43, 150,
+	43, 149,
 	-2, 110,
-	-1, 208,
+	-1, 209,
 	10, 116,
 	-2, 54,
-	-1, 209,
+	-1, 210,
 	10, 132,
 	-2, 55,
 }
 
 const ASNPrivate = 57344
 
-const ASNLast = 326
+const ASNLast = 340
 
 var ASNAct = [...]int{
-	175, 210, 193, 133, 184, 183, 169, 211, 190, 23,
-	33, 34, 61, 21, 23, 234, 21, 64, 75, 5,
-	63, 5, 218, 23, 140, 6, 7, 215, 203, 23,
-	156, 14, 39, 40, 38, 23, 215, 37, 29, 51,
-	66, 91, 50, 192, 23, 170, 43, 134, 51, 85,
-	23, 50, 28, 36, 58, 23, 53, 23, 65, 49,
-	48, 180, 30, 60, 223, 9, 59, 225, 45, 23,
-	85, 52, 88, 23, 83, 32, 27, 245, 16, 186,
-	187, 176, 199, 44, 223, 199, 87, 26, 217, 42,
-	228, 185, 226, 41, 31, 229, 250, 227, 246, 86,
-	46, 231, 230, 253, 247, 125, 89, 12, 54, 179,
-	55, 61, 84, 201, 82, 1, 6, 7, 62, 22,
-	24, 6, 7, 89, 22, 24, 137, 167, 168, 181,
-	6, 7, 126, 22, 24, 195, 6, 7, 191, 22,
-	24, 171, 6, 7, 136, 22, 24, 178, 174, 123,
-	212, 6, 7, 194, 22, 24, 132, 6, 7, 212,
-	22, 24, 6, 7, 177, 22, 24, 22, 24, 90,
-	209, 243, 207, 202, 214, 213, 251, 20, 248, 22,
-	24, 20, 241, 22, 24, 129, 130, 3, 208, 174,
-	8, 221, 221, 219, 206, 216, 205, 182, 204, 173,
-	222, 172, 166, 221, 165, 164, 163, 162, 161, 220,
-	220, 222, 160, 159, 158, 157, 232, 155, 224, 154,
-	153, 220, 152, 221, 235, 219, 151, 150, 149, 237,
-	137, 242, 244, 240, 214, 213, 174, 239, 148, 147,
-	146, 220, 233, 145, 174, 144, 238, 249, 136, 143,
-	236, 252, 142, 200, 139, 138, 135, 122, 121, 120,
-	119, 118, 117, 116, 115, 114, 113, 112, 111, 110,
-	109, 108, 107, 106, 104, 105, 103, 102, 101, 100,
-	99, 98, 97, 96, 95, 94, 93, 81, 80, 79,
-	78, 77, 76, 189, 188, 92, 128, 127, 141, 74,
-	73, 72, 71, 70, 69, 68, 67, 198, 197, 196,
-	131, 124, 57, 56, 47, 35, 13, 25, 19, 18,
-	17, 15, 11, 10, 4, 2,
+	175, 211, 213, 133, 184, 183, 212, 190, 23, 169,
+	33, 34, 23, 21, 61, 193, 21, 23, 14, 140,
+	39, 219, 203, 75, 5, 38, 5, 219, 37, 23,
+	6, 7, 29, 40, 66, 23, 241, 156, 91, 51,
+	64, 50, 236, 63, 23, 43, 28, 222, 170, 23,
+	58, 50, 36, 134, 23, 60, 23, 85, 51, 53,
+	9, 23, 192, 48, 180, 65, 30, 229, 45, 23,
+	27, 88, 85, 23, 83, 52, 252, 44, 199, 199,
+	227, 26, 186, 187, 176, 227, 32, 16, 87, 221,
+	42, 232, 230, 46, 185, 59, 233, 231, 257, 49,
+	89, 253, 235, 31, 234, 260, 254, 86, 84, 41,
+	125, 12, 179, 55, 201, 6, 7, 89, 22, 24,
+	20, 82, 22, 24, 6, 7, 137, 22, 24, 126,
+	167, 168, 181, 1, 61, 195, 6, 7, 191, 22,
+	24, 123, 6, 7, 214, 22, 24, 62, 54, 136,
+	214, 6, 7, 174, 22, 24, 6, 7, 194, 22,
+	24, 6, 7, 132, 22, 24, 22, 24, 6, 7,
+	210, 22, 24, 202, 216, 215, 6, 7, 171, 22,
+	24, 20, 217, 22, 24, 90, 3, 218, 208, 8,
+	220, 225, 225, 209, 174, 178, 177, 250, 207, 226,
+	258, 129, 130, 225, 255, 248, 223, 206, 205, 137,
+	226, 237, 238, 182, 224, 224, 204, 173, 172, 166,
+	239, 165, 164, 228, 163, 162, 224, 225, 242, 161,
+	160, 159, 136, 244, 137, 249, 251, 247, 216, 215,
+	246, 240, 223, 158, 157, 174, 155, 154, 153, 243,
+	224, 152, 151, 174, 256, 245, 150, 136, 259, 149,
+	148, 147, 146, 145, 144, 143, 142, 200, 139, 138,
+	135, 122, 121, 120, 119, 118, 117, 116, 115, 114,
+	113, 112, 111, 110, 109, 108, 107, 106, 104, 105,
+	103, 102, 101, 100, 99, 98, 97, 96, 95, 94,
+	93, 81, 80, 79, 78, 77, 76, 189, 188, 92,
+	128, 127, 141, 74, 73, 72, 71, 70, 69, 68,
+	67, 198, 197, 196, 131, 124, 57, 56, 47, 35,
+	13, 25, 19, 18, 17, 15, 11, 10, 4, 2,
 }
 
 var ASNPact = [...]int{
-	-94, -1000, -94, -1000, 18, 103, -1000, -1000, -1000, -88,
-	-1000, -1000, 61, 21, -33, 57, -1000, -1000, -1000, -1000,
-	58, -1000, -1000, -112, -1000, -4, -66, -69, -71, -1000,
-	-1000, -1000, 45, -1000, -1000, 78, -21, -1000, -1000, -1000,
-	65, 36, 89, -1000, -1000, -17, 52, 4, -8, -26,
-	-108, -9, -1000, -1000, -94, -94, 48, -108, -1000, 39,
-	-1000, -1000, 60, 46, -1000, -94, -1000, -1000, -1000, -1000,
-	-1000, -1000, -1000, -1000, -1000, 78, -1000, -1000, -1000, -1000,
-	-1000, -1000, -94, -1000, -1000, -108, -94, -1000, -1000, -1000,
-	-1000, 78, 78, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
+	-89, -1000, -89, -1000, 13, 107, -1000, -1000, -1000, -101,
+	-1000, -1000, 0, 15, -39, 61, -1000, -1000, -1000, -1000,
+	69, -1000, -1000, -112, -1000, -5, -75, -78, -83, -1000,
+	-1000, -1000, 44, -1000, -1000, 79, -22, -1000, -1000, -1000,
+	59, 36, 82, -1000, -1000, -17, 56, 7, 2, -27,
+	-106, 14, -1000, -1000, -89, -89, 48, -106, -1000, 47,
+	-1000, -1000, 62, 45, -1000, -89, -1000, -1000, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, 79, -1000, -1000, -1000, -1000,
+	-1000, -1000, -89, -1000, -1000, -106, -89, -1000, -1000, -1000,
+	-1000, 79, 79, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
 	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
 	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
-	-1000, -1000, -1000, -1000, -1000, 43, -1000, -1000, -1000, 2,
-	-1000, -1000, -1000, -1000, 38, -1000, 70, -1000, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, 49, -1000, -1000, -1000, 5,
+	-1000, -1000, -1000, -1000, 57, -1000, 64, -1000, -1000, -1000,
 	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
 	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
-	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, 23,
-	2, -1000, -1000, -1000, 77, -1000, -1000, -1000, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, 17,
+	5, -1000, -1000, -1000, 78, -1000, -1000, -1000, -1000, -1000,
 	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
-	17, -3, -1000, -1000, 67, -1000, -1000, -1000, -1000, -94,
-	-1000, 24, -3, -1000, 87, 85, 92, 91, 67, -1000,
-	-1000, -1000, -1000, -1000, -1000, 45, -1000, 2, -1000, -1000,
-	47, -1000, 11, 45, -1000, 2, -1000, -94, -1000, 32,
-	45, 45, -1000, -1000, -1000, 59, -1000, -1000, -1000, -1000,
-	-1000, 88, -1000, 99, -1000, -1000, 45, -1000, 86, -1000,
-	45, 98, -1000, -1000,
+	42, -4, -1000, -1000, 63, -1000, -1000, -1000, -1000, -89,
+	-1000, 24, -4, -1000, 87, 86, 94, 92, 37, 63,
+	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, 44,
+	-1000, 5, -1000, -1000, 68, -1000, 32, 44, -1000, 5,
+	-1000, -89, -1000, 23, 44, 44, -1000, -1000, -1000, -1000,
+	-1000, -1000, 58, -1000, -1000, -1000, -1000, -1000, 91, -1000,
+	101, -1000, -1000, 44, -1000, 88, -1000, 44, 100, -1000,
+	-1000,
 }
 
 var ASNPgo = [...]int{
-	0, 325, 187, 324, 323, 322, 321, 78, 320, 319,
-	318, 317, 316, 315, 314, 60, 59, 313, 312, 54,
-	66, 63, 311, 310, 30, 8, 2, 309, 308, 307,
-	58, 40, 3, 306, 305, 304, 303, 302, 301, 300,
-	299, 41, 24, 298, 297, 296, 295, 294, 293, 292,
-	291, 290, 289, 288, 287, 286, 285, 284, 283, 282,
-	281, 280, 279, 278, 277, 276, 275, 274, 273, 272,
-	271, 270, 269, 268, 267, 266, 265, 264, 263, 262,
-	261, 260, 259, 258, 257, 256, 255, 254, 253, 252,
-	249, 245, 243, 240, 239, 238, 228, 227, 226, 222,
-	220, 219, 217, 215, 214, 213, 212, 208, 207, 206,
-	205, 204, 202, 201, 199, 198, 1, 197, 5, 4,
-	196, 7, 194, 182, 178, 176, 172, 171, 164, 147,
-	93, 18, 0, 141, 115, 113,
+	0, 339, 186, 338, 337, 336, 335, 87, 334, 333,
+	332, 331, 330, 329, 328, 63, 99, 327, 326, 50,
+	95, 55, 325, 324, 37, 7, 15, 323, 322, 321,
+	65, 34, 3, 320, 319, 318, 317, 316, 315, 314,
+	313, 38, 19, 312, 311, 310, 309, 308, 307, 306,
+	305, 304, 303, 302, 301, 300, 299, 298, 297, 296,
+	295, 294, 293, 292, 291, 290, 289, 288, 287, 286,
+	285, 284, 283, 282, 281, 280, 279, 278, 277, 276,
+	275, 274, 273, 272, 271, 270, 269, 268, 267, 266,
+	265, 264, 263, 262, 261, 260, 259, 256, 252, 251,
+	248, 247, 246, 244, 243, 231, 230, 229, 225, 224,
+	222, 221, 219, 218, 217, 216, 1, 213, 5, 4,
+	208, 6, 207, 205, 204, 200, 198, 197, 196, 195,
+	188, 2, 187, 182, 182, 109, 23, 0, 178, 133,
+	114,
 }
 
 var ASNR1 = [...]int{
-	0, 134, 1, 1, 2, 3, 12, 12, 4, 4,
+	0, 139, 1, 1, 2, 3, 12, 12, 4, 4,
 	5, 6, 6, 7, 7, 7, 8, 9, 10, 11,
 	11, 11, 11, 13, 13, 14, 14, 14, 16, 16,
 	16, 16, 20, 20, 21, 15, 15, 17, 17, 18,
@@ -450,18 +453,19 @@ var ASNR1 = [...]int{
 	92, 92, 92, 92, 115, 115, 116, 93, 94, 94,
 	113, 113, 113, 113, 117, 120, 120, 121, 121, 121,
 	121, 118, 122, 123, 124, 125, 119, 126, 127, 114,
-	95, 96, 97, 98, 99, 100, 100, 101, 102, 103,
-	135, 103, 104, 104, 128, 128, 129, 129, 129, 105,
-	106, 107, 108, 109, 110, 111, 112, 90, 91, 44,
-	43, 45, 46, 47, 48, 49, 50, 51, 52, 53,
-	54, 32, 32, 32, 32, 85, 86, 87, 88, 55,
+	95, 96, 97, 98, 99, 100, 100, 102, 103, 140,
+	103, 104, 104, 128, 128, 129, 129, 129, 101, 105,
+	106, 130, 130, 131, 131, 131, 134, 133, 132, 107,
+	108, 109, 110, 111, 112, 90, 91, 44, 43, 45,
+	46, 47, 48, 49, 50, 51, 52, 53, 54, 32,
+	32, 32, 32, 85, 86, 87, 88, 55, 55, 55,
 	55, 55, 55, 55, 55, 55, 55, 55, 55, 55,
 	55, 55, 55, 55, 55, 55, 55, 55, 55, 55,
-	55, 55, 55, 55, 55, 55, 56, 57, 58, 59,
-	60, 61, 62, 63, 64, 65, 67, 66, 68, 69,
-	70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
-	80, 81, 82, 83, 84, 133, 133, 131, 131, 132,
-	132, 132, 132, 130,
+	55, 55, 55, 55, 56, 57, 58, 59, 60, 61,
+	62, 63, 64, 65, 67, 66, 68, 69, 70, 71,
+	72, 73, 74, 75, 76, 77, 78, 79, 80, 81,
+	82, 83, 84, 138, 138, 136, 136, 137, 137, 137,
+	137, 135,
 }
 
 var ASNR2 = [...]int{
@@ -479,76 +483,79 @@ var ASNR2 = [...]int{
 	1, 3, 2, 2, 1, 3, 1, 1, 1, 1,
 	1, 1, 1, 1, 3, 1, 3, 1, 1, 1,
 	1, 9, 1, 1, 1, 1, 5, 1, 1, 1,
-	3, 1, 1, 1, 0, 1, 1, 0, 1, 1,
-	0, 4, 1, 1, 1, 1, 1, 1, 1, 0,
+	3, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+	4, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+	3, 1, 2, 1, 1, 1, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 1, 1, 1, 1, 3, 2, 0, 0, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+	1, 1, 1, 3, 2, 0, 0, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+	1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-	2, 1, 2, 3,
+	0, 0, 0, 1, 1, 1, 1, 1, 2, 1,
+	2, 3,
 }
 
 var ASNChk = [...]int{
-	-1000, -134, -1, -2, -3, -131, 119, 120, -2, 47,
+	-1000, -139, -1, -2, -3, -136, 119, 120, -2, 47,
 	-4, -5, 4, -12, 119, -6, -7, -8, -9, -10,
-	120, -132, 122, 12, 123, -11, 66, 55, 31, 71,
+	120, -137, 122, 12, 123, -11, 66, 55, 31, 71,
 	5, -7, 17, 122, 123, -13, 57, 103, 103, 103,
-	-132, -130, 11, 67, 18, 32, 11, -14, -15, -16,
+	-137, -135, 11, 67, 18, 32, 11, -14, -15, -16,
 	68, 56, 19, 52, -16, -15, -17, -18, -19, -20,
 	-21, 120, -20, 29, 26, -30, -31, -33, -34, -35,
-	-36, -37, -38, -39, -40, -131, -49, -50, -51, -52,
+	-36, -37, -38, -39, -40, -136, -49, -50, -51, -52,
 	-53, -54, -30, 26, -19, 10, 60, 26, 26, -31,
-	-130, -41, -46, -55, -56, -57, -58, -59, -60, -61,
+	-135, -41, -46, -55, -56, -57, -58, -59, -60, -61,
 	-62, -63, -64, -65, -67, -66, -68, -69, -70, -71,
 	-72, -73, -74, -75, -76, -77, -78, -79, -80, -81,
-	-82, -83, -84, -21, -22, -131, -41, -44, -45, -130,
-	-130, -23, -24, -32, 4, -85, -131, -132, -86, -87,
+	-82, -83, -84, -21, -22, -136, -41, -44, -45, -135,
+	-135, -23, -24, -32, 4, -85, -136, -137, -86, -87,
 	-42, -43, -89, -90, -91, -92, -93, -94, -95, -96,
 	-97, -98, -99, -100, -101, -102, -24, -103, -104, -105,
 	-106, -107, -108, -109, -110, -111, -112, 125, 126, 4,
-	43, -133, -113, -114, -131, -132, 79, -128, -129, 107,
+	43, -138, -113, -114, -136, -137, 79, -128, -129, 107,
 	59, 127, -117, -118, -119, 89, 77, 78, -47, -48,
-	-25, -32, 5, -26, -131, -132, -27, -28, -29, 15,
-	-88, -135, -32, 5, -115, -120, -122, -126, -131, -132,
-	-116, -121, 127, -118, -119, 4, -42, 11, 5, -26,
-	-131, -132, -25, 17, -131, 43, 5, 10, 5, 10,
-	10, 10, -132, -42, 4, -132, -42, -116, -131, -121,
-	-32, -123, -132, -127, -132, 18, 10, 5, -124, -132,
-	10, -125, -132, 5,
+	-25, -32, 5, -26, -136, -137, -27, -28, -29, 15,
+	-88, -140, -32, 5, -115, -120, -122, -126, -130, -136,
+	-137, -116, -121, -131, 127, -118, -119, -133, -132, 4,
+	-42, 11, 5, -26, -136, -137, -25, 17, -136, 43,
+	5, 10, 5, 10, 10, 10, 5, -131, -32, -137,
+	-42, 4, -137, -42, -116, -136, -121, -32, -123, -137,
+	-127, -137, 18, 10, 5, -124, -137, 10, -125, -137,
+	5,
 }
 
 var ASNDef = [...]int{
-	0, -2, 1, 2, 0, 9, 247, 248, 3, 7,
+	0, -2, 1, 2, 0, 9, 255, 256, 3, 7,
 	5, 8, 0, 22, 0, 0, 11, 13, 14, 15,
-	16, 17, 249, 0, 251, 24, 0, 0, 0, 6,
-	10, 12, 0, 250, 252, 0, 0, 19, 20, 21,
+	16, 17, 257, 0, 259, 24, 0, 0, 0, 6,
+	10, 12, 0, 258, 260, 0, 0, 19, 20, 21,
 	0, 0, 0, 23, 18, -2, 0, 0, 31, 36,
-	38, 0, 253, 4, 59, 59, 0, 37, 39, 0,
+	38, 0, 261, 4, 59, 59, 0, 37, 39, 0,
 	32, 34, 0, 0, 30, 25, 57, 60, 61, 62,
 	63, 64, 65, 66, 67, 0, 75, 76, 77, 78,
 	79, 80, 26, 35, 40, 0, 0, 28, 29, 58,
-	169, 0, 0, 81, 82, 83, 189, 190, 191, 192,
-	193, 194, 195, 196, 197, 198, 199, 200, 201, 202,
-	203, 204, 205, 206, 207, 208, 209, 210, 211, 212,
-	213, 214, 215, 33, 41, 45, 68, 70, 72, 144,
-	173, 42, 43, 44, 0, 181, 182, 183, 184, 188,
+	177, 0, 0, 81, 82, 83, 197, 198, 199, 200,
+	201, 202, 203, 204, 205, 206, 207, 208, 209, 210,
+	211, 212, 213, 214, 215, 216, 217, 218, 219, 220,
+	221, 222, 223, 33, 41, 45, 68, 70, 72, 144,
+	181, 42, 43, 44, 0, 189, 190, 191, 192, 196,
 	69, 71, 84, 85, 86, 87, 88, 89, 90, 91,
 	92, 93, 94, 95, 96, 97, 98, 99, 100, 101,
-	102, 103, 104, 105, 106, 107, 108, 109, -2, 187,
-	144, 117, 118, 119, 142, 145, 148, 152, 153, 245,
-	246, 120, 121, 122, 123, 156, 157, 158, 73, 74,
+	102, 103, 104, 105, 106, 107, 108, 109, -2, 195,
+	144, 117, 118, 119, 142, 145, 147, 151, 152, 253,
+	254, 120, 121, 122, 123, 155, 156, 157, 73, 74,
 	0, 0, 48, 49, 54, 55, 51, 52, 53, 0,
-	186, 0, 130, 48, 0, 0, 0, 0, -2, -2,
-	114, 125, 127, 128, 129, 0, 113, 144, 46, 50,
-	54, 55, 0, 0, 185, 144, 111, 0, 124, 187,
-	0, 0, 132, 140, 47, 0, 151, 115, 116, 126,
-	130, 0, 133, 0, 138, 56, 0, 136, 0, 134,
-	0, 0, 135, 131,
+	194, 0, 130, 48, 0, 0, 0, 0, 0, -2,
+	-2, 114, 125, 161, 127, 128, 129, 163, 164, 0,
+	113, 144, 46, 50, 54, 55, 0, 0, 193, 144,
+	111, 0, 124, 195, 0, 0, 160, 162, 165, 132,
+	140, 47, 0, 150, 115, 116, 126, 130, 0, 133,
+	0, 138, 56, 0, 136, 0, 134, 0, 0, 135,
+	131,
 }
 
 var ASNTok1 = [...]int{
@@ -914,7 +921,7 @@ ASNdefault:
 
 	case 1:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:326
+//line asn.y:331
 		{
 			SetResult(ASNlex, ASNDollar[1].TypeValue)
 			Print("Done")
@@ -924,7 +931,7 @@ ASNdefault:
 		}
 	case 2:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:335
+//line asn.y:340
 		{
 			ASNVAL.TypeValue = LIST{
 				ASNDollar[1].TypeValue,
@@ -932,14 +939,14 @@ ASNdefault:
 		}
 	case 3:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:340
+//line asn.y:345
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 			ASNVAL.TypeValue = append(ASNVAL.TypeValue.(LIST), ASNDollar[2].TypeValue)
 		}
 	case 4:
 		ASNDollar = ASNS[ASNpt-9 : ASNpt+1]
-//line asn.y:355
+//line asn.y:360
 		{
 			ASNVAL.TypeValue = MAP{
 				"identifier": ASNDollar[1].TypeValue,
@@ -950,7 +957,7 @@ ASNdefault:
 		}
 	case 5:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:367
+//line asn.y:372
 		{
 			ASNVAL.TypeValue = MAP{
 				"reference":             ASNDollar[1].TypeValue,
@@ -959,37 +966,37 @@ ASNdefault:
 		}
 	case 6:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:375
+//line asn.y:380
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
 	case 7:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:378
+//line asn.y:383
 		{
 			ASNVAL.TypeValue = ""
 		}
 	case 8:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:383
+//line asn.y:388
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 9:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:386
+//line asn.y:391
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 10:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:391
+//line asn.y:396
 		{
 			ASNVAL.TypeValue = ASNDollar[2].TypeValue
 		}
 	case 11:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:396
+//line asn.y:401
 		{
 			ASNVAL.TypeValue = LIST{
 				ASNDollar[1].TypeValue,
@@ -997,32 +1004,32 @@ ASNdefault:
 		}
 	case 12:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:401
+//line asn.y:406
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 			ASNVAL.TypeValue = append(ASNVAL.TypeValue.(LIST), ASNDollar[2].TypeValue)
 		}
 	case 13:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:407
+//line asn.y:412
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 14:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:410
+//line asn.y:415
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 15:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:413
+//line asn.y:418
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 16:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:418
+//line asn.y:423
 		{
 			ASNVAL.TypeValue = MAP{
 				"name": ASNDollar[1].TypeString,
@@ -1030,7 +1037,7 @@ ASNdefault:
 		}
 	case 17:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:425
+//line asn.y:430
 		{
 			ASNVAL.TypeValue = MAP{
 				"number": ASNDollar[1].TypeValue,
@@ -1038,7 +1045,7 @@ ASNdefault:
 		}
 	case 18:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line asn.y:432
+//line asn.y:437
 		{
 			ASNVAL.TypeValue = MAP{
 				"name":   ASNDollar[1].TypeString,
@@ -1047,43 +1054,43 @@ ASNdefault:
 		}
 	case 19:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:440
+//line asn.y:445
 		{
 			ASNVAL.TypeValue = "Implicit"
 		}
 	case 20:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:443
+//line asn.y:448
 		{
 			ASNVAL.TypeValue = "Explicit"
 		}
 	case 21:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:446
+//line asn.y:451
 		{
 			ASNVAL.TypeValue = "Automatic"
 		}
 	case 22:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:449
+//line asn.y:454
 		{
 			ASNVAL.TypeValue = "Explicit"
 		}
 	case 23:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:454
+//line asn.y:459
 		{
 			ASNVAL.TypeValue = true
 		}
 	case 24:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:457
+//line asn.y:462
 		{
 			ASNVAL.TypeValue = false
 		}
 	case 25:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:464
+//line asn.y:469
 		{
 			ASNVAL.TypeValue = MAP{
 				"imports":     ASNDollar[1].TypeValue,
@@ -1093,7 +1100,7 @@ ASNdefault:
 		}
 	case 26:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:473
+//line asn.y:478
 		{
 			ASNVAL.TypeValue = MAP{
 				"imports":     ASNDollar[2].TypeValue,
@@ -1103,13 +1110,13 @@ ASNdefault:
 		}
 	case 27:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:480
+//line asn.y:485
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 28:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:485
+//line asn.y:490
 		{
 			ASNVAL.TypeValue = MAP{
 				"all":     "false",
@@ -1118,7 +1125,7 @@ ASNdefault:
 		}
 	case 29:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:491
+//line asn.y:496
 		{
 			ASNVAL.TypeValue = MAP{
 				"all": "true",
@@ -1126,7 +1133,7 @@ ASNdefault:
 		}
 	case 30:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:496
+//line asn.y:501
 		{
 			ASNVAL.TypeValue = MAP{
 				"all": "false",
@@ -1134,7 +1141,7 @@ ASNdefault:
 		}
 	case 31:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:501
+//line asn.y:506
 		{
 			ASNVAL.TypeValue = MAP{
 				"all": "true",
@@ -1142,7 +1149,7 @@ ASNdefault:
 		}
 	case 32:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:508
+//line asn.y:513
 		{
 			ASNVAL.TypeValue = LIST{
 				ASNDollar[1].TypeValue,
@@ -1150,44 +1157,44 @@ ASNdefault:
 		}
 	case 33:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:513
+//line asn.y:518
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 			ASNVAL.TypeValue = append(ASNVAL.TypeValue.(LIST), ASNDollar[3].TypeValue)
 		}
 	case 34:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:519
+//line asn.y:524
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
 	case 35:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:524
+//line asn.y:529
 		{
 			ASNVAL.TypeValue = ASNDollar[2].TypeValue
 		}
 	case 36:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:527
+//line asn.y:532
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 37:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:532
+//line asn.y:537
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 38:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:535
+//line asn.y:540
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 39:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:540
+//line asn.y:545
 		{
 			ASNVAL.TypeValue = LIST{
 				ASNDollar[1].TypeValue,
@@ -1195,14 +1202,14 @@ ASNdefault:
 		}
 	case 40:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:545
+//line asn.y:550
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 			ASNVAL.TypeValue = append(ASNVAL.TypeValue.(LIST), ASNDollar[2].TypeValue)
 		}
 	case 41:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:551
+//line asn.y:556
 		{
 			ASNVAL.TypeValue = MAP{
 				"symbols":   ASNDollar[1].TypeValue,
@@ -1211,7 +1218,7 @@ ASNdefault:
 		}
 	case 42:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:559
+//line asn.y:564
 		{
 			ASNVAL.TypeValue = MAP{
 				"name":        ASNDollar[1].TypeValue,
@@ -1220,43 +1227,43 @@ ASNdefault:
 		}
 	case 43:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:567
+//line asn.y:572
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 44:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:570
+//line asn.y:575
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 45:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:573
+//line asn.y:578
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 46:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:578
+//line asn.y:583
 		{
 			ASNVAL.TypeValue = ASNDollar[2].TypeValue
 		}
 	case 47:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line asn.y:581
+//line asn.y:586
 		{
 			ASNVAL.TypeValue = ASNDollar[3].TypeValue
 		}
 	case 48:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:584
+//line asn.y:589
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 49:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:589
+//line asn.y:594
 		{
 			ASNVAL.TypeValue = LIST{
 				ASNDollar[1].TypeValue,
@@ -1264,32 +1271,32 @@ ASNdefault:
 		}
 	case 50:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:594
+//line asn.y:599
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 			ASNVAL.TypeValue = append(ASNVAL.TypeValue.(LIST), ASNDollar[2].TypeValue)
 		}
 	case 51:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:600
+//line asn.y:605
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 52:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:603
+//line asn.y:608
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 53:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:606
+//line asn.y:611
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 54:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:611
+//line asn.y:616
 		{
 			ASNVAL.TypeValue = MAP{
 				"name": ASNDollar[1].TypeValue,
@@ -1297,7 +1304,7 @@ ASNdefault:
 		}
 	case 55:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:618
+//line asn.y:623
 		{
 			ASNVAL.TypeValue = MAP{
 				"number": ASNDollar[1].TypeValue,
@@ -1305,7 +1312,7 @@ ASNdefault:
 		}
 	case 56:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line asn.y:625
+//line asn.y:630
 		{
 			ASNVAL.TypeValue = MAP{
 				"name":   ASNDollar[1].TypeValue,
@@ -1314,7 +1321,7 @@ ASNdefault:
 		}
 	case 57:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:633
+//line asn.y:638
 		{
 			ASNVAL.TypeValue = LIST{
 				ASNDollar[1].TypeValue,
@@ -1322,68 +1329,68 @@ ASNdefault:
 		}
 	case 58:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:638
+//line asn.y:643
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 			ASNVAL.TypeValue = append(ASNVAL.TypeValue.(LIST), ASNDollar[2].TypeValue)
 		}
 	case 59:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:642
+//line asn.y:647
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 60:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:647
+//line asn.y:652
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 61:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:650
+//line asn.y:655
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 62:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:653
+//line asn.y:658
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 63:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:656
+//line asn.y:661
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 64:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:659
+//line asn.y:664
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 65:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:662
+//line asn.y:667
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 66:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:665
+//line asn.y:670
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 67:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:668
+//line asn.y:673
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 68:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:673
+//line asn.y:678
 		{
 			ASNVAL.TypeValue = MAP{
 				"assignment": "TYPE",
@@ -1393,7 +1400,7 @@ ASNdefault:
 		}
 	case 69:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line asn.y:682
+//line asn.y:687
 		{
 			ASNVAL.TypeValue = MAP{
 				"assignment": "VALUE",
@@ -1404,7 +1411,7 @@ ASNdefault:
 		}
 	case 70:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:692
+//line asn.y:697
 		{
 			ASNVAL.TypeValue = MAP{
 				"assignment": "XML_VALUE",
@@ -1414,7 +1421,7 @@ ASNdefault:
 		}
 	case 71:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line asn.y:701
+//line asn.y:706
 		{
 			ASNVAL.TypeValue = MAP{
 				"assignment": "VALUE_SET",
@@ -1425,7 +1432,7 @@ ASNdefault:
 		}
 	case 72:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:711
+//line asn.y:716
 		{
 			ASNVAL.TypeValue = MAP{
 				"assignment": "OBJECT_CLASS",
@@ -1435,7 +1442,7 @@ ASNdefault:
 		}
 	case 73:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line asn.y:720
+//line asn.y:725
 		{
 			ASNVAL.TypeValue = MAP{
 				"assignment": "OBJECT",
@@ -1446,7 +1453,7 @@ ASNdefault:
 		}
 	case 74:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
-//line asn.y:730
+//line asn.y:735
 		{
 			ASNVAL.TypeValue = MAP{
 				"assignment": "OBJECT_SET",
@@ -1457,43 +1464,43 @@ ASNdefault:
 		}
 	case 75:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:740
+//line asn.y:745
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 76:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:743
+//line asn.y:748
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 77:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:746
+//line asn.y:751
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 78:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:749
+//line asn.y:754
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 79:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:752
+//line asn.y:757
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 80:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:755
+//line asn.y:760
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 81:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:760
+//line asn.y:765
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":       "BUILTIN_TYPE",
@@ -1502,7 +1509,7 @@ ASNdefault:
 		}
 	case 82:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:766
+//line asn.y:771
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":       "REFERENCED_TYPE",
@@ -1511,7 +1518,7 @@ ASNdefault:
 		}
 	case 83:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:772
+//line asn.y:777
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":       "CONSTRAINED_TYPE",
@@ -1520,7 +1527,7 @@ ASNdefault:
 		}
 	case 84:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:780
+//line asn.y:785
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":       "BUILTIN_VALUE",
@@ -1529,7 +1536,7 @@ ASNdefault:
 		}
 	case 85:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:786
+//line asn.y:791
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":       "REFERENCED_VALUE",
@@ -1538,7 +1545,7 @@ ASNdefault:
 		}
 	case 86:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:792
+//line asn.y:797
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":       "OBJECT_CLASS_FIELD_VALUE",
@@ -1547,7 +1554,7 @@ ASNdefault:
 		}
 	case 87:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:800
+//line asn.y:805
 		{
 			ASNVAL.TypeValue = MAP{
 				"bitString": ASNDollar[1].TypeValue,
@@ -1555,7 +1562,7 @@ ASNdefault:
 		}
 	case 88:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:805
+//line asn.y:810
 		{
 			ASNVAL.TypeValue = MAP{
 				"boolean": ASNDollar[1].TypeValue,
@@ -1563,7 +1570,7 @@ ASNdefault:
 		}
 	case 89:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:810
+//line asn.y:815
 		{
 			ASNVAL.TypeValue = MAP{
 				"characterString": ASNDollar[1].TypeValue,
@@ -1571,7 +1578,7 @@ ASNdefault:
 		}
 	case 90:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:815
+//line asn.y:820
 		{
 			ASNVAL.TypeValue = MAP{
 				"choice": ASNDollar[1].TypeValue,
@@ -1579,7 +1586,7 @@ ASNdefault:
 		}
 	case 91:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:820
+//line asn.y:825
 		{
 			ASNVAL.TypeValue = MAP{
 				"embeddedPDV": ASNDollar[1].TypeValue,
@@ -1587,7 +1594,7 @@ ASNdefault:
 		}
 	case 92:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:825
+//line asn.y:830
 		{
 			ASNVAL.TypeValue = MAP{
 				"enumerated": ASNDollar[1].TypeValue,
@@ -1595,7 +1602,7 @@ ASNdefault:
 		}
 	case 93:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:830
+//line asn.y:835
 		{
 			ASNVAL.TypeValue = MAP{
 				"external": ASNDollar[1].TypeValue,
@@ -1603,7 +1610,7 @@ ASNdefault:
 		}
 	case 94:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:835
+//line asn.y:840
 		{
 			ASNVAL.TypeValue = MAP{
 				"instanceOf": ASNDollar[1].TypeValue,
@@ -1611,7 +1618,7 @@ ASNdefault:
 		}
 	case 95:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:840
+//line asn.y:845
 		{
 			ASNVAL.TypeValue = MAP{
 				"integer": ASNDollar[1].TypeValue,
@@ -1619,7 +1626,7 @@ ASNdefault:
 		}
 	case 96:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:845
+//line asn.y:850
 		{
 			ASNVAL.TypeValue = MAP{
 				"iri": ASNDollar[1].TypeValue,
@@ -1627,7 +1634,7 @@ ASNdefault:
 		}
 	case 97:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:850
+//line asn.y:855
 		{
 			ASNVAL.TypeValue = MAP{
 				"null": ASNDollar[1].TypeValue,
@@ -1635,7 +1642,7 @@ ASNdefault:
 		}
 	case 98:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:855
+//line asn.y:860
 		{
 			ASNVAL.TypeValue = MAP{
 				"objectIdentifier": ASNDollar[1].TypeValue,
@@ -1643,7 +1650,7 @@ ASNdefault:
 		}
 	case 99:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:860
+//line asn.y:865
 		{
 			ASNVAL.TypeValue = MAP{
 				"octetString": ASNDollar[1].TypeValue,
@@ -1651,7 +1658,7 @@ ASNdefault:
 		}
 	case 100:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:865
+//line asn.y:870
 		{
 			ASNVAL.TypeValue = MAP{
 				"real": ASNDollar[1].TypeValue,
@@ -1659,7 +1666,7 @@ ASNdefault:
 		}
 	case 101:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:870
+//line asn.y:875
 		{
 			ASNVAL.TypeValue = MAP{
 				"relativeIRI": ASNDollar[1].TypeValue,
@@ -1667,7 +1674,7 @@ ASNdefault:
 		}
 	case 102:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:875
+//line asn.y:880
 		{
 			ASNVAL.TypeValue = MAP{
 				"relativeOID": ASNDollar[1].TypeValue,
@@ -1675,7 +1682,7 @@ ASNdefault:
 		}
 	case 103:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:880
+//line asn.y:885
 		{
 			ASNVAL.TypeValue = MAP{
 				"sequence": ASNDollar[1].TypeValue,
@@ -1683,7 +1690,7 @@ ASNdefault:
 		}
 	case 104:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:885
+//line asn.y:890
 		{
 			ASNVAL.TypeValue = MAP{
 				"sequenceOf": ASNDollar[1].TypeValue,
@@ -1691,7 +1698,7 @@ ASNdefault:
 		}
 	case 105:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:890
+//line asn.y:895
 		{
 			ASNVAL.TypeValue = MAP{
 				"set": ASNDollar[1].TypeValue,
@@ -1699,7 +1706,7 @@ ASNdefault:
 		}
 	case 106:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:895
+//line asn.y:900
 		{
 			ASNVAL.TypeValue = MAP{
 				"setOf": ASNDollar[1].TypeValue,
@@ -1707,7 +1714,7 @@ ASNdefault:
 		}
 	case 107:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:900
+//line asn.y:905
 		{
 			ASNVAL.TypeValue = MAP{
 				"prefixed": ASNDollar[1].TypeValue,
@@ -1715,7 +1722,7 @@ ASNdefault:
 		}
 	case 108:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:905
+//line asn.y:910
 		{
 			ASNVAL.TypeValue = MAP{
 				"time": ASNDollar[1].TypeValue,
@@ -1723,37 +1730,37 @@ ASNdefault:
 		}
 	case 109:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:912
+//line asn.y:917
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
 	case 110:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:915
+//line asn.y:920
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
 	case 111:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:918
+//line asn.y:923
 		{
 			ASNVAL.TypeValue = ASNDollar[2].TypeValue
 		}
 	case 112:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:921
+//line asn.y:926
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 113:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:924
+//line asn.y:929
 		{
 			ASNVAL.TypeValue = ASNDollar[2].TypeValue
 		}
 	case 114:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:929
+//line asn.y:934
 		{
 			ASNVAL.TypeValue = LIST{
 				ASNDollar[1].TypeValue,
@@ -1761,68 +1768,68 @@ ASNdefault:
 		}
 	case 115:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:934
+//line asn.y:939
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 			ASNVAL.TypeValue = append(ASNVAL.TypeValue.(LIST), ASNDollar[2].TypeToken)
 		}
 	case 116:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:940
+//line asn.y:945
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 117:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:945
+//line asn.y:950
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 118:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:950
+//line asn.y:955
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 119:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:953
+//line asn.y:958
 		{
 
 		}
 	case 120:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:958
+//line asn.y:963
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
 	case 121:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:961
+//line asn.y:966
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 122:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:964
+//line asn.y:969
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 123:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:967
+//line asn.y:972
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 124:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:972
+//line asn.y:977
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 125:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:977
+//line asn.y:982
 		{
 			ASNVAL.TypeValue = LIST{
 				ASNDollar[1].TypeValue,
@@ -1830,38 +1837,38 @@ ASNdefault:
 		}
 	case 126:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:982
+//line asn.y:987
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 			ASNVAL.TypeValue = append(ASNVAL.TypeValue.(LIST), ASNDollar[2].TypeToken)
 		}
 	case 127:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:988
+//line asn.y:993
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
 	case 128:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:991
+//line asn.y:996
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 129:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:994
+//line asn.y:999
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 130:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:997
+//line asn.y:1002
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 131:
 		ASNDollar = ASNS[ASNpt-9 : ASNpt+1]
-//line asn.y:1002
+//line asn.y:1007
 		{
 			ASNVAL.TypeValue = MAP{
 				"group": ASNDollar[2].TypeValue,
@@ -1872,31 +1879,31 @@ ASNdefault:
 		}
 	case 132:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1012
+//line asn.y:1017
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 133:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1017
+//line asn.y:1022
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 134:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1022
+//line asn.y:1027
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 135:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1027
+//line asn.y:1032
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 136:
 		ASNDollar = ASNS[ASNpt-5 : ASNpt+1]
-//line asn.y:1032
+//line asn.y:1037
 		{
 			ASNVAL.TypeValue = MAP{
 				"tableColumn": ASNDollar[2].TypeValue,
@@ -1905,25 +1912,25 @@ ASNdefault:
 		}
 	case 137:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1040
+//line asn.y:1045
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 138:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1045
+//line asn.y:1050
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 139:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1050
+//line asn.y:1055
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 140:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:1055
+//line asn.y:1060
 		{
 			ASNVAL.TypeValue = MAP{
 				"identifier": ASNDollar[1].TypeValue,
@@ -1932,694 +1939,742 @@ ASNdefault:
 		}
 	case 141:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1063
+//line asn.y:1068
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 142:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1068
+//line asn.y:1073
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 143:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1073
+//line asn.y:1078
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 144:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1078
+//line asn.y:1083
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 145:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1083
+//line asn.y:1088
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 146:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1086
+//line asn.y:1091
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
 	case 147:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1091
-		{
-			ASNVAL.TypeValue = nil
-		}
-	case 148:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1096
 		{
 			ASNVAL.TypeValue = "NULL"
 		}
-	case 149:
+	case 148:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1102
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
-	case 150:
+	case 149:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1105
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
-	case 151:
+	case 150:
 		ASNDollar = ASNS[ASNpt-4 : ASNpt+1]
 //line asn.y:1108
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
-	case 152:
+	case 151:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1113
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
-	case 153:
+	case 152:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1116
 		{
 			ASNVAL.TypeValue = nil
 		}
-	case 154:
+	case 153:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1121
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
-	case 155:
+	case 154:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1124
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeValue
 		}
-	case 156:
+	case 155:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1129
 		{
 			ASNVAL.TypeValue = nil
 		}
-	case 157:
+	case 156:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1132
 		{
 			ASNVAL.TypeValue = nil
 		}
-	case 158:
+	case 157:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1135
 		{
 			ASNVAL.TypeValue = nil
 		}
-	case 159:
+	case 158:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
 //line asn.y:1140
 		{
 			ASNVAL.TypeValue = nil
 		}
-	case 160:
+	case 159:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
 //line asn.y:1145
 		{
 			ASNVAL.TypeValue = nil
 		}
-	case 161:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+	case 160:
+		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
 //line asn.y:1150
 		{
 			ASNVAL.TypeValue = nil
 		}
-	case 162:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+	case 161:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1155
 		{
 			ASNVAL.TypeValue = nil
 		}
+	case 162:
+		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
+//line asn.y:1158
+		{
+			ASNVAL.TypeValue = nil
+		}
 	case 163:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1160
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1163
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 164:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1165
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1166
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 165:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1170
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1169
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 166:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1175
+//line asn.y:1173
 		{
-			ASNVAL.TypeValue = nil
+
 		}
 	case 167:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1180
+//line asn.y:1177
 		{
-			ASNVAL.TypeValue = nil
+
 		}
 	case 168:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1185
+//line asn.y:1181
 		{
-			ASNVAL.TypeValue = nil
+
 		}
 	case 169:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1190
+//line asn.y:1186
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 170:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1195
+//line asn.y:1191
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 171:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1200
+//line asn.y:1196
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 172:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1205
+//line asn.y:1201
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 173:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1210
+//line asn.y:1206
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 174:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1215
+//line asn.y:1211
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 175:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1220
+//line asn.y:1216
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 176:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1225
+//line asn.y:1221
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 177:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1230
+//line asn.y:1226
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 178:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1235
+//line asn.y:1231
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 179:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1240
+//line asn.y:1236
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 180:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1245
+//line asn.y:1241
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 181:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1246
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 182:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1251
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 183:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1256
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 184:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1261
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 185:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1266
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 186:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1271
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 187:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1276
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 188:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1281
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 189:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1250
+//line asn.y:1286
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":  "EXTERNAL_VALUE",
 				"value": ASNDollar[1].TypeValue,
 			}
 		}
-	case 182:
+	case 190:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1256
+//line asn.y:1292
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":  "STRING_VALUE",
 				"value": ASNDollar[1].TypeValue,
 			}
 		}
-	case 183:
+	case 191:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1262
+//line asn.y:1298
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":  "NUMBER_VALUE",
 				"value": ASNDollar[1].TypeValue,
 			}
 		}
-	case 184:
+	case 192:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1268
+//line asn.y:1304
 		{
 			ASNVAL.TypeValue = MAP{
 				"type":  "PARAMETERIZED_VALUE",
 				"value": ASNDollar[1].TypeValue,
 			}
 		}
-	case 185:
+	case 193:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:1276
+//line asn.y:1312
 		{
 			ASNVAL.TypeValue = MAP{
 				"module": ASNDollar[1].TypeValue,
 				"value":  ASNDollar[3].TypeValue,
 			}
 		}
-	case 186:
-		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:1284
-		{
-			ASNVAL.TypeValue = nil
-		}
-	case 187:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1289
-		{
-			ASNVAL.TypeValue = nil
-		}
-	case 188:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1294
-		{
-			ASNVAL.TypeValue = nil
-		}
-	case 189:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1299
-		{
-
-		}
-	case 190:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1302
-		{
-
-		}
-	case 191:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1305
-		{
-
-		}
-	case 192:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1308
-		{
-
-		}
-	case 193:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1311
-		{
-
-		}
 	case 194:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1314
-		{
-
-		}
-	case 195:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1317
-		{
-
-		}
-	case 196:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
 //line asn.y:1320
 		{
-
+			ASNVAL.TypeValue = nil
+		}
+	case 195:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1325
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 196:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1330
+		{
+			ASNVAL.TypeValue = nil
 		}
 	case 197:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1323
-		{
-
-		}
-	case 198:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1326
-		{
-
-		}
-	case 199:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1329
-		{
-
-		}
-	case 200:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1332
-		{
-
-		}
-	case 201:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1335
 		{
 
 		}
-	case 202:
+	case 198:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1338
 		{
 
 		}
-	case 203:
+	case 199:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1341
 		{
 
 		}
-	case 204:
+	case 200:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1344
 		{
 
 		}
-	case 205:
+	case 201:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1347
 		{
 
 		}
-	case 206:
+	case 202:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1350
 		{
 
 		}
-	case 207:
+	case 203:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1353
 		{
 
 		}
-	case 208:
+	case 204:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1356
 		{
 
 		}
-	case 209:
+	case 205:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1359
 		{
 
 		}
-	case 210:
+	case 206:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1362
 		{
 
 		}
-	case 211:
+	case 207:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1365
 		{
 
 		}
-	case 212:
+	case 208:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1368
 		{
 
 		}
-	case 213:
+	case 209:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1371
 		{
 
 		}
-	case 214:
+	case 210:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1374
 		{
 
 		}
-	case 215:
+	case 211:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1377
 		{
 
 		}
+	case 212:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1380
+		{
+
+		}
+	case 213:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1383
+		{
+
+		}
+	case 214:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1386
+		{
+
+		}
+	case 215:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1389
+		{
+
+		}
 	case 216:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1382
-		{
-			ASNVAL.TypeValue = nil
-		}
-	case 217:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1387
-		{
-			ASNVAL.TypeValue = nil
-		}
-	case 218:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
 //line asn.y:1392
 		{
-			ASNVAL.TypeValue = nil
+
+		}
+	case 217:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1395
+		{
+
+		}
+	case 218:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1398
+		{
+
 		}
 	case 219:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1397
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1401
 		{
-			ASNVAL.TypeValue = nil
+
 		}
 	case 220:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1402
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1404
 		{
-			ASNVAL.TypeValue = nil
+
 		}
 	case 221:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1406
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1407
 		{
-			ASNVAL.TypeValue = nil
+
 		}
 	case 222:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1411
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1410
 		{
-			ASNVAL.TypeValue = nil
+
 		}
 	case 223:
-		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1415
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1413
 		{
-			ASNVAL.TypeValue = nil
+
 		}
 	case 224:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1419
+//line asn.y:1418
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 225:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1424
+//line asn.y:1423
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 226:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1429
+//line asn.y:1428
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 227:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1434
+//line asn.y:1433
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 228:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1439
+//line asn.y:1438
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 229:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1444
+//line asn.y:1442
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 230:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1449
+//line asn.y:1447
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 231:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1454
+//line asn.y:1451
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 232:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1459
+//line asn.y:1455
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 233:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1464
+//line asn.y:1460
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 234:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1469
+//line asn.y:1465
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 235:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1474
+//line asn.y:1470
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 236:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1479
+//line asn.y:1475
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 237:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1484
+//line asn.y:1480
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 238:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1489
+//line asn.y:1485
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 239:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1494
+//line asn.y:1490
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 240:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1499
+//line asn.y:1495
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 241:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1504
+//line asn.y:1500
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 242:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1509
+//line asn.y:1505
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 243:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1514
+//line asn.y:1510
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 244:
 		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
-//line asn.y:1519
+//line asn.y:1515
 		{
 			ASNVAL.TypeValue = nil
 		}
 	case 245:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1524
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1520
 		{
-			ASNVAL.TypeValue = ASNDollar[1].TypeString
+			ASNVAL.TypeValue = nil
 		}
 	case 246:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1527
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1525
 		{
-			ASNVAL.TypeValue = ASNDollar[1].TypeString
+			ASNVAL.TypeValue = nil
 		}
 	case 247:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1532
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1530
 		{
-			ASNVAL.TypeValue = ASNDollar[1].TypeString
+			ASNVAL.TypeValue = nil
 		}
 	case 248:
-		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
 //line asn.y:1535
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 249:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1540
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 250:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1545
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 251:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1550
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 252:
+		ASNDollar = ASNS[ASNpt-0 : ASNpt+1]
+//line asn.y:1555
+		{
+			ASNVAL.TypeValue = nil
+		}
+	case 253:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1560
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeString
 		}
-	case 249:
+	case 254:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1540
+//line asn.y:1563
+		{
+			ASNVAL.TypeValue = ASNDollar[1].TypeString
+		}
+	case 255:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1568
+		{
+			ASNVAL.TypeValue = ASNDollar[1].TypeString
+		}
+	case 256:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1571
+		{
+			ASNVAL.TypeValue = ASNDollar[1].TypeString
+		}
+	case 257:
+		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
+//line asn.y:1576
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeNumber
 		}
-	case 250:
+	case 258:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:1543
+//line asn.y:1579
 		{
 			ASNVAL.TypeValue = (-1) * ASNDollar[2].TypeNumber
 		}
-	case 251:
+	case 259:
 		ASNDollar = ASNS[ASNpt-1 : ASNpt+1]
-//line asn.y:1546
+//line asn.y:1582
 		{
 			ASNVAL.TypeValue = ASNDollar[1].TypeNumber
 		}
-	case 252:
+	case 260:
 		ASNDollar = ASNS[ASNpt-2 : ASNpt+1]
-//line asn.y:1549
+//line asn.y:1585
 		{
 			ASNVAL.TypeValue = (-1) * ASNDollar[2].TypeNumber
 		}
-	case 253:
+	case 261:
 		ASNDollar = ASNS[ASNpt-3 : ASNpt+1]
-//line asn.y:1554
+//line asn.y:1590
 		{
 			ASNVAL.TypeValue = "::="
 		}
