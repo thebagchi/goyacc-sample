@@ -1021,6 +1021,13 @@ ParseValueSetTypeAssignment:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectClassAssignment ::=
+ *      objectclassreference
+ *      "::="
+ *      ObjectClass
+ *****************************************************************************/
 ParseObjectClassAssignment:
     ParseString ParseAssignementSymbol ParseObjectClass {
         $$ = MAP {
@@ -1029,21 +1036,37 @@ ParseObjectClassAssignment:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectAssignment ::=
+ *      objectreference
+ *      DefinedObjectClass
+ *      "::="
+ *      Object
+ *****************************************************************************/
 ParseObjectAssignment:
     ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObject {
         $$ = MAP {
-            "reference":  $1,
-            "class":      $2,
-            "value":      $4,
+            "reference":    $1,
+            "definedClass": $2,
+            "object":       $4,
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectSetAssignment ::=
+ *      objectsetreference
+ *      DefinedObjectClass
+ *      "::="
+ *      ObjectSet
+ *****************************************************************************/
 ParseObjectSetAssignment:
     ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObjectSet {
         $$ = MAP {
-            "reference":  $1,
-            "class":      $2,
-            "values":     $4,
+            "reference":    $1,
+            "definedClass": $2,
+            "objectSet":    $4,
         }
     }
 
