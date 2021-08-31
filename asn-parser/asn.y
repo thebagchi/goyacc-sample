@@ -879,6 +879,12 @@ ParseNameAndNumberForm:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * AssignmentList ::=
+ *      Assignment
+ *      | AssignmentList Assignment
+ *****************************************************************************/
 ParseAssignmentList:
     ParseAssignment {
         $$ = LIST {
@@ -893,6 +899,18 @@ ParseAssignmentList:
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Assignment ::=
+ *      TypeAssignment
+ *      | ValueAssignment
+ *      | XMLValueAssignment
+ *      | ValueSetTypeAssignment
+ *      | ObjectClassAssignment
+ *      | ObjectAssignment
+ *      | ObjectSetAssignment
+ *      | ParameterizedAssignment
+ *****************************************************************************/
 ParseAssignment:
     ParseTypeAssignment {
         $$ = $1

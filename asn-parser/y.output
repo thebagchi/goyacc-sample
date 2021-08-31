@@ -57,13 +57,13 @@ state 5
 state 6
 	ParseString:  TokenCapitalString.    (261)
 
-	.  reduce 261 (src line 1800)
+	.  reduce 261 (src line 1818)
 
 
 state 7
 	ParseString:  TokenString.    (262)
 
-	.  reduce 262 (src line 1804)
+	.  reduce 262 (src line 1822)
 
 
 state 8
@@ -185,7 +185,7 @@ state 21
 state 22
 	ParseNumber:  TokenInteger.    (263)
 
-	.  reduce 263 (src line 1808)
+	.  reduce 263 (src line 1826)
 
 
 state 23
@@ -200,7 +200,7 @@ state 23
 state 24
 	ParseNumber:  TokenFloat.    (265)
 
-	.  reduce 265 (src line 1815)
+	.  reduce 265 (src line 1833)
 
 
 state 25
@@ -264,13 +264,13 @@ state 32
 state 33
 	ParseNumber:  MINUS TokenInteger.    (264)
 
-	.  reduce 264 (src line 1812)
+	.  reduce 264 (src line 1830)
 
 
 state 34
 	ParseNumber:  MINUS TokenFloat.    (266)
 
-	.  reduce 266 (src line 1818)
+	.  reduce 266 (src line 1836)
 
 
 state 35
@@ -433,7 +433,7 @@ state 51
 state 52
 	ParseAssignementSymbol:  COLON COLON EQUALITY.    (267)
 
-	.  reduce 267 (src line 1822)
+	.  reduce 267 (src line 1840)
 
 
 state 53
@@ -475,7 +475,7 @@ state 54
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
-	.  reduce 68 (src line 892)
+	.  reduce 68 (src line 898)
 
 	ParseAssignmentList  goto 69
 	ParseAssignment  goto 70
@@ -527,7 +527,7 @@ state 55
 
 	TokenCapitalString  shift 6
 	TokenString  shift 7
-	.  reduce 68 (src line 892)
+	.  reduce 68 (src line 898)
 
 	ParseAssignmentList  goto 86
 	ParseAssignment  goto 70
@@ -700,55 +700,55 @@ state 69
 state 70
 	ParseAssignmentList:  ParseAssignment.    (66)
 
-	.  reduce 66 (src line 882)
+	.  reduce 66 (src line 888)
 
 
 state 71
 	ParseAssignment:  ParseTypeAssignment.    (69)
 
-	.  reduce 69 (src line 896)
+	.  reduce 69 (src line 914)
 
 
 state 72
 	ParseAssignment:  ParseValueAssignment.    (70)
 
-	.  reduce 70 (src line 900)
+	.  reduce 70 (src line 918)
 
 
 state 73
 	ParseAssignment:  ParseXMLValueAssignment.    (71)
 
-	.  reduce 71 (src line 903)
+	.  reduce 71 (src line 921)
 
 
 state 74
 	ParseAssignment:  ParseValueSetTypeAssignment.    (72)
 
-	.  reduce 72 (src line 906)
+	.  reduce 72 (src line 924)
 
 
 state 75
 	ParseAssignment:  ParseObjectClassAssignment.    (73)
 
-	.  reduce 73 (src line 909)
+	.  reduce 73 (src line 927)
 
 
 state 76
 	ParseAssignment:  ParseObjectAssignment.    (74)
 
-	.  reduce 74 (src line 912)
+	.  reduce 74 (src line 930)
 
 
 state 77
 	ParseAssignment:  ParseObjectSetAssignment.    (75)
 
-	.  reduce 75 (src line 915)
+	.  reduce 75 (src line 933)
 
 
 state 78
 	ParseAssignment:  ParseParameterizedAssignment.    (76)
 
-	.  reduce 76 (src line 918)
+	.  reduce 76 (src line 936)
 
 
 79: shift/reduce conflict (shift 42(0), red'n 186(0)) on COLON
@@ -860,37 +860,37 @@ state 79
 state 80
 	ParseParameterizedAssignment:  ParseParameterizedTypeAssignment.    (84)
 
-	.  reduce 84 (src line 989)
+	.  reduce 84 (src line 1007)
 
 
 state 81
 	ParseParameterizedAssignment:  ParseParameterizedValueAssignment.    (85)
 
-	.  reduce 85 (src line 993)
+	.  reduce 85 (src line 1011)
 
 
 state 82
 	ParseParameterizedAssignment:  ParseParameterizedValueSetTypeAssignment.    (86)
 
-	.  reduce 86 (src line 996)
+	.  reduce 86 (src line 1014)
 
 
 state 83
 	ParseParameterizedAssignment:  ParseParameterizedObjectClassAssignment.    (87)
 
-	.  reduce 87 (src line 999)
+	.  reduce 87 (src line 1017)
 
 
 state 84
 	ParseParameterizedAssignment:  ParseParameterizedObjectAssignment.    (88)
 
-	.  reduce 88 (src line 1002)
+	.  reduce 88 (src line 1020)
 
 
 state 85
 	ParseParameterizedAssignment:  ParseParameterizedObjectSetAssignment.    (89)
 
-	.  reduce 89 (src line 1005)
+	.  reduce 89 (src line 1023)
 
 
  86: reduce/reduce conflict  (red'ns 27 and 189) on END_SYMBOL
@@ -998,7 +998,7 @@ state 93
 state 94
 	ParseAssignmentList:  ParseAssignmentList ParseAssignment.    (67)
 
-	.  reduce 67 (src line 888)
+	.  reduce 67 (src line 894)
 
 
  95: reduce/reduce conflict  (red'ns 183 and 185) on END_SYMBOL
@@ -1127,7 +1127,7 @@ state 95
 	ParseTimeType: .    (257)
 	ParseTimeOfDayType: .    (258)
 
-	.  reduce 183 (src line 1458)
+	.  reduce 183 (src line 1476)
 
 	ParseType  goto 132
 	ParseXMLTypedValue  goto 133
@@ -1184,181 +1184,181 @@ state 97
 state 98
 	ParseType:  ParseBuiltinType.    (90)
 
-	.  reduce 90 (src line 1009)
+	.  reduce 90 (src line 1027)
 
 
 state 99
 	ParseType:  ParseReferencedType.    (91)
 
-	.  reduce 91 (src line 1016)
+	.  reduce 91 (src line 1034)
 
 
 state 100
 	ParseType:  ParseConstrainedType.    (92)
 
-	.  reduce 92 (src line 1022)
+	.  reduce 92 (src line 1040)
 
 
 state 101
 	ParseBuiltinType:  ParseBitStringType.    (203)
 
-	.  reduce 203 (src line 1567)
+	.  reduce 203 (src line 1585)
 
 
 state 102
 	ParseBuiltinType:  ParseBooleanType.    (204)
 
-	.  reduce 204 (src line 1571)
+	.  reduce 204 (src line 1589)
 
 
 state 103
 	ParseBuiltinType:  ParseCharacterStringType.    (205)
 
-	.  reduce 205 (src line 1574)
+	.  reduce 205 (src line 1592)
 
 
 state 104
 	ParseBuiltinType:  ParseChoiceType.    (206)
 
-	.  reduce 206 (src line 1577)
+	.  reduce 206 (src line 1595)
 
 
 state 105
 	ParseBuiltinType:  ParseDateType.    (207)
 
-	.  reduce 207 (src line 1580)
+	.  reduce 207 (src line 1598)
 
 
 state 106
 	ParseBuiltinType:  ParseDateTimeType.    (208)
 
-	.  reduce 208 (src line 1583)
+	.  reduce 208 (src line 1601)
 
 
 state 107
 	ParseBuiltinType:  ParseDurationType.    (209)
 
-	.  reduce 209 (src line 1586)
+	.  reduce 209 (src line 1604)
 
 
 state 108
 	ParseBuiltinType:  ParseEmbeddedPDVType.    (210)
 
-	.  reduce 210 (src line 1589)
+	.  reduce 210 (src line 1607)
 
 
 state 109
 	ParseBuiltinType:  ParseEnumeratedType.    (211)
 
-	.  reduce 211 (src line 1592)
+	.  reduce 211 (src line 1610)
 
 
 state 110
 	ParseBuiltinType:  ParseExternalType.    (212)
 
-	.  reduce 212 (src line 1595)
+	.  reduce 212 (src line 1613)
 
 
 state 111
 	ParseBuiltinType:  ParseInstanceOfType.    (213)
 
-	.  reduce 213 (src line 1598)
+	.  reduce 213 (src line 1616)
 
 
 state 112
 	ParseBuiltinType:  ParseIntegerType.    (214)
 
-	.  reduce 214 (src line 1601)
+	.  reduce 214 (src line 1619)
 
 
 state 113
 	ParseBuiltinType:  ParseIRIType.    (215)
 
-	.  reduce 215 (src line 1604)
+	.  reduce 215 (src line 1622)
 
 
 state 114
 	ParseBuiltinType:  ParseNullType.    (216)
 
-	.  reduce 216 (src line 1607)
+	.  reduce 216 (src line 1625)
 
 
 state 115
 	ParseBuiltinType:  ParseObjectClassFieldType.    (217)
 
-	.  reduce 217 (src line 1610)
+	.  reduce 217 (src line 1628)
 
 
 state 116
 	ParseBuiltinType:  ParseObjectIdentifierType.    (218)
 
-	.  reduce 218 (src line 1613)
+	.  reduce 218 (src line 1631)
 
 
 state 117
 	ParseBuiltinType:  ParseOctetStringType.    (219)
 
-	.  reduce 219 (src line 1616)
+	.  reduce 219 (src line 1634)
 
 
 state 118
 	ParseBuiltinType:  ParseRealType.    (220)
 
-	.  reduce 220 (src line 1619)
+	.  reduce 220 (src line 1637)
 
 
 state 119
 	ParseBuiltinType:  ParseRelativeIRIType.    (221)
 
-	.  reduce 221 (src line 1622)
+	.  reduce 221 (src line 1640)
 
 
 state 120
 	ParseBuiltinType:  ParseRelativeOIDType.    (222)
 
-	.  reduce 222 (src line 1625)
+	.  reduce 222 (src line 1643)
 
 
 state 121
 	ParseBuiltinType:  ParseSequenceType.    (223)
 
-	.  reduce 223 (src line 1628)
+	.  reduce 223 (src line 1646)
 
 
 state 122
 	ParseBuiltinType:  ParseSequenceOfType.    (224)
 
-	.  reduce 224 (src line 1631)
+	.  reduce 224 (src line 1649)
 
 
 state 123
 	ParseBuiltinType:  ParseSetType.    (225)
 
-	.  reduce 225 (src line 1634)
+	.  reduce 225 (src line 1652)
 
 
 state 124
 	ParseBuiltinType:  ParseSetOfType.    (226)
 
-	.  reduce 226 (src line 1637)
+	.  reduce 226 (src line 1655)
 
 
 state 125
 	ParseBuiltinType:  ParsePrefixedType.    (227)
 
-	.  reduce 227 (src line 1640)
+	.  reduce 227 (src line 1658)
 
 
 state 126
 	ParseBuiltinType:  ParseTimeType.    (228)
 
-	.  reduce 228 (src line 1643)
+	.  reduce 228 (src line 1661)
 
 
 state 127
 	ParseBuiltinType:  ParseTimeOfDayType.    (229)
 
-	.  reduce 229 (src line 1646)
+	.  reduce 229 (src line 1664)
 
 
 state 128
@@ -1409,19 +1409,19 @@ state 131
 state 132
 	ParseTypeAssignment:  ParseString ParseAssignementSymbol ParseType.    (77)
 
-	.  reduce 77 (src line 922)
+	.  reduce 77 (src line 940)
 
 
 state 133
 	ParseXMLValueAssignment:  ParseString ParseAssignementSymbol ParseXMLTypedValue.    (79)
 
-	.  reduce 79 (src line 941)
+	.  reduce 79 (src line 959)
 
 
 state 134
 	ParseObjectClassAssignment:  ParseString ParseAssignementSymbol ParseObjectClass.    (81)
 
-	.  reduce 81 (src line 960)
+	.  reduce 81 (src line 978)
 
 
 135: shift/reduce conflict (shift 6(0), red'n 184(0)) on TokenCapitalString
@@ -1491,7 +1491,7 @@ state 135
 	TokenBString  shift 173
 	TokenHString  shift 174
 	TokenCString  shift 187
-	.  reduce 153 (src line 1327)
+	.  reduce 153 (src line 1345)
 
 	ParseObjectIdentifierValue  goto 162
 	ParseValue  goto 146
@@ -1540,7 +1540,7 @@ state 136
 	ParseObject: .    (187)
 	ParseObjectSet: .    (188)
 
-	.  reduce 187 (src line 1478)
+	.  reduce 187 (src line 1496)
 
 	ParseObject  goto 194
 	ParseObjectSet  goto 195
@@ -1581,7 +1581,7 @@ state 140
 	TokenString  shift 7
 	TokenInteger  shift 22
 	TokenFloat  shift 24
-	.  reduce 201 (src line 1557)
+	.  reduce 201 (src line 1575)
 
 	ParseObjIdComponentsList  goto 196
 	ParseObjIdComponents  goto 199
@@ -1598,7 +1598,7 @@ state 140
 state 141
 	ParseDefinedValue:  ParseExternalValueReference.    (195)
 
-	.  reduce 195 (src line 1518)
+	.  reduce 195 (src line 1536)
 
 
 state 142
@@ -1606,153 +1606,153 @@ state 142
 	ParseExternalValueReference:  ParseString.DOT ParseString 
 
 	DOT  shift 205
-	.  reduce 196 (src line 1525)
+	.  reduce 196 (src line 1543)
 
 
 state 143
 	ParseDefinedValue:  ParseNumber.    (197)
 
-	.  reduce 197 (src line 1531)
+	.  reduce 197 (src line 1549)
 
 
 state 144
 	ParseDefinedValue:  ParseParameterizedValue.    (198)
 
-	.  reduce 198 (src line 1537)
+	.  reduce 198 (src line 1555)
 
 
 state 145
 	ParseParameterizedValue:  ParseSimpleDefinedValue.ParseActualParameterList 
 	ParseActualParameterList: .    (202)
 
-	.  reduce 202 (src line 1562)
+	.  reduce 202 (src line 1580)
 
 	ParseActualParameterList  goto 206
 
 state 146
 	ParseValueAssignment:  ParseString ParseType ParseAssignementSymbol ParseValue.    (78)
 
-	.  reduce 78 (src line 931)
+	.  reduce 78 (src line 949)
 
 
 state 147
 	ParseValueSetTypeAssignment:  ParseString ParseType ParseAssignementSymbol ParseValueSet.    (80)
 
-	.  reduce 80 (src line 950)
+	.  reduce 80 (src line 968)
 
 
 state 148
 	ParseValue:  ParseBuiltinValue.    (93)
 
-	.  reduce 93 (src line 1029)
+	.  reduce 93 (src line 1047)
 
 
 state 149
 	ParseValue:  ParseReferencedValue.    (94)
 
-	.  reduce 94 (src line 1036)
+	.  reduce 94 (src line 1054)
 
 
 state 150
 	ParseValue:  ParseObjectClassFieldValue.    (95)
 
-	.  reduce 95 (src line 1042)
+	.  reduce 95 (src line 1060)
 
 
 state 151
 	ParseBuiltinValue:  ParseBitStringValue.    (96)
 
-	.  reduce 96 (src line 1049)
+	.  reduce 96 (src line 1067)
 
 
 state 152
 	ParseBuiltinValue:  ParseBooleanValue.    (97)
 
-	.  reduce 97 (src line 1055)
+	.  reduce 97 (src line 1073)
 
 
 state 153
 	ParseBuiltinValue:  ParseCharacterStringValue.    (98)
 
-	.  reduce 98 (src line 1060)
+	.  reduce 98 (src line 1078)
 
 
 state 154
 	ParseBuiltinValue:  ParseChoiceValue.    (99)
 
-	.  reduce 99 (src line 1065)
+	.  reduce 99 (src line 1083)
 
 
 state 155
 	ParseBuiltinValue:  ParseEmbeddedPDVValue.    (100)
 
-	.  reduce 100 (src line 1070)
+	.  reduce 100 (src line 1088)
 
 
 state 156
 	ParseBuiltinValue:  ParseEnumeratedValue.    (101)
 
-	.  reduce 101 (src line 1075)
+	.  reduce 101 (src line 1093)
 
 
 state 157
 	ParseBuiltinValue:  ParseExternalValue.    (102)
 
-	.  reduce 102 (src line 1080)
+	.  reduce 102 (src line 1098)
 
 
 state 158
 	ParseBuiltinValue:  ParseInstanceOfValue.    (103)
 
-	.  reduce 103 (src line 1085)
+	.  reduce 103 (src line 1103)
 
 
 state 159
 	ParseBuiltinValue:  ParseIntegerValue.    (104)
 
-	.  reduce 104 (src line 1090)
+	.  reduce 104 (src line 1108)
 
 
 state 160
 	ParseBuiltinValue:  ParseIRIValue.    (105)
 
-	.  reduce 105 (src line 1095)
+	.  reduce 105 (src line 1113)
 
 
 state 161
 	ParseBuiltinValue:  ParseNullValue.    (106)
 
-	.  reduce 106 (src line 1100)
+	.  reduce 106 (src line 1118)
 
 
 state 162
 	ParseBuiltinValue:  ParseObjectIdentifierValue.    (107)
 
-	.  reduce 107 (src line 1105)
+	.  reduce 107 (src line 1123)
 
 
 state 163
 	ParseBuiltinValue:  ParseOctetStringValue.    (108)
 
-	.  reduce 108 (src line 1110)
+	.  reduce 108 (src line 1128)
 
 
 state 164
 	ParseBuiltinValue:  ParseRealValue.    (109)
 
-	.  reduce 109 (src line 1115)
+	.  reduce 109 (src line 1133)
 
 
 state 165
 	ParseBuiltinValue:  ParseRelativeIRIValue.    (110)
 
-	.  reduce 110 (src line 1120)
+	.  reduce 110 (src line 1138)
 
 
 state 166
 	ParseBuiltinValue:  ParseRelativeOIDValue.    (111)
 
-	.  reduce 111 (src line 1125)
+	.  reduce 111 (src line 1143)
 
 
  167: reduce/reduce conflict  (red'ns 112 and 148) on END_SYMBOL
@@ -1774,37 +1774,37 @@ state 167
 	ParseExternalValue:  ParseSequenceValue.    (152)
 	ParseNumericRealValue:  ParseSequenceValue.    (163)
 
-	.  reduce 112 (src line 1130)
+	.  reduce 112 (src line 1148)
 
 
 state 168
 	ParseBuiltinValue:  ParseSequenceOfValue.    (113)
 
-	.  reduce 113 (src line 1135)
+	.  reduce 113 (src line 1153)
 
 
 state 169
 	ParseBuiltinValue:  ParseSetValue.    (114)
 
-	.  reduce 114 (src line 1140)
+	.  reduce 114 (src line 1158)
 
 
 state 170
 	ParseBuiltinValue:  ParseSetOfValue.    (115)
 
-	.  reduce 115 (src line 1145)
+	.  reduce 115 (src line 1163)
 
 
 state 171
 	ParseBuiltinValue:  ParsePrefixedValue.    (116)
 
-	.  reduce 116 (src line 1150)
+	.  reduce 116 (src line 1168)
 
 
 state 172
 	ParseBuiltinValue:  ParseTimeValue.    (117)
 
-	.  reduce 117 (src line 1155)
+	.  reduce 117 (src line 1173)
 
 
  173: reduce/reduce conflict  (red'ns 118 and 157) on END_SYMBOL
@@ -1814,7 +1814,7 @@ state 173
 	ParseBitStringValue:  TokenBString.    (118)
 	ParseOctetStringValue:  TokenBString.    (157)
 
-	.  reduce 118 (src line 1161)
+	.  reduce 118 (src line 1179)
 
 
 state 174
@@ -1822,8 +1822,8 @@ state 174
 	ParseOctetStringValue:  TokenHString.$$158 CONTAINING_SYMBOL ParseValue 
 	$$158: .    (158)
 
-	CONTAINING_SYMBOL  reduce 158 (src line 1350)
-	.  reduce 119 (src line 1165)
+	CONTAINING_SYMBOL  reduce 158 (src line 1368)
+	.  reduce 119 (src line 1183)
 
 	$$158  goto 207
 
@@ -1854,7 +1854,7 @@ state 175
 	TokenInteger  shift 22
 	TokenFloat  shift 24
 	TokenCString  shift 222
-	.  reduce 201 (src line 1557)
+	.  reduce 201 (src line 1575)
 
 	ParseObjIdComponentsList  goto 196
 	ParseObjIdComponents  goto 199
@@ -1940,7 +1940,7 @@ state 176
 	TokenBString  shift 173
 	TokenHString  shift 174
 	TokenCString  shift 187
-	.  reduce 153 (src line 1327)
+	.  reduce 153 (src line 1345)
 
 	ParseObjectIdentifierValue  goto 162
 	ParseValue  goto 226
@@ -1982,19 +1982,19 @@ state 176
 state 177
 	ParseBooleanValue:  ParseBoolean.    (126)
 
-	.  reduce 126 (src line 1194)
+	.  reduce 126 (src line 1212)
 
 
 state 178
 	ParseCharacterStringValue:  ParseRestrictedCharacterStringValue.    (127)
 
-	.  reduce 127 (src line 1199)
+	.  reduce 127 (src line 1217)
 
 
 state 179
 	ParseCharacterStringValue:  ParseUnrestrictedCharacterStringValue.    (128)
 
-	.  reduce 128 (src line 1203)
+	.  reduce 128 (src line 1221)
 
 
  180: reduce/reduce conflict  (red'ns 151 and 155) on END_SYMBOL
@@ -2006,7 +2006,7 @@ state 180
 	ParseIntegerValue:  ParseString.    (155)
 
 	COLON  shift 227
-	.  reduce 151 (src line 1317)
+	.  reduce 151 (src line 1335)
 
 
  181: reduce/reduce conflict  (red'ns 154 and 162) on END_SYMBOL
@@ -2016,91 +2016,91 @@ state 181
 	ParseIntegerValue:  ParseNumber.    (154)
 	ParseNumericRealValue:  ParseNumber.    (162)
 
-	.  reduce 154 (src line 1332)
+	.  reduce 154 (src line 1350)
 
 
 state 182
 	ParseNullValue:  NULL_SYMBOL.    (156)
 
-	.  reduce 156 (src line 1340)
+	.  reduce 156 (src line 1358)
 
 
 state 183
 	ParseRealValue:  ParseNumericRealValue.    (160)
 
-	.  reduce 160 (src line 1357)
+	.  reduce 160 (src line 1375)
 
 
 state 184
 	ParseRealValue:  ParseSpecialRealValue.    (161)
 
-	.  reduce 161 (src line 1361)
+	.  reduce 161 (src line 1379)
 
 
 state 185
 	ParseBoolean:  TRUE_SYMBOL.    (259)
 
-	.  reduce 259 (src line 1792)
+	.  reduce 259 (src line 1810)
 
 
 state 186
 	ParseBoolean:  FALSE_SYMBOL.    (260)
 
-	.  reduce 260 (src line 1796)
+	.  reduce 260 (src line 1814)
 
 
 state 187
 	ParseRestrictedCharacterStringValue:  TokenCString.    (129)
 
-	.  reduce 129 (src line 1207)
+	.  reduce 129 (src line 1225)
 
 
 state 188
 	ParseRestrictedCharacterStringValue:  ParseCharacterStringList.    (130)
 
-	.  reduce 130 (src line 1211)
+	.  reduce 130 (src line 1229)
 
 
 state 189
 	ParseRestrictedCharacterStringValue:  ParseQuadruple.    (131)
 
-	.  reduce 131 (src line 1214)
+	.  reduce 131 (src line 1232)
 
 
 state 190
 	ParseRestrictedCharacterStringValue:  ParseTuple.    (132)
 
-	.  reduce 132 (src line 1217)
+	.  reduce 132 (src line 1235)
 
 
 state 191
 	ParseSpecialRealValue:  PLUSINFINITY_SYMBOL.    (164)
 
-	.  reduce 164 (src line 1373)
+	.  reduce 164 (src line 1391)
 
 
 state 192
 	ParseSpecialRealValue:  MINUSINFINITY_SYMBOL.    (165)
 
-	.  reduce 165 (src line 1377)
+	.  reduce 165 (src line 1395)
 
 
 state 193
 	ParseSpecialRealValue:  NOTANUMBER_SYMBOL.    (166)
 
-	.  reduce 166 (src line 1380)
+	.  reduce 166 (src line 1398)
 
 
 state 194
 	ParseObjectAssignment:  ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObject.    (82)
 
-	.  reduce 82 (src line 969)
+	.  reduce 82 (src line 987)
 
 
 state 195
 	ParseObjectSetAssignment:  ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObjectSet.    (83)
 
-	.  reduce 83 (src line 979)
+	.  reduce 83 (src line 997)
 
 
 196: shift/reduce conflict (shift 228(0), red'n 201(0)) on CURLY_END
@@ -2161,7 +2161,7 @@ state 197
 	TokenString  shift 7
 	TokenInteger  shift 22
 	TokenFloat  shift 24
-	.  reduce 201 (src line 1557)
+	.  reduce 201 (src line 1575)
 
 	ParseObjIdComponentsList  goto 231
 	ParseObjIdComponents  goto 199
@@ -2250,7 +2250,7 @@ state 205
 state 206
 	ParseParameterizedValue:  ParseSimpleDefinedValue ParseActualParameterList.    (200)
 
-	.  reduce 200 (src line 1552)
+	.  reduce 200 (src line 1570)
 
 
 state 207
@@ -2292,13 +2292,13 @@ state 208
 	ParseSimpleDefinedValue: .    (201)
 
 	CURLY_END  reduce 61 (src line 835)
-	COMMA  reduce 139 (src line 1247)
+	COMMA  reduce 139 (src line 1265)
 	MINUS  shift 23
 	TokenCapitalString  shift 6
 	TokenString  shift 7
 	TokenInteger  shift 22
 	TokenFloat  shift 24
-	.  reduce 201 (src line 1557)
+	.  reduce 201 (src line 1575)
 
 	ParseObjIdComponentsList  goto 231
 	ParseObjIdComponents  goto 199
@@ -2398,8 +2398,8 @@ state 215
 	ParseDefinedValue:  ParseString.    (196)
 	ParseExternalValueReference:  ParseString.DOT ParseString 
 
-	CURLY_START  reduce 196 (src line 1525)
-	COMMA  reduce 125 (src line 1189)
+	CURLY_START  reduce 196 (src line 1543)
+	COMMA  reduce 125 (src line 1207)
 	DOT  shift 205
 	ROUND_START  shift 232
 	.  reduce 62 (src line 844)
@@ -2419,27 +2419,27 @@ state 216
 	ParseTableColumn:  ParseNumber.    (146)
 	ParseDefinedValue:  ParseNumber.    (197)
 
-	CURLY_START  reduce 197 (src line 1531)
-	COMMA  reduce 141 (src line 1261)
+	CURLY_START  reduce 197 (src line 1549)
+	COMMA  reduce 141 (src line 1279)
 	.  reduce 63 (src line 857)
 
 
 state 217
 	ParseIdentifierList:  ParseIdentifier.    (123)
 
-	.  reduce 123 (src line 1178)
+	.  reduce 123 (src line 1196)
 
 
 state 218
 	ParseCharSyms:  ParseCharsDefn.    (134)
 
-	.  reduce 134 (src line 1226)
+	.  reduce 134 (src line 1244)
 
 
 state 219
 	ParseRelativeOIDComponentsList:  ParseRelativeOIDComponents.    (170)
 
-	.  reduce 170 (src line 1399)
+	.  reduce 170 (src line 1417)
 
 
  220: reduce/reduce conflict  (red'ns 59 and 172) on CURLY_END
@@ -2471,19 +2471,19 @@ state 221
 state 222
 	ParseCharsDefn:  TokenCString.    (136)
 
-	.  reduce 136 (src line 1237)
+	.  reduce 136 (src line 1255)
 
 
 state 223
 	ParseCharsDefn:  ParseQuadruple.    (137)
 
-	.  reduce 137 (src line 1241)
+	.  reduce 137 (src line 1259)
 
 
 state 224
 	ParseCharsDefn:  ParseTuple.    (138)
 
-	.  reduce 138 (src line 1244)
+	.  reduce 138 (src line 1262)
 
 
 state 225
@@ -2502,7 +2502,7 @@ state 225
 state 226
 	ParseBitStringValue:  CONTAINING_SYMBOL ParseValue.    (122)
 
-	.  reduce 122 (src line 1174)
+	.  reduce 122 (src line 1192)
 
 
 227: shift/reduce conflict (shift 6(0), red'n 181(0)) on TokenCapitalString
@@ -2567,7 +2567,7 @@ state 227
 	TokenBString  shift 173
 	TokenHString  shift 174
 	TokenCString  shift 187
-	.  reduce 153 (src line 1327)
+	.  reduce 153 (src line 1345)
 
 	ParseObjectIdentifierValue  goto 162
 	ParseValue  goto 248
@@ -2671,7 +2671,7 @@ state 232
 	TokenString  shift 7
 	TokenInteger  shift 22
 	TokenFloat  shift 24
-	.  reduce 201 (src line 1557)
+	.  reduce 201 (src line 1575)
 
 	ParseNumberForm  goto 250
 	ParseDefinedValue  goto 251
@@ -2684,7 +2684,7 @@ state 232
 state 233
 	ParseExternalValueReference:  ParseString DOT ParseString.    (199)
 
-	.  reduce 199 (src line 1544)
+	.  reduce 199 (src line 1562)
 
 
 234: shift/reduce conflict (shift 6(0), red'n 181(0)) on TokenCapitalString
@@ -2749,7 +2749,7 @@ state 234
 	TokenBString  shift 173
 	TokenHString  shift 174
 	TokenCString  shift 187
-	.  reduce 153 (src line 1327)
+	.  reduce 153 (src line 1345)
 
 	ParseObjectIdentifierValue  goto 162
 	ParseValue  goto 252
@@ -2791,7 +2791,7 @@ state 234
 state 235
 	ParseBitStringValue:  CURLY_START ParseIdentifierList CURLY_END.    (120)
 
-	.  reduce 120 (src line 1168)
+	.  reduce 120 (src line 1186)
 
 
 state 236
@@ -2807,7 +2807,7 @@ state 236
 state 237
 	ParseCharacterStringList:  CURLY_START ParseCharSyms CURLY_END.    (133)
 
-	.  reduce 133 (src line 1221)
+	.  reduce 133 (src line 1239)
 
 
 state 238
@@ -2821,7 +2821,7 @@ state 238
 	TokenInteger  shift 22
 	TokenFloat  shift 24
 	TokenCString  shift 222
-	.  reduce 201 (src line 1557)
+	.  reduce 201 (src line 1575)
 
 	ParseDefinedValue  goto 256
 	ParseExternalValueReference  goto 141
@@ -2858,25 +2858,25 @@ state 240
 state 241
 	ParseRelativeOIDValue:  CURLY_START ParseRelativeOIDComponentsList CURLY_END.    (169)
 
-	.  reduce 169 (src line 1394)
+	.  reduce 169 (src line 1412)
 
 
 state 242
 	ParseRelativeOIDComponentsList:  ParseRelativeOIDComponentsList ParseRelativeOIDComponents.    (171)
 
-	.  reduce 171 (src line 1403)
+	.  reduce 171 (src line 1421)
 
 
 state 243
 	ParseRelativeOIDComponents:  ParseNumberForm.    (172)
 
-	.  reduce 172 (src line 1407)
+	.  reduce 172 (src line 1425)
 
 
 state 244
 	ParseRelativeOIDComponents:  ParseNameAndNumberForm.    (173)
 
-	.  reduce 173 (src line 1411)
+	.  reduce 173 (src line 1429)
 
 
  245: reduce/reduce conflict  (red'ns 64 and 174) on CURLY_END
@@ -2899,7 +2899,7 @@ state 246
 
 	DOT  shift 205
 	ROUND_START  shift 232
-	.  reduce 196 (src line 1525)
+	.  reduce 196 (src line 1543)
 
 
  247: reduce/reduce conflict  (red'ns 141 and 146) on COMMA
@@ -2907,13 +2907,13 @@ state 247
 	ParseGroup:  ParseNumber.    (141)
 	ParseTableColumn:  ParseNumber.    (146)
 
-	.  reduce 141 (src line 1261)
+	.  reduce 141 (src line 1279)
 
 
 state 248
 	ParseChoiceValue:  ParseString COLON ParseValue.    (149)
 
-	.  reduce 149 (src line 1304)
+	.  reduce 149 (src line 1322)
 
 
 state 249
@@ -2938,31 +2938,31 @@ state 251
 state 252
 	ParseOctetStringValue:  TokenHString $$158 CONTAINING_SYMBOL ParseValue.    (159)
 
-	.  reduce 159 (src line 1353)
+	.  reduce 159 (src line 1371)
 
 
 state 253
 	ParseIdentifierList:  ParseIdentifierList COMMA ParseIdentifier.    (124)
 
-	.  reduce 124 (src line 1184)
+	.  reduce 124 (src line 1202)
 
 
 state 254
 	ParseIdentifier:  ParseString.    (125)
 
-	.  reduce 125 (src line 1189)
+	.  reduce 125 (src line 1207)
 
 
 state 255
 	ParseCharSyms:  ParseCharSyms COMMA ParseCharsDefn.    (135)
 
-	.  reduce 135 (src line 1232)
+	.  reduce 135 (src line 1250)
 
 
 state 256
 	ParseCharsDefn:  ParseDefinedValue.    (139)
 
-	.  reduce 139 (src line 1247)
+	.  reduce 139 (src line 1265)
 
 
 state 257
@@ -2975,7 +2975,7 @@ state 257
 state 258
 	ParsePlane:  ParseNumber.    (142)
 
-	.  reduce 142 (src line 1266)
+	.  reduce 142 (src line 1284)
 
 
 state 259
@@ -2988,7 +2988,7 @@ state 259
 state 260
 	ParseTableRow:  ParseNumber.    (147)
 
-	.  reduce 147 (src line 1294)
+	.  reduce 147 (src line 1312)
 
 
 state 261
@@ -3011,7 +3011,7 @@ state 262
 state 263
 	ParseTuple:  CURLY_START ParseTableColumn COMMA ParseTableRow CURLY_END.    (145)
 
-	.  reduce 145 (src line 1281)
+	.  reduce 145 (src line 1299)
 
 
 state 264
@@ -3024,7 +3024,7 @@ state 264
 state 265
 	ParseRow:  ParseNumber.    (143)
 
-	.  reduce 143 (src line 1271)
+	.  reduce 143 (src line 1289)
 
 
 state 266
@@ -3048,13 +3048,13 @@ state 267
 state 268
 	ParseCell:  ParseNumber.    (144)
 
-	.  reduce 144 (src line 1276)
+	.  reduce 144 (src line 1294)
 
 
 state 269
 	ParseQuadruple:  CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END.    (140)
 
-	.  reduce 140 (src line 1251)
+	.  reduce 140 (src line 1269)
 
 Rule not reduced: ParseSymbolsExported:  
 Rule not reduced: ParseParameterizedReference:  ParseReference 

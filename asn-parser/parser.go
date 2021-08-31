@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"regexp"
 	"strconv"
 	"strings"
 	"unicode"
@@ -589,11 +590,31 @@ func (p *Parser) Error(msg string) {
 	p.ErrorMsg = errors.New(msg)
 }
 
+func RemoveBlanks(buffer []byte) []byte {
+	regex := regexp.MustCompile("(?m)^\\s*$[\r\n]*")
+	return bytes.Trim(regex.ReplaceAll(buffer, []byte("")), "\r\n")
+}
+
+func RemoveBlockComment(content []byte) []byte {
+	comment := regexp.MustCompile(`/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/`)
+	return comment.ReplaceAll(content, []byte(""))
+}
+
+func RemoveLineComment(content []byte) []byte {
+	comment := regexp.MustCompile(`--.*`)
+	return comment.ReplaceAll(content, []byte(""))
+}
+
+func RemoveComments(content []byte) []byte {
+	return RemoveBlanks(RemoveLineComment(RemoveBlockComment(content)))
+}
+
 func Parse(content []byte) (string, error) {
 
 	ASNDebug = 1
 	ASNErrorVerbose = true
 
+	content = RemoveComments(content)
 	parser := &Parser{
 		Input: bufio.NewReader(bytes.NewReader(content)),
 	}
