@@ -200,20 +200,21 @@ type (
 %type<TypeValue>    ParseModuleBody
 %type<TypeValue>    ParseImports
 %type<TypeValue>    ParseExports
-%type<TypeValue>    ParseImportSymbols
-%type<TypeValue>    ParseSymbolsFromModules
+%type<TypeValue>    ParseSymbolsImported
+%type<TypeValue>    ParseSymbolsFromModuleList
 %type<TypeValue>    ParseSymbolsFromModule
-%type<TypeValue>    ParseSymbols
+%type<TypeValue>    ParseSymbolsExported
+%type<TypeValue>    ParseSymbolList
 %type<TypeValue>    ParseSymbol
 %type<TypeValue>    ParseGlobalModuleReference
 %type<TypeValue>    ParseAssignedIdentifier
 %type<TypeValue>    ParseObjectIdentifierValue
 %type<TypeValue>    ParseObjIdComponentsList
 %type<TypeValue>    ParseObjIdComponents
-%type<TypeValue>    ParseObjIdComponentsNameForm
-%type<TypeValue>    ParseObjIdComponentsNumberForm
-%type<TypeValue>    ParseObjIdComponentsNameAndNumberForm
-%type<TypeValue>    ParseAssignments
+%type<TypeValue>    ParseNameForm
+%type<TypeValue>    ParseNumberForm
+%type<TypeValue>    ParseNameAndNumberForm
+%type<TypeValue>    ParseAssignmentList
 %type<TypeValue>    ParseAssignment
 %type<TypeValue>    ParseDefinedValue
 %type<TypeValue>    ParseTypeAssignment
@@ -315,9 +316,9 @@ type (
 %type<TypeValue>    ParseSpecialRealValue
 %type<TypeValue>    ParseRelativeOIDComponentsList
 %type<TypeValue>    ParseRelativeOIDComponents
-%type<TypeValue>    ParseNameAndNumberForm
-%type<TypeValue>    ParseNumberForm
-%type<TypeValue>    ParseNameForm
+%type<TypeValue>    ParseEncodingControlSections
+%type<TypeValue>    ParseReference
+%type<TypeValue>    ParseParameterizedReference
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -347,6 +348,20 @@ ParseModules:
         $$ = append($$.(LIST), $2)
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ModuleDefinition ::=
+ *     ModuleIdentifier
+ *     DEFINITIONS
+ *     EncodingReferenceDefault
+ *     TagDefault
+ *     ExtensionDefault
+ *     "::="
+ *     BEGIN
+ *     ModuleBody
+ *     EncodingControlSections
+ *     END
+ *****************************************************************************/
 ParseModule:
     ParseModuleIdentifier          // 1
     DEFINITIONS_SYMBOL             // 2
@@ -356,7 +371,8 @@ ParseModule:
     ParseAssignementSymbol         // 6
     BEGIN_SYMBOL                   // 7
     ParseModuleBody                // 8
-    END_SYMBOL                     // 9
+    ParseEncodingControlSections   // 9
+    END_SYMBOL                     // 10
     {
         $$ = MAP {
             "identifier": $1,
@@ -366,6 +382,23 @@ ParseModule:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * EncodingControlSections ::=
+ *  EncodingControlSection EncodingControlSections
+ *  |empty
+ *****************************************************************************/
+ParseEncodingControlSections:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ModuleIdentifier ::=
+ *     modulereference
+ *     DefinitiveIdentification
+ *****************************************************************************/
 ParseModuleIdentifier:
     ParseString
     ParseDefinitiveIdentification
@@ -376,6 +409,12 @@ ParseModuleIdentifier:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * EncodingReferenceDefault ::=
+ *  encodingreference INSTRUCTIONS
+ *  | empty
+ *****************************************************************************/
 ParseEncodingReferenceDefault:
     TokenCapitalString INSTRUCTIONS_SYMBOL {
         $$ = $1
@@ -384,6 +423,13 @@ ParseEncodingReferenceDefault:
         $$ = ""
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DefinitiveIdentification ::=
+ *   | DefinitiveOID
+ *   | DefinitiveOIDandIRI
+ *   | empty
+ *****************************************************************************/
 ParseDefinitiveIdentification:
     ParseDefinitiveOID {
         $$ = $1
@@ -392,11 +438,22 @@ ParseDefinitiveIdentification:
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DefinitiveOID ::=
+ *  "{" DefinitiveObjIdComponentList "}"
+ *****************************************************************************/
 ParseDefinitiveOID:
     CURLY_START ParseDefinitiveObjIdComponentList CURLY_END {
         $$ = $2
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DefinitiveObjIdComponentList ::=
+ *  DefinitiveObjIdComponent
+ *  | DefinitiveObjIdComponent DefinitiveObjIdComponentList
+ *****************************************************************************/
 ParseDefinitiveObjIdComponentList:
     ParseDefinitiveObjIdComponent {
         $$ = LIST {
@@ -408,6 +465,13 @@ ParseDefinitiveObjIdComponentList:
         $$ = append($$.(LIST), $2)
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DefinitiveObjIdComponent ::=
+ *  DefinitiveNameForm
+ *  | DefinitiveNumberForm
+ *  | DefinitiveNameAndNumberForm
+ *****************************************************************************/
 ParseDefinitiveObjIdComponent:
     ParseDefinitiveNameForm {
         $$ = $1
@@ -419,6 +483,10 @@ ParseDefinitiveObjIdComponent:
         $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * NameForm ::= identifier
+ *****************************************************************************/
 ParseDefinitiveNameForm:
     TokenString {
         $$ = MAP {
@@ -426,6 +494,10 @@ ParseDefinitiveNameForm:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DefinitiveNumberForm ::= number
+ *****************************************************************************/
 ParseDefinitiveNumberForm:
     ParseNumber {
         $$ = MAP {
@@ -433,6 +505,10 @@ ParseDefinitiveNumberForm:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DefinitiveNameAndNumberForm ::= identifier "(" DefinitiveNumberForm ")"
+ *****************************************************************************/
 ParseDefinitiveNameAndNumberForm:
     TokenString ROUND_START ParseNumber ROUND_END {
         $$ = MAP {
@@ -441,6 +517,14 @@ ParseDefinitiveNameAndNumberForm:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * TagDefault ::=
+ *  EXPLICIT TAGS
+ *  | IMPLICIT TAGS
+ *  | AUTOMATIC TAGS
+ *  | empty
+ *****************************************************************************/
 ParseTagDefault:
     IMPLICIT_SYMBOL TAGS_SYMBOL {
         $$ = "Implicit"
@@ -455,6 +539,12 @@ ParseTagDefault:
         $$ = "Explicit"
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionDefault ::=
+ *  EXTENSIBILITY IMPLIED
+ *  | empty
+ *****************************************************************************/
 ParseExtensionDefault:
     EXTENSIBILITY_SYMBOL IMPLIED_SYMBOL {
         $$ = true
@@ -463,10 +553,16 @@ ParseExtensionDefault:
         $$ = false
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ModuleBody ::=
+ *  Exports Imports AssignmentList
+ *  | empty
+ *****************************************************************************/
 ParseModuleBody:
     ParseImports
     ParseExports
-    ParseAssignments {
+    ParseAssignmentList {
       $$ = MAP {
           "imports":     $1,
           "exports":     $2,
@@ -475,7 +571,7 @@ ParseModuleBody:
     }
   | ParseExports
     ParseImports
-    ParseAssignments {
+    ParseAssignmentList {
         $$ = MAP {
             "imports":     $2,
             "exports":     $1,
@@ -486,8 +582,15 @@ ParseModuleBody:
       $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Exports ::=
+ *  EXPORTS SymbolsExported ";"
+ *  | EXPORTS ALL ";"
+ *  | empty
+ *****************************************************************************/
 ParseExports:
-    EXPORTS_SYMBOL ParseSymbols SEMI_COMMA {
+    EXPORTS_SYMBOL ParseSymbolsExported SEMI_COMMA {
       $$ = MAP {
           "all":     "false",
           "symbols": $2,
@@ -509,57 +612,148 @@ ParseExports:
       }
   }
 
-ParseSymbols:
+/******************************************************************************
+ * BNF Definition:
+ * SymbolsExported ::=
+ *  SymbolList
+ *  | empty
+ *****************************************************************************/
+ParseSymbolsExported:
+    ParseSymbolList {
+         $$ = $1
+    }
+  | /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SymbolList ::=
+ *  Symbol
+ *  | SymbolList "," Symbol
+ *****************************************************************************/
+ParseSymbolList:
     ParseSymbol {
          $$ = LIST {
              $1,
          }
     }
-  | ParseSymbols COMMA ParseSymbol {
+  | ParseSymbolList COMMA ParseSymbol {
         $$ = $1
         $$ = append($$.(LIST), $3)
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Symbol ::=
+ *  Reference
+ *  | ParameterizedReference
+ *****************************************************************************/
 ParseSymbol:
-    TokenString {
+    ParseReference {
+        $$ = MAP {
+            "reference": $1,
+        }
+    }
+  | ParseParameterizedReference {
+        $$ = MAP {
+            "parameterizedReference": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Reference ::=
+ *  typereference
+ *  | valuereference
+ *  | objectclassreference
+ *  | objectreference
+ *  | objectsetreference
+ *****************************************************************************/
+ParseReference:
+    // All the lexical items:
+    //   typereference, valuereference, objectclassreference, objectreference, objectsetreference
+    //   are string tokens.
+    ParseString {
         $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ParameterizedReference ::=
+ *     Reference | Reference "{" "}"
+ *****************************************************************************/
+ParseParameterizedReference:
+    ParseReference {
+        $$ = $1
+    }
+  | ParseReference CURLY_START CURLY_END {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Imports ::=
+ *      IMPORTS SymbolsImported ";"
+ *      | empty
+ *****************************************************************************/
 ParseImports:
-    IMPORTS_SYMBOL ParseImportSymbols SEMI_COMMA {
+    IMPORTS_SYMBOL ParseSymbolsImported SEMI_COMMA {
       $$ = $2
     }
   | /* EMPTY */ {
       $$ = nil
     }
 
-ParseImportSymbols:
-   ParseSymbolsFromModules {
+/******************************************************************************
+ * BNF Definition:
+ * SymbolsImported ::=
+ *      SymbolsFromModuleList
+ *      | empty
+ *****************************************************************************/
+ParseSymbolsImported:
+   ParseSymbolsFromModuleList {
        $$ = $1
    }
  | /* EMPTY */ {
        $$ = nil
    }
 
-ParseSymbolsFromModules:
+/******************************************************************************
+ * BNF Definition:
+ * SymbolsFromModuleList ::=
+ *      SymbolsFromModule
+ *      | SymbolsFromModuleList SymbolsFromModule
+ *****************************************************************************/
+ParseSymbolsFromModuleList:
     ParseSymbolsFromModule {
         $$ = LIST {
             $1,
         }
     }
-  | ParseSymbolsFromModules ParseSymbolsFromModule {
+  | ParseSymbolsFromModuleList ParseSymbolsFromModule {
         $$ = $1
         $$ = append($$.(LIST), $2)
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SymbolsFromModule ::=
+ *      SymbolList FROM GlobalModuleReference
+ *****************************************************************************/
 ParseSymbolsFromModule:
-    ParseSymbols FROM_SYMBOL ParseGlobalModuleReference {
+    ParseSymbolList FROM_SYMBOL ParseGlobalModuleReference {
         $$ = MAP {
             "symbols":   $1,
             "reference": $3,
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * GlobalModuleReference ::=
+ *      modulereference AssignedIdentifier
+ *****************************************************************************/
 ParseGlobalModuleReference:
     ParseString ParseAssignedIdentifier {
        $$ = MAP {
@@ -568,6 +762,13 @@ ParseGlobalModuleReference:
        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * AssignedIdentifier ::=
+ *      ObjectIdentifierValue
+ *      | DefinedValue
+ *      | empty
+ *****************************************************************************/
 ParseAssignedIdentifier:
     ParseObjectIdentifierValue {
         $$ = $1
@@ -579,6 +780,12 @@ ParseAssignedIdentifier:
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectIdentifierValue ::=
+ *      "{" ObjIdComponentsList "}"
+ *      | "{" DefinedValue ObjIdComponentsList "}"
+ *****************************************************************************/
 ParseObjectIdentifierValue:
     CURLY_START ParseObjIdComponentsList CURLY_END {
         $$ = $2
@@ -590,6 +797,12 @@ ParseObjectIdentifierValue:
       $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjIdComponentsList ::=
+ *      ObjIdComponents
+ *      | ObjIdComponents ObjIdComponentsList
+ *****************************************************************************/
 ParseObjIdComponentsList:
     ParseObjIdComponents {
         $$ = LIST {
@@ -601,46 +814,78 @@ ParseObjIdComponentsList:
         $$ = append($$.(LIST), $2)
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjIdComponents ::=
+ *      NameForm
+ *      | NumberForm
+ *      | NameAndNumberForm
+ *      | DefinedValue
+ *****************************************************************************/
 ParseObjIdComponents:
-    ParseObjIdComponentsNameForm {
+    ParseNameForm {
         $$ = $1
     }
-  | ParseObjIdComponentsNumberForm {
+  | ParseNumberForm {
         $$ = $1
     }
-  | ParseObjIdComponentsNameAndNumberForm {
+  | ParseNameAndNumberForm {
+        $$ = $1
+    }
+  | ParseDefinedValue {
         $$ = $1
     }
 
-ParseObjIdComponentsNameForm:
+/******************************************************************************
+ * BNF Definition:
+ * NameForm ::=
+ *      identifier
+ *****************************************************************************/
+ParseNameForm:
    ParseString {
        $$ = MAP {
            "name": $1,
        }
    }
 
-ParseObjIdComponentsNumberForm:
+/******************************************************************************
+ * BNF Definition:
+ * NumberForm ::=
+ *      number
+ *      | DefinedValue
+ *****************************************************************************/
+ParseNumberForm:
     ParseNumber {
         $$ = MAP {
             "number": $1,
         }
     }
+  | ParseDefinedValue {
+        $$ = MAP {
+            "number": $1,
+        }
+    }
 
-ParseObjIdComponentsNameAndNumberForm:
-    ParseString ROUND_START ParseNumber ROUND_END {
+/******************************************************************************
+ * BNF Definition:
+ * NameAndNumberForm ::=
+ *      identifier "(" NumberForm ")"
+ *****************************************************************************/
+ParseNameAndNumberForm:
+    ParseString ROUND_START ParseNumberForm ROUND_END {
         $$ = MAP {
             "name":   $1,
             "number": $3,
         }
     }
 
-ParseAssignments:
+ParseAssignmentList:
     ParseAssignment {
         $$ = LIST {
             $1,
         }
     }
-  | ParseAssignments ParseAssignment {
+  | ParseAssignmentList ParseAssignment {
         $$ = $1
         $$ = append($$.(LIST), $2)
      }
@@ -1169,18 +1414,6 @@ ParseRelativeOIDComponents:
   | ParseDefinedValue {
         $$ = nil
     }
-
-ParseNameForm: {
-
-}
-
-ParseNumberForm: {
-
-}
-
-ParseNameAndNumberForm: {
-
-}
 
 ParseSequenceValue:
     /* EMPTY */ {
