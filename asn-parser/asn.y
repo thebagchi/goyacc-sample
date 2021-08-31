@@ -824,16 +824,24 @@ ParseObjIdComponentsList:
  *****************************************************************************/
 ParseObjIdComponents:
     ParseNameForm {
-        $$ = $1
+        $$ = MAP {
+            "name": $1,
+        }
     }
   | ParseNumberForm {
-        $$ = $1
+        $$ = MAP {
+            "number": $1,
+        }
     }
   | ParseNameAndNumberForm {
-        $$ = $1
+        $$ = MAP {
+            "nameAndNumber": $1,
+        }
     }
   | ParseDefinedValue {
-        $$ = $1
+        $$ = MAP {
+            "definedValue": $1,
+        }
     }
 
 /******************************************************************************
@@ -843,9 +851,7 @@ ParseObjIdComponents:
  *****************************************************************************/
 ParseNameForm:
    ParseString {
-       $$ = MAP {
-           "name": $1,
-       }
+       $$ = $1
    }
 
 /******************************************************************************
@@ -856,13 +862,11 @@ ParseNameForm:
  *****************************************************************************/
 ParseNumberForm:
     ParseNumber {
-        $$ = MAP {
-            "number": $1,
-        }
+        $$ = $1
     }
   | ParseDefinedValue {
         $$ = MAP {
-            "number": $1,
+            "definedValue": $1,
         }
     }
 
@@ -913,72 +917,113 @@ ParseAssignmentList:
  *****************************************************************************/
 ParseAssignment:
     ParseTypeAssignment {
-        $$ = $1
+        $$ = MAP {
+            "typeAssignment": $1,
+        }
     }
   | ParseValueAssignment {
-        $$ = $1
+        $$ = MAP {
+            "valueAssignment": $1,
+        }
     }
   | ParseXMLValueAssignment {
-        $$ = $1
+        $$ = MAP {
+            "xmlValueAssignment": $1,
+        }
     }
   | ParseValueSetTypeAssignment {
-        $$ = $1
+        $$ = MAP {
+            "valueSetAssignment": $1,
+        }
     }
   | ParseObjectClassAssignment {
-        $$ = $1
+        $$ = MAP {
+            "objectClassAssignment": $1,
+        }
     }
   | ParseObjectAssignment {
-        $$ = $1
+        $$ = MAP {
+            "objectAssignment": $1,
+        }
     }
   | ParseObjectSetAssignment {
-        $$ = $1
+        $$ = MAP {
+            "objectSetAssignment": $1,
+        }
     }
   | ParseParameterizedAssignment {
-        $$ = $1
+        $$ = MAP {
+            "parameterizedAssignment": $1,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * TypeAssignment ::=
+ *      typereference
+ *      "::="
+ *      Type
+ *****************************************************************************/
 ParseTypeAssignment:
     ParseString ParseAssignementSymbol ParseType {
         $$ = MAP {
-            "assignment": "TYPE",
             "reference":  $1,
             "type":       $2,
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ValueAssignment ::=
+ *      valuereference
+ *      Type
+ *      "::="
+ *      Value
+ *****************************************************************************/
 ParseValueAssignment:
     ParseString ParseType ParseAssignementSymbol ParseValue {
         $$ = MAP {
-            "assignment": "VALUE",
             "reference":  $1,
             "type":       $2,
             "value":      $4,
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * XMLValueAssignment ::=
+ *      valuereference
+ *      "::="
+ *      XMLTypedValue
+ *****************************************************************************/
 ParseXMLValueAssignment:
     ParseString ParseAssignementSymbol ParseXMLTypedValue {
         $$ = MAP {
-            "assignment": "XML_VALUE",
             "reference":  $1,
             "value":      $3,
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ValueSetTypeAssignment ::=
+ *      typereference
+ *      Type
+ *      "::="
+ *      ValueSet
+ *****************************************************************************/
 ParseValueSetTypeAssignment:
     ParseString ParseType ParseAssignementSymbol ParseValueSet {
         $$ = MAP {
-            "assignment": "VALUE_SET",
             "reference":  $1,
             "type":       $2,
-            "values":     $4,
+            "valueSet":   $4,
         }
     }
 
 ParseObjectClassAssignment:
     ParseString ParseAssignementSymbol ParseObjectClass {
         $$ = MAP {
-            "assignment": "OBJECT_CLASS",
             "reference":  $1,
             "class":      $3,
         }
@@ -987,7 +1032,6 @@ ParseObjectClassAssignment:
 ParseObjectAssignment:
     ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObject {
         $$ = MAP {
-            "assignment": "OBJECT",
             "reference":  $1,
             "class":      $2,
             "value":      $4,
@@ -997,7 +1041,6 @@ ParseObjectAssignment:
 ParseObjectSetAssignment:
     ParseString ParseDefinedObjectClass ParseAssignementSymbol ParseObjectSet {
         $$ = MAP {
-            "assignment": "OBJECT_SET",
             "reference":  $1,
             "class":      $2,
             "values":     $4,
