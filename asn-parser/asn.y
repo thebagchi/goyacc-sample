@@ -333,6 +333,11 @@ type (
 %type<TypeValue>    ParseActualParameter
 %type<TypeValue>    ParseEncodingControlSection
 %type<TypeValue>    ParseEncodingInstructionAssignmentList
+%type<TypeValue>    ParseDefinedObject
+%type<TypeValue>    ParseParameterizedObject
+%type<TypeValue>    ParseDefinedObjectSet
+%type<TypeValue>    ParseParameterizedObjectSet
+%type<TypeValue>    ParseExternalObjectReference
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -1652,8 +1657,69 @@ PaseTypeFromObject:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ReferencedObjects ::=
+ *      DefinedObject | ParameterizedObject | DefinedObjectSet | ParameterizedObjectSet
+ *****************************************************************************/
 ParseReferencedObjects:
-    // TODO: ParseReferencedObjects
+    ParseDefinedObject {
+        $$ = MAP {
+            "definedObject": $1,
+        }
+    }
+  | ParseParameterizedObject {
+        $$ = MAP {
+            "parameterizedObject": $1,
+        }
+    }
+  | ParseDefinedObjectSet {
+        $$ = MAP {
+            "definedObjectSet": $1,
+        }
+    }
+  | ParseParameterizedObjectSet {
+        $$ = MAP {
+            "parameterizedObjectSet": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * DefinedObject ::=
+ *      ExternalObjectReference | objectreference
+ *****************************************************************************/
+ParseDefinedObject:
+    ParseExternalObjectReference{
+        $$ = MAP {
+            "externalObjectReference": $1,
+        }
+    }
+  | ParseString {
+        $$ = MAP {
+            "objectReference": $1,
+        }
+    }
+
+ParseExternalObjectReference:
+    // TODO: ParseExternalObjectReference
+    /* EMPTY */ {
+        $$ = nil
+    }
+ParseParameterizedObject:
+    // TODO: ParseParameterizedObject
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseDefinedObjectSet:
+    // TODO: ParseDefinedObjectSet
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseParameterizedObjectSet:
+    // TODO: ParseParameterizedObjectSet
     /* EMPTY */ {
         $$ = nil
     }
