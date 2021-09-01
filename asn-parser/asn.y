@@ -319,6 +319,17 @@ type (
 %type<TypeValue>    ParseEncodingControlSections
 %type<TypeValue>    ParseReference
 %type<TypeValue>    ParseParameterizedReference
+%type<TypeValue>    ParseDefinedType
+%type<TypeValue>    ParseUsefulType
+%type<TypeValue>    ParseSelectionType
+%type<TypeValue>    PaseTypeFromObject
+%type<TypeValue>    ParseValueSetFromObjects
+%type<TypeValue>    ParseExternalTypeReference
+%type<TypeValue>    ParseParameterizedType
+%type<TypeValue>    ParseParameterizedValueSetType
+%type<TypeValue>    ParseSimpleDefinedType
+%type<TypeValue>    ParseReferencedObjects
+%type<TypeValue>    ParseFieldName
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -1071,6 +1082,16 @@ ParseObjectSetAssignment:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ParameterizedAssignment ::=
+ *      ParameterizedTypeAssignment
+ *      | ParameterizedValueAssignment
+ *      | ParameterizedValueSetTypeAssignment
+ *      | ParameterizedObjectClassAssignment
+ *      | ParameterizedObjectAssignment
+ *      | ParameterizedObjectSetAssignment
+ *****************************************************************************/
 ParseParameterizedAssignment:
     ParseParameterizedTypeAssignment {
         $$ = $1
@@ -1091,6 +1112,13 @@ ParseParameterizedAssignment:
         $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Type ::=
+ *      BuiltinType
+ *      | ReferencedType
+ *      | ConstrainedType
+ *****************************************************************************/
 ParseType:
     ParseBuiltinType {
         $$ = MAP {
@@ -1111,6 +1139,13 @@ ParseType:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Value ::=
+ *      BuiltinValue
+ *      | ReferencedValue
+ *      | ObjectClassFieldValue
+ *****************************************************************************/
 ParseValue:
     ParseBuiltinValue {
         $$ = MAP {
@@ -1129,6 +1164,547 @@ ParseValue:
             "type":       "OBJECT_CLASS_FIELD_VALUE",
             "properties": $1,
         }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * BuiltinType ::=
+ *      BitStringType
+ *      | BooleanType
+ *      | CharacterStringType
+ *      | ChoiceType
+ *      | DateType
+ *      | DateTimeType
+ *      | DurationType
+ *      | EmbeddedPDVType
+ *      | EnumeratedType
+ *      | ExternalType
+ *      | InstanceOfType
+ *      | IntegerType
+ *      | IRIType
+ *      | NullType
+ *      | ObjectClassFieldType
+ *      | ObjectIdentifierType
+ *      | OctetStringType
+ *      | RealType
+ *      | RelativeIRIType
+ *      | RelativeOIDType
+ *      | SequenceType
+ *      | SequenceOfType
+ *      | SetType
+ *      | SetOfType
+ *      | TimeType
+ *      | TimeOfDayType
+ *****************************************************************************/
+ParseBuiltinType:
+    ParseBitStringType {
+        $$ = MAP {
+            "bitStringType": $1,
+        }
+    }
+  | ParseBooleanType {
+        $$ = MAP {
+            "booleanType": $1,
+        }
+    }
+  | ParseCharacterStringType {
+        $$ = MAP {
+            "characterStringType": $1,
+        }
+    }
+  | ParseChoiceType {
+        $$ = MAP {
+            "choiceType": $1,
+        }
+    }
+  | ParseDateType {
+        $$ = MAP {
+            "dateType": $1,
+        }
+    }
+  | ParseDateTimeType {
+        $$ = MAP {
+            "dataTimeType": $1,
+        }
+    }
+  | ParseDurationType {
+        $$ = MAP {
+            "durationType": $1,
+        }
+    }
+  | ParseEmbeddedPDVType {
+        $$ = MAP {
+            "embeddedPDVType": $1,
+        }
+    }
+  | ParseEnumeratedType {
+        $$ = MAP {
+            "enumeratedType": $1,
+        }
+    }
+  | ParseExternalType {
+        $$ = MAP {
+            "externalType": $1,
+        }
+    }
+  | ParseInstanceOfType {
+        $$ = MAP {
+            "instanceOfType": $1,
+        }
+    }
+  | ParseIntegerType {
+        $$ = MAP {
+            "integerType": $1,
+        }
+    }
+  | ParseIRIType {
+        $$ = MAP {
+            "iriType": $1,
+        }
+    }
+  | ParseNullType {
+        $$ = MAP {
+            "nullType": $1,
+        }
+    }
+  | ParseObjectClassFieldType {
+        $$ = MAP {
+            "objectClassFieldType": $1,
+        }
+    }
+  | ParseObjectIdentifierType {
+        $$ = MAP {
+            "objectIdentifierType": $1,
+        }
+    }
+  | ParseOctetStringType {
+        $$ = MAP {
+            "octetStringType": $1,
+        }
+    }
+  | ParseRealType {
+        $$ = MAP {
+            "realType": $1,
+        }
+    }
+  | ParseRelativeIRIType {
+        $$ = MAP {
+            "relativeIRIType": $1,
+        }
+    }
+  | ParseRelativeOIDType {
+        $$ = MAP {
+            "relativeOIDType": $1,
+        }
+    }
+  | ParseSequenceType {
+        $$ = MAP {
+            "sequenceType": $1,
+        }
+    }
+  | ParseSequenceOfType {
+        $$ = MAP {
+            "sequenceOfType": $1,
+        }
+    }
+  | ParseSetType {
+        $$ = MAP {
+            "setType": $1,
+        }
+    }
+  | ParseSetOfType {
+        $$ = MAP {
+            "setOfType": $1,
+        }
+    }
+  | ParsePrefixedType {
+        $$ = MAP {
+            "prefixedType": $1,
+        }
+    }
+  | ParseTimeType {
+        $$ = MAP {
+            "timeType": $1,
+        }
+    }
+  | ParseTimeOfDayType {
+        $$ = MAP {
+            "timeOfDayType": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ReferencedType ::=
+ *      DefinedType
+ *      | UsefulType
+ *      | SelectionType
+ *      | TypeFromObject
+ *      | ValueSetFromObjects
+ *****************************************************************************/
+ParseReferencedType:
+    ParseDefinedType {
+        $$ = MAP {
+            "definedType": $1,
+        }
+    }
+  | ParseUsefulType {
+        $$ = MAP {
+            "usefulType": $1,
+        }
+    }
+  | ParseSelectionType {
+        $$ = MAP {
+            "selectionType": $1,
+        }
+    }
+  | PaseTypeFromObject {
+        $$ = MAP {
+            "typeFromObject": $1,
+        }
+    }
+  | ParseValueSetFromObjects {
+        $$ = MAP {
+            "valueSetFromObjects": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * DefinedType ::=
+ *      ExternalTypeReference
+ *      | typereference
+ *      | ParameterizedType
+ *      | ParameterizedValueSetType
+ *****************************************************************************/
+ParseDefinedType:
+    ParseExternalTypeReference {
+        $$ = MAP {
+            "externalTypeReference": $1,
+        }
+    }
+  | ParseString {
+        $$ = MAP {
+            "typeReference": $1,
+        }
+    }
+  | ParseParameterizedType {
+        $$ = MAP {
+            "parameterizedType": $1,
+        }
+    }
+  | ParseParameterizedValueSetType {
+        $$ = MAP {
+            "parameterizedValueSetType": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExternalTypeReference ::=
+ *      modulereference
+ *      "."
+ *      typereference
+ *****************************************************************************/
+ParseExternalTypeReference:
+    ParseString DOT ParseString {
+        $$ = MAP {
+            "moduleReference": $1,
+            "typeReference":   $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ParameterizedType ::=
+ *      SimpleDefinedType
+ *      ActualParameterList
+ *****************************************************************************/
+ParseParameterizedType:
+    ParseSimpleDefinedType ParseActualParameterList {
+        $$ = MAP {
+            "simpleDefinedType":   $1,
+            "actualParameterList": $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ParameterizedValueSetType ::=
+ *      SimpleDefinedType
+ *      ActualParameterList
+ *****************************************************************************/
+ParseParameterizedValueSetType:
+    ParseSimpleDefinedType ParseActualParameterList {
+        $$ = MAP {
+            "simpleDefinedType":   $1,
+            "actualParameterList": $2,
+        }
+    }
+
+ParseSimpleDefinedType:
+    // TODO: ParseFieldName
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseActualParameterList:
+    // TODO: ParseFieldName
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * UsefulType ::= typereference
+ * Following are the useful types
+ * UTF8String
+ * GraphicString
+ * NumericString
+ * VisibleString
+ * PrintableString
+ * ISO646String
+ * TeletexString
+ * GeneralString
+ * T61String
+ * UniversalString
+ * VideotexString
+ * BMPString
+ * IA5String
+ * GeneralizedTime
+ * UTCTime
+ * ObjectDescriptor
+ *****************************************************************************/
+ParseUsefulType:
+    UTF8STRING_SYMBOL {
+        $$ = STRING(UTF8String)
+    }
+  | GRAPHICSTRING_SYMBOL {
+        $$ = STRING(GraphicString)
+    }
+  | NUMERICSTRING_SYMBOL {
+        $$ = STRING(NumericString)
+    }
+  | VISIBLESTRING_SYMBOL {
+        $$ = STRING(VisibleString)
+    }
+  | PRINTABLESTRING_SYMBOL {
+        $$ = STRING(PrintableString)
+    }
+  | ISO646STRING_SYMBOL {
+        $$ = STRING(ISO646String)
+    }
+  | TELETEXSTRING_SYMBOL {
+        $$ = STRING(TeletexString)
+    }
+  | GENERALSTRING_SYMBOL {
+        $$ = STRING(GeneralString)
+    }
+  | T61STRING_SYMBOL {
+        $$ = STRING(T61String)
+    }
+  | UNIVERSALSTRING_SYMBOL {
+        $$ = STRING(UniversalString)
+    }
+  | VIDEOTEXSTRING_SYMBOL {
+        $$ = STRING(VideotexString)
+    }
+  | BMPSTRING_SYMBOL {
+        $$ = STRING(BMPString)
+    }
+  | IA5STRING_SYMBOL {
+        $$ = STRING(IA5String)
+    }
+  | GENERALIZEDTIME_SYMBOL {
+        $$ = STRING(GeneralizedTime)
+    }
+  | UTCTIME_SYMBOL {
+        $$ = STRING(UTCTime)
+    }
+  | OBJECTDESCRIPTOR_SYMBOL {
+        $$ = STRING(ObjectDescriptor)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SelectionType ::=
+ *      identifier "<" Type
+ *****************************************************************************/
+ParseSelectionType:
+    ParseString LESS_THAN ParseType {
+        $$ = MAP {
+            "identifier": $1,
+            "type":       $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * TypeFromObject ::=
+ *      ReferencedObjects "." FieldName
+ *****************************************************************************/
+PaseTypeFromObject:
+    ParseReferencedObjects DOT ParseFieldName {
+        $$ = MAP {
+            "referencedObjects": $1,
+            "fieldName":         $2,
+        }
+    }
+
+ParseReferencedObjects:
+    // TODO: ParseReferencedObjects
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseFieldName:
+    // TODO: ParseFieldName
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseValueSetFromObjects:
+    // TODO: ParseValueSetFromObjects
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseConstrainedType:
+    // TODO: ParseConstrainedType
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseBitStringType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseBooleanType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseCharacterStringType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+ParseChoiceType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseDateType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+ParseDateTimeType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+ParseDurationType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseEmbeddedPDVType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseEnumeratedType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseExternalType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseInstanceOfType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseIntegerType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseIRIType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseNullType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseObjectClassFieldType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseObjectIdentifierType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseOctetStringType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseRealType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseRelativeIRIType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseRelativeOIDType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSequenceType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSequenceOfType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSetType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSetOfType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParsePrefixedType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseTimeType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseTimeOfDayType:
+    /* EMPTY */ {
+        $$ = nil
     }
 
 ParseBuiltinValue:
@@ -1646,231 +2222,6 @@ ParseSimpleDefinedValue:
 
 ParseActualParameterList:
     {
-        $$ = nil
-    }
-
-ParseBuiltinType:
-    ParseBitStringType {
-
-    }
-  | ParseBooleanType {
-
-    }
-  | ParseCharacterStringType {
-
-    }
-  | ParseChoiceType {
-
-    }
-  | ParseDateType {
-
-    }
-  | ParseDateTimeType {
-
-    }
-  | ParseDurationType {
-
-    }
-  | ParseEmbeddedPDVType {
-
-    }
-  | ParseEnumeratedType {
-
-    }
-  | ParseExternalType {
-
-    }
-  | ParseInstanceOfType {
-
-    }
-  | ParseIntegerType {
-
-    }
-  | ParseIRIType {
-
-    }
-  | ParseNullType {
-
-    }
-  | ParseObjectClassFieldType {
-
-    }
-  | ParseObjectIdentifierType {
-
-    }
-  | ParseOctetStringType {
-
-    }
-  | ParseRealType {
-
-    }
-  | ParseRelativeIRIType {
-
-    }
-  | ParseRelativeOIDType {
-
-    }
-  | ParseSequenceType {
-
-    }
-  | ParseSequenceOfType {
-
-    }
-  | ParseSetType {
-
-    }
-  | ParseSetOfType {
-
-    }
-  | ParsePrefixedType {
-
-    }
-  | ParseTimeType {
-
-    }
-  | ParseTimeOfDayType {
-
-    }
-
-ParseReferencedType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseConstrainedType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseBitStringType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseBooleanType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseCharacterStringType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-ParseChoiceType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseDateType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-ParseDateTimeType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-ParseDurationType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseEmbeddedPDVType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseEnumeratedType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseExternalType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseInstanceOfType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseIntegerType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseIRIType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseNullType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseObjectClassFieldType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseObjectIdentifierType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseOctetStringType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseRealType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseRelativeIRIType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseRelativeOIDType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseSequenceType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseSequenceOfType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseSetType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseSetOfType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParsePrefixedType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseTimeType:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-ParseTimeOfDayType:
-    /* EMPTY */ {
         $$ = nil
     }
 
