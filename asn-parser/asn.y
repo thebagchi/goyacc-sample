@@ -330,6 +330,9 @@ type (
 %type<TypeValue>    ParseSimpleDefinedType
 %type<TypeValue>    ParseReferencedObjects
 %type<TypeValue>    ParseFieldName
+%type<TypeValue>    ParseActualParameter
+%type<TypeValue>    ParseEncodingControlSection
+%type<TypeValue>    ParseEncodingInstructionAssignmentList
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -400,7 +403,42 @@ ParseModule:
  *  |empty
  *****************************************************************************/
 ParseEncodingControlSections:
-    // TODO: ParseEncodingControlSections
+    ParseEncodingControlSection {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseEncodingControlSections ParseEncodingControlSections {
+        $$ = $1
+        $$ = append($$.(LIST), $2)
+    }
+  | /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EncodingControlSection ::=
+ *      ENCODING-CONTROL
+ *      encodingreference
+ *      EncodingInstructionAssignmentList
+ *****************************************************************************/
+ParseEncodingControlSection:
+    ENCODINGCONTROL_SYMBOL TokenCapitalString ParseEncodingInstructionAssignmentList {
+        $$ = MAP {
+            "encodingReference":    $2,
+            "encodingInstructions": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * International Standard identified by the "encodingreference" (see Annex E) and can consist of any
+ *  sequence of ASN.1 lexical items (including comment, cstring and white-space) except the lexical items END and
+ *  ENCODING-CONTROL, which will not appear in an "EncodingInstructionAssignmentList"
+ *****************************************************************************/
+ParseEncodingInstructionAssignmentList:
+    // TODO: ParseEncodingInstructionAssignmentList
     /* EMPTY */ {
         $$ = nil
     }
@@ -1442,16 +1480,79 @@ ParseParameterizedValueSetType:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SimpleDefinedType ::=
+ *      ExternalTypeReference
+ *      | typereference
+ *****************************************************************************/
 ParseSimpleDefinedType:
-    // TODO: ParseFieldName
-    /* EMPTY */ {
-        $$ = nil
+    ParseExternalTypeReference {
+        $$ = MAP {
+            "externalTypeReference": $1,
+        }
+    }
+  | ParseString {
+        $$ = MAP {
+            "typeReference": $1,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ActualParameterList ::= "{" ActualParameter "," + "}"
+ *****************************************************************************/
 ParseActualParameterList:
-    // TODO: ParseFieldName
-    /* EMPTY */ {
-        $$ = nil
+    CURLY_START ParseActualParameter CURLY_END {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | CURLY_START ParseActualParameterList COMMA ParseActualParameter CURLY_END {
+        $$ = $1
+        $$ = append($$.(LIST), $2)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ActualParameter ::=
+ *      Type
+ *      | Value
+ *      | ValueSet
+ *      | DefinedObjectClass
+ *      | Object
+ *      | ObjectSet
+ *****************************************************************************/
+ParseActualParameter:
+    ParseType {
+        $$ = MAP {
+            "type": $1,
+        }
+    }
+  | ParseValue {
+        $$ = MAP {
+            "value": $1,
+        }
+    }
+  | ParseValueSet {
+        $$ = MAP {
+            "valueSet": $1,
+        }
+    }
+  | ParseDefinedObjectClass {
+        $$ = MAP {
+            "definedObjectClass": $1,
+        }
+    }
+  | ParseObject {
+        $$ = MAP {
+            "object": $1,
+        }
+    }
+  | ParseObjectSet {
+        $$ = MAP {
+            "objectSet": $1,
+        }
     }
 
 /******************************************************************************
