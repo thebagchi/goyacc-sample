@@ -399,6 +399,9 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 		case '<':
 			return LESS_THAN
 		case '.':
+			if err := p.CanBeELLIPSIS(); nil == err {
+				return ELLIPSIS
+			}
 			return DOT
 		case '=':
 			return EQUALITY
@@ -430,6 +433,24 @@ func (p *Parser) Lex(lval *ASNSymType) int {
 		break
 	}
 	return 0
+}
+
+func (p *Parser) CanBeELLIPSIS() error {
+	var (
+		count = 0
+	)
+	for count < 2 {
+		b, err := p.Input.Peek(count + 1)
+		if nil != err {
+			return err
+		}
+		if !bytes.HasSuffix(b, []byte(".")) {
+			return fmt.Errorf("invalid byte: %#U", rune(b[count]))
+		}
+		count++
+	}
+	_, _ = p.Input.Discard(count)
+	return nil
 }
 
 func (p *Parser) CanBeCharString() (string, error) {

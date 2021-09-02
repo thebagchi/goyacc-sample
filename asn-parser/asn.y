@@ -80,6 +80,7 @@ type (
 %token <TypeToken> EXCLAMATION
 %token <TypeToken> CARET
 %token <TypeToken> SEMI_COMMA
+%token <TypeToken> ELLIPSIS
 
 %token<TypeString>  ABSENT_SYMBOL
 %token<TypeString>  ABSTRACTSYNTAX_SYMBOL
@@ -341,6 +342,18 @@ type (
 %type<TypeValue>    ParseExternalObjectSetReference
 %type<TypeValue>    ParsePrimitiveFieldNameList
 %type<TypeValue>    ParsePrimitiveFieldName
+%type<TypeValue>    ParseConstraint
+%type<TypeValue>    ParseTypeWithConstraint
+%type<TypeValue>    ParseConstraintSpec
+%type<TypeValue>    ParseExceptionSpec
+%type<TypeValue>    ParseSubtypeConstraint
+%type<TypeValue>    ParseGeneralConstraint
+%type<TypeValue>    ParseElementSetSpecs
+%type<TypeValue>    ParseRootElementSetSpec
+%type<TypeValue>    ParseAdditionalElementSetSpec
+%type<TypeValue>    ParseElementSetSpec
+%type<TypeValue>    ParseUnions
+%type<TypeValue>    ParseExclusions
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -1810,146 +1823,328 @@ ParsePrimitiveFieldName:
         $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ValueSetFromObjects ::=
+ *     ReferencedObjects "." FieldName
+ *****************************************************************************/
 ParseValueSetFromObjects:
-    // TODO: ParseValueSetFromObjects
+    ParseReferencedObjects DOT ParseFieldName {
+        $$ = MAP {
+            "referencedObjects": $1,
+            "fieldname":         $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ConstrainedType ::=
+ *      Type Constraint
+ *      | TypeWithConstraint
+ *****************************************************************************/
+ParseConstrainedType:
+    ParseType ParseConstraint {
+        $$ = MAP {
+            "type":       $1,
+            "constraint": $2,
+        }
+    }
+  | ParseTypeWithConstraint {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Constraint ::=
+ *      "(" ConstraintSpec ExceptionSpec ")"
+ *****************************************************************************/
+ParseConstraint:
+    ROUND_START ParseConstraintSpec ParseExceptionSpec ROUND_END {
+        $$ = MAP {
+            "constraintSpec": $2,
+            "exceptionSpec":  $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ConstraintSpec ::=
+ *      SubtypeConstraint
+ *       | GeneralConstraint
+ *****************************************************************************/
+ParseConstraintSpec:
+    ParseSubtypeConstraint {
+        $$ = MAP {
+            "subtypeConstraint": $1,
+        }
+    }
+  | ParseGeneralConstraint {
+        $$ = MAP {
+            "generalConstraint": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SubtypeConstraint ::=
+ *      ElementSetSpecs
+ *****************************************************************************/
+ParseSubtypeConstraint:
+    ParseElementSetSpecs {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ElementSetSpecs ::=
+ *      RootElementSetSpec
+ *      | RootElementSetSpec "," "..."
+ *      | RootElementSetSpec "," "..." "," AdditionalElementSetSpec
+ *****************************************************************************/
+ParseElementSetSpecs:
+    ParseRootElementSetSpec {
+        $$ = MAP {
+            "rootElementSetSpec": $1,
+        }
+    }
+  | ParseRootElementSetSpec COMMA ELLIPSIS {
+        $$ = MAP {
+            "rootElementSetSpec": $1,
+        }
+    }
+  | ParseRootElementSetSpec COMMA ELLIPSIS COMMA ParseAdditionalElementSetSpec {
+        $$ = MAP {
+            "rootElementSetSpec":       $1,
+            "additionalElementSetSpec": $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RootElementSetSpec ::=
+ *      ElementSetSpec
+ *****************************************************************************/
+ParseRootElementSetSpec:
+    ParseElementSetSpec {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AdditionalElementSetSpec ::=
+ *      ElementSetSpec
+ *****************************************************************************/
+ParseAdditionalElementSetSpec:
+    ParseElementSetSpec {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ElementSetSpec ::=
+ *      Unions
+ *      | ALL Exclusions
+ *****************************************************************************/
+ParseElementSetSpec:
+    ParseUnions {
+        $$ = MAP {
+            "unions": $1,
+        }
+    }
+  | ALL_SYMBOL ParseExclusions {
+        $$ = MAP {
+            "exclusions": $1,
+        }
+    }
+
+ParseUnions:
+    // TODO: ParseUnions
     /* EMPTY */ {
         $$ = nil
     }
 
-ParseConstrainedType:
-    // TODO: ParseConstrainedType
+ParseExclusions:
+    // TODO: ParseExclusions
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseGeneralConstraint:
+    // TODO: ParseGeneralConstraint
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseExceptionSpec:
+    // TODO: ParseExceptionSpec
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseTypeWithConstraint:
+    // TODO: ParseTypeWithConstraint
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseBitStringType:
+    // TODO: ParseBitStringType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseBooleanType:
+    // TODO: ParseBooleanType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseCharacterStringType:
+    // TODO: ParseCharacterStringType
     /* EMPTY */ {
         $$ = nil
     }
+
 ParseChoiceType:
+    // TODO: ParseChoiceType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseDateType:
+    // TODO: ParseDateType
     /* EMPTY */ {
         $$ = nil
     }
+
 ParseDateTimeType:
+    // TODO: ParseDateTimeType
     /* EMPTY */ {
         $$ = nil
     }
+
 ParseDurationType:
+    // TODO: ParseDurationType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseEmbeddedPDVType:
+    // TODO: ParseEmbeddedPDVType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseEnumeratedType:
+    // TODO: ParseEnumeratedType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseExternalType:
+    // TODO: ParseExternalType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseInstanceOfType:
+    // TODO: ParseInstanceOfType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseIntegerType:
+    // TODO: ParseIntegerType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseIRIType:
+    // TODO: ParseIRIType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseNullType:
+    // TODO: ParseNullType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseObjectClassFieldType:
+    // TODO: ParseObjectClassFieldType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseObjectIdentifierType:
+    // TODO: ParseObjectIdentifierType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseOctetStringType:
+    // TODO: ParseOctetStringType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseRealType:
+    // TODO: ParseRealType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseRelativeIRIType:
+    // TODO: ParseRelativeIRIType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseRelativeOIDType:
+    // TODO: ParseRelativeOIDType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseSequenceType:
+    // TODO: ParseSequenceType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseSequenceOfType:
+    // TODO: ParseSequenceOfType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseSetType:
+    // TODO: ParseSetType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseSetOfType:
+    // TODO: ParseSetOfType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParsePrefixedType:
+    // TODO: ParsePrefixedType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseTimeType:
+    // TODO: ParseTimeType
     /* EMPTY */ {
         $$ = nil
     }
 
 ParseTimeOfDayType:
+    // TODO: ParseTimeOfDayType
     /* EMPTY */ {
         $$ = nil
     }
