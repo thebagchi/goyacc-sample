@@ -338,6 +338,9 @@ type (
 %type<TypeValue>    ParseDefinedObjectSet
 %type<TypeValue>    ParseParameterizedObjectSet
 %type<TypeValue>    ParseExternalObjectReference
+%type<TypeValue>    ParseExternalObjectSetReference
+%type<TypeValue>    ParsePrimitiveFieldNameList
+%type<TypeValue>    ParsePrimitiveFieldName
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -1510,12 +1513,12 @@ ParseSimpleDefinedType:
 ParseActualParameterList:
     CURLY_START ParseActualParameter CURLY_END {
         $$ = LIST {
-            $1,
+            $2,
         }
     }
   | CURLY_START ParseActualParameterList COMMA ParseActualParameter CURLY_END {
-        $$ = $1
-        $$ = append($$.(LIST), $2)
+        $$ = $2
+        $$ = append($$.(LIST), $4)
     }
 
 /******************************************************************************
@@ -1701,33 +1704,110 @@ ParseDefinedObject:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ExternalObjectReference ::=
+ *      modulereference "." objectreference
+ *****************************************************************************/
 ParseExternalObjectReference:
-    // TODO: ParseExternalObjectReference
-    /* EMPTY */ {
-        $$ = nil
+    ParseString DOT ParseString {
+        $$ = MAP {
+            "moduleReference": $1,
+            "objectReference": $3,
+        }
     }
+
+/******************************************************************************
+ * BNF Definition:
+ * ParameterizedObject ::=
+ *      DefinedObject ActualParameterList
+ *****************************************************************************/
 ParseParameterizedObject:
-    // TODO: ParseParameterizedObject
-    /* EMPTY */ {
-        $$ = nil
+    ParseDefinedObject ParseActualParameterList {
+        $$ = MAP {
+            "definedObject":       $1,
+            "actualParameterList": $2,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DefinedObjectSet ::=
+ *      ExternalObjectSetReference | objectsetreference
+ *****************************************************************************/
 ParseDefinedObjectSet:
-    // TODO: ParseDefinedObjectSet
-    /* EMPTY */ {
-        $$ = nil
+    ParseExternalObjectSetReference {
+        $$ = $1
+    }
+  | ParseString {
+        $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ExternalObjectSetReference ::=
+ *      modulereference "." objectsetreference
+ *****************************************************************************/
+ParseExternalObjectSetReference:
+    ParseString DOT ParseString {
+        $$ = MAP {
+            "moduleReference":    $1,
+            "objectSetReference": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ParameterizedObjectSet ::=
+ *      DefinedObjectSet ActualParameterList
+ *****************************************************************************/
 ParseParameterizedObjectSet:
-    // TODO: ParseParameterizedObjectSet
-    /* EMPTY */ {
-        $$ = nil
+    ParseDefinedObjectSet ParseActualParameterList {
+        $$ = MAP {
+            "definedObjectSet":    $1,
+            "actualParameterList": $2,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * FieldName ::=
+ *     PrimitiveFieldName "." +
+ *****************************************************************************/
 ParseFieldName:
-    // TODO: ParseFieldName
-    /* EMPTY */ {
-        $$ = nil
+    ParsePrimitiveFieldNameList {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * PrimitiveFieldNameList ::=
+ *     PrimitiveFieldName
+ *     | PrimitiveFieldNameList "." PrimitiveFieldName
+ *****************************************************************************/
+ ParsePrimitiveFieldNameList:
+    ParsePrimitiveFieldName {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParsePrimitiveFieldNameList DOT ParsePrimitiveFieldName {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+     }
+
+/******************************************************************************
+ * BNF Definition:
+ * PrimitiveFieldName ::=
+ *      typefieldreference
+ *      | valuefieldreference
+ *      | valuesetfieldreference
+ *      | objectfieldreference
+ *      | objectsetfieldreference
+ *****************************************************************************/
+ParsePrimitiveFieldName:
+    ParseString {
+        $$ = $1
     }
 
 ParseValueSetFromObjects:
