@@ -354,6 +354,33 @@ type (
 %type<TypeValue>    ParseElementSetSpec
 %type<TypeValue>    ParseUnions
 %type<TypeValue>    ParseExclusions
+%type<TypeValue>    ParseIntersections
+%type<TypeValue>    ParseUElems
+%type<TypeValue>    ParseUnionMark
+%type<TypeValue>    ParseIntersectionElements
+%type<TypeValue>    ParseIElems
+%type<TypeValue>    ParseIntersectionMark
+%type<TypeValue>    ParseElements
+%type<TypeValue>    ParseElems
+%type<TypeValue>    ParseSubtypeElements
+%type<TypeValue>    ParseObjectSetElements
+%type<TypeValue>    ParseSingleValue
+%type<TypeValue>    ParseContainedSubtype
+%type<TypeValue>    ParseValueRange
+%type<TypeValue>    ParsePermittedAlphabet
+%type<TypeValue>    ParseSizeConstraint
+%type<TypeValue>    ParseTypeConstraint
+%type<TypeValue>    ParseInnerTypeConstraints
+%type<TypeValue>    ParsePatternConstraint
+%type<TypeValue>    ParsePropertySettings
+%type<TypeValue>    ParseDurationRange
+%type<TypeValue>    ParseTimePointRange
+%type<TypeValue>    ParseRecurrenceRange
+%type<TypeValue>    ParseIncludes
+%type<TypeValue>    ParseLowerEndpoint
+%type<TypeValue>    ParseLowerEndValue
+%type<TypeValue>    ParseUpperEndpoint
+%type<TypeValue>    ParseUpperEndValue
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -1957,8 +1984,356 @@ ParseElementSetSpec:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Unions ::=
+ *      Intersections
+ *      | UElems UnionMark Intersections
+ *****************************************************************************/
 ParseUnions:
-    // TODO: ParseUnions
+    ParseIntersections {
+        $$ = $1
+    }
+  | ParseUElems ParseUnionMark ParseIntersections {
+        $$ = MAP {
+            "unions":        $1,
+            "intersections": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Intersections ::=
+ *      IntersectionElements
+ *      | IElems IntersectionMark IntersectionElements
+ *****************************************************************************/
+ParseIntersections:
+    ParseIntersectionElements {
+        $$ = $1
+    }
+  | ParseIElems ParseIntersectionMark ParseIntersectionElements {
+        $$ = MAP {
+            "intersections":        $1,
+            "intersectionElements": $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * IntersectionElements ::=
+ *      Elements | Elems Exclusions
+ *****************************************************************************/
+ParseIntersectionElements:
+    ParseElements {
+        $$ = $1
+    }
+  | ParseElems ParseExclusions {
+        $$ = MAP {
+            "elements":   $1,
+            "exclusions": $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Elements ::=
+ *      SubtypeElements
+ *      | ObjectSetElements
+ *      | "(" ElementSetSpec ")"
+ *****************************************************************************/
+ParseElements:
+    ParseSubtypeElements {
+        $$ = MAP {
+            "subtypeElements": $1,
+        }
+    }
+  | ParseObjectSetElements {
+        $$ = MAP {
+            "objectSetElements": $1,
+        }
+    }
+  | ROUND_START ParseElementSetSpec ROUND_END {
+        $$ = MAP {
+            "elementSetSpec": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Elems ::=
+ *      Elements
+ *****************************************************************************/
+ParseElems:
+    ParseElements {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SubtypeElements ::=
+ *      SingleValue
+ *      | ContainedSubtype
+ *      | ValueRange
+ *      | PermittedAlphabet
+ *      | SizeConstraint
+ *      | TypeConstraint
+ *      | InnerTypeConstraints
+ *      | PatternConstraint
+ *      | PropertySettings
+ *      | DurationRange
+ *      | TimePointRange
+ *      | RecurrenceRange
+ *****************************************************************************/
+ParseSubtypeElements:
+    ParseSingleValue {
+        $$ = MAP {
+            "singleValue": $1,
+        }
+    }
+  | ParseContainedSubtype {
+        $$ = MAP {
+            "containedSubtype": $1,
+        }
+    }
+  | ParseValueRange {
+        $$ = MAP {
+            "valueRange": $1,
+        }
+    }
+  | ParsePermittedAlphabet {
+        $$ = MAP {
+            "permittedAlphabet": $1,
+        }
+    }
+  | ParseSizeConstraint {
+        $$ = MAP {
+            "sizeConstraint": $1,
+        }
+    }
+  | ParseTypeConstraint {
+        $$ = MAP {
+            "typeConstraint": $1,
+        }
+    }
+  | ParseInnerTypeConstraints {
+        $$ = MAP {
+            "innerTypeConstraints": $1,
+        }
+    }
+  | ParsePatternConstraint {
+        $$ = MAP {
+            "patternConstraint": $1,
+        }
+    }
+  | ParsePropertySettings {
+        $$ = MAP {
+            "propertySettings": $1,
+        }
+    }
+  | ParseDurationRange {
+        $$ = MAP {
+            "durationRange": $1,
+        }
+    }
+  | ParseTimePointRange {
+        $$ = MAP {
+            "timePointRange": $1,
+        }
+    }
+  | ParseRecurrenceRange {
+        $$ = MAP {
+            "recurrenceRange": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SingleValue ::=
+ *      ParseValue
+ *****************************************************************************/
+ParseSingleValue:
+    ParseValue {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ContainedSubtype ::=
+ *      Includes Type
+ *****************************************************************************/
+ParseContainedSubtype:
+    ParseIncludes ParseType {
+        $$ = $2
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Includes ::=
+ *      INCLUDES | empty
+ *****************************************************************************/
+ParseIncludes:
+    INCLUDES_SYMBOL {
+        $$ = "INCLUDES"
+    }
+  | /* EMPTY */ {
+        $$ = "INCLUDES"
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ValueRange ::=
+ *      LowerEndpoint ".." UpperEndpoint
+ *****************************************************************************/
+ParseValueRange:
+    ParseLowerEndpoint DOT DOT ParseUpperEndpoint {
+        $$ = MAP {
+            "lowerEndpoint": $1,
+            "upperEndpoint": $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * LowerEndpoint ::=
+ *      LowerEndValue | LowerEndValue "<"
+ *****************************************************************************/
+ParseLowerEndpoint:
+    ParseLowerEndValue {
+        $$ = $1
+    }
+  | ParseLowerEndValue LESS_THAN {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * LowerEndValue ::=
+ *      Value | MIN
+ *****************************************************************************/
+ParseLowerEndValue:
+    ParseValue {
+        $$ = $1
+    }
+  | MIN_SYMBOL {
+        $$ = "MIN"
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * UpperEndpoint ::=
+ *      UpperEndValue | "<" UpperEndValue
+ *****************************************************************************/
+ParseUpperEndpoint:
+    ParseUpperEndValue {
+        $$ = $1
+    }
+  | LESS_THAN ParseUpperEndValue {
+        $$ = $2
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * UpperEndValue ::=
+ *      Value | MAX
+ *****************************************************************************/
+ParseUpperEndValue:
+    ParseValue {
+        $$ = $1
+    }
+  | MAX_SYMBOL {
+        $$ = "MAX"
+    }
+
+ParsePermittedAlphabet:
+    // TODO: ParsePermittedAlphabet
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseSizeConstraint:
+    // TODO: ParseSizeConstraint
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseTypeConstraint:
+    // TODO: ParseTypeConstraint
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseInnerTypeConstraints:
+    // TODO: ParseInnerTypeConstraints
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParsePatternConstraint:
+    // TODO: ParsePatternConstraint
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParsePropertySettings:
+    // TODO: ParsePropertySettings
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseDurationRange:
+    // TODO: ParseDurationRange
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseTimePointRange:
+    // TODO: ParseTimePointRange
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseRecurrenceRange:
+    // TODO: ParseRecurrenceRange
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseObjectSetElements:
+    // TODO: ParseObjectSetElements
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseIElems:
+    // TODO: ParseExclusions
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseIntersectionMark:
+    // TODO: ParseExclusions
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * UElems ::=
+ *      Unions
+ *****************************************************************************/
+ParseUElems:
+    ParseUnions {
+        $$ = nil
+    }
+
+ParseUnionMark:
+    // TODO: ParseUnionMark
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseIntersections:
+    // TODO: ParseIntersections
     /* EMPTY */ {
         $$ = nil
     }
