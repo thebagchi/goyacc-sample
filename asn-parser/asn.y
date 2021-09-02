@@ -381,6 +381,12 @@ type (
 %type<TypeValue>    ParseLowerEndValue
 %type<TypeValue>    ParseUpperEndpoint
 %type<TypeValue>    ParseUpperEndValue
+%type<TypeValue>    ParseSingleTypeConstraint
+%type<TypeValue>    ParseMultipleTypeConstraints
+%type<TypeValue>    ParseFullSpecification
+%type<TypeValue>    ParsePartialSpecification
+%type<TypeValue>    ParseTypeConstraints
+%type<TypeValue>    ParseNamedConstraint
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -2244,28 +2250,115 @@ ParseUpperEndValue:
         $$ = "MAX"
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * PermittedAlphabet ::=
+ *      FROM Constraint
+ *****************************************************************************/
 ParsePermittedAlphabet:
-    // TODO: ParsePermittedAlphabet
-    /* EMPTY */ {
-        $$ = nil
+    FROM_SYMBOL ParseConstraint {
+        $$ = $2
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SizeConstraint ::=
+ *      SIZE Constraint
+ *****************************************************************************/
 ParseSizeConstraint:
-    // TODO: ParseSizeConstraint
-    /* EMPTY */ {
-        $$ = nil
+    SIZE_SYMBOL ParseConstraint {
+        $$ = $2
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * TypeConstraint ::=
+ *      Type
+ *****************************************************************************/
 ParseTypeConstraint:
-    // TODO: ParseTypeConstraint
+    ParseType {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * InnerTypeConstraints ::=
+ *      WITH COMPONENT SingleTypeConstraint
+ *      | WITH COMPONENTS MultipleTypeConstraints
+ *****************************************************************************/
+ParseInnerTypeConstraints:
+    WITH_SYMBOL COMPONENTS_SYMBOL ParseSingleTypeConstraint {
+        $$ = $3
+    }
+    WITH_SYMBOL COMPONENTS_SYMBOL ParseMultipleTypeConstraints {
+        $$ = $3
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SingleTypeConstraint::=
+ *      Constraint
+ *****************************************************************************/
+ParseSingleTypeConstraint:
+    ParseConstraint {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * MultipleTypeConstraints ::=
+ *      FullSpecification
+ *      | PartialSpecification
+ *****************************************************************************/
+ParseMultipleTypeConstraints:
+    ParseFullSpecification {
+        $$ = $1
+    }
+  | ParsePartialSpecification {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * FullSpecification ::=
+ *      "{" TypeConstraints "}"
+ *****************************************************************************/
+ParseFullSpecification:
+    CURLY_START ParseTypeConstraints CURLY_END {
+        $$ = $2
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * TypeConstraints ::=
+ *      NamedConstraint
+ *      | NamedConstraint "," TypeConstraints
+ *****************************************************************************/
+ParseTypeConstraints:
+    ParseNamedConstraint {
+        $$ = $1
+    }
+  | ParseNamedConstraint COMMA ParseTypeConstraints {
+        $$ = MAP {
+            "nameConstraint":  $1,
+            "typeConstraints": $3,
+        }
+    }
+
+ParseNamedConstraint:
+    // TODO: ParsePatternConstraint
     /* EMPTY */ {
         $$ = nil
     }
 
-ParseInnerTypeConstraints:
-    // TODO: ParseInnerTypeConstraints
-    /* EMPTY */ {
-        $$ = nil
+/******************************************************************************
+ * BNF Definition:
+ * PartialSpecification ::=
+ *      "{" "..." "," TypeConstraints "}"
+ *****************************************************************************/
+ParsePartialSpecification:
+    CURLY_START ELLIPSIS COMMA ParseTypeConstraints CURLY_END {
+        $$ = $4
     }
 
 ParsePatternConstraint:
