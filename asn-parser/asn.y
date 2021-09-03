@@ -387,6 +387,10 @@ type (
 %type<TypeValue>    ParsePartialSpecification
 %type<TypeValue>    ParseTypeConstraints
 %type<TypeValue>    ParseNamedConstraint
+%type<TypeValue>    ParseComponentConstraint
+%type<TypeValue>    ParseValueConstraint
+%type<TypeValue>    ParsePresenceConstraint
+%type<TypeValue>    ParseObjectSetFromObjects
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -2345,9 +2349,61 @@ ParseTypeConstraints:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * NamedConstraint ::=
+ *      identifier ComponentConstraint
+ *****************************************************************************/
 ParseNamedConstraint:
-    // TODO: ParsePatternConstraint
-    /* EMPTY */ {
+    ParseString ParseComponentConstraint {
+        $$ = MAP {
+            "identifier":          $1,
+            "componentConstraint": $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ComponentConstraint ::=
+ *      ValueConstraint PresenceConstraint
+ *****************************************************************************/
+ParseComponentConstraint:
+    ParseValueConstraint ParsePresenceConstraint {
+        $$ = MAP {
+            "valueConstraint":    $1,
+            "presenceConstraint": $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ValueConstraint ::=
+ *      Constraint | empty
+ *****************************************************************************/
+ParseValueConstraint:
+    ParseConstraint {
+        $$ = $1
+    }
+ |  /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * PresenceConstraint ::=
+ *      PRESENT | ABSENT | OPTIONAL | empty
+ *****************************************************************************/
+ParsePresenceConstraint:
+    PRESENT_SYMBOL {
+        $$ = "PRESENT"
+    }
+  | ABSENT_SYMBOL {
+        $$ = "ABSENT"
+    }
+  | OPTIONAL_SYMBOL {
+        $$ = "OPTIONAL"
+    }
+  | /* EMPTY */ {
         $$ = nil
     }
 
@@ -2361,52 +2417,120 @@ ParsePartialSpecification:
         $$ = $4
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * PatternConstraint ::=
+ *      PATTERN Value
+ *****************************************************************************/
 ParsePatternConstraint:
-    // TODO: ParsePatternConstraint
-    /* EMPTY */ {
-        $$ = nil
+    PATTERN_SYMBOL ParseValue {
+        $$ = $2
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * PropertySettings ::=
+ *      SETTINGS simplestring
+ *****************************************************************************/
 ParsePropertySettings:
-    // TODO: ParsePropertySettings
-    /* EMPTY */ {
-        $$ = nil
+    SETTINGS_SYMBOL ParseString {
+        $$ = $2
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DurationRange ::=
+ *      ValueRange
+ *****************************************************************************/
 ParseDurationRange:
-    // TODO: ParseDurationRange
-    /* EMPTY */ {
-        $$ = nil
+    ParseValueRange {
+        $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * TimePointRange ::=
+ *      ValueRange
+ *****************************************************************************/
 ParseTimePointRange:
-    // TODO: ParseTimePointRange
-    /* EMPTY */ {
-        $$ = nil
+    ParseValueRange {
+        $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * RecurrenceRange ::=
+ *      ValueRange
+ *****************************************************************************/
 ParseRecurrenceRange:
-    // TODO: ParseRecurrenceRange
-    /* EMPTY */ {
-        $$ = nil
+    ParseValueRange {
+        $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectSetElements ::=
+ *      Object
+ *      | DefinedObjectSet
+ *      | ObjectSetFromObjects
+ *      | ParameterizedObjectSet
+ *****************************************************************************/
 ParseObjectSetElements:
-    // TODO: ParseObjectSetElements
-    /* EMPTY */ {
-        $$ = nil
+    ParseObject{
+        $$ = MAP {
+            "object": $1,
+        }
+    }
+  | ParseDefinedObjectSet {
+        $$ = MAP {
+            "definedObjectSet": $1,
+        }
+    }
+  | ParseObjectSetFromObjects {
+        $$ = MAP {
+            "objectSetFromObjects": $1,
+        }
+    }
+  | ParseParameterizedObjectSet {
+        $$ = MAP {
+            "parameterizedObjectSet": $1,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectSetFromObjects ::=
+ *      ReferencedObjects "." FieldName
+ *****************************************************************************/
+ParseObjectSetFromObjects:
+    ParseReferencedObjects DOT ParseFieldName {
+        $$ = MAP {
+            "referencedObjects": $1,
+            "fieldName":         $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * IElems ::=
+ *      Intersections
+ *****************************************************************************/
 ParseIElems:
-    // TODO: ParseExclusions
-    /* EMPTY */ {
-        $$ = nil
+    ParseIntersections {
+        $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * IntersectionMark ::=
+ *      "^" | INTERSECTION
+ *****************************************************************************/
 ParseIntersectionMark:
-    // TODO: ParseExclusions
-    /* EMPTY */ {
-        $$ = nil
+    CARET {
+        $$ = "INTERSECTION"
+    }
+  | INTERSECTION_SYMBOL {
+        $$ = "INTERSECTION"
     }
 
 /******************************************************************************
@@ -2416,7 +2540,7 @@ ParseIntersectionMark:
  *****************************************************************************/
 ParseUElems:
     ParseUnions {
-        $$ = nil
+        $$ = $1
     }
 
 ParseUnionMark:
