@@ -403,6 +403,9 @@ type (
 %type<TypeValue>    ParseAtNotation
 %type<TypeValue>    ParseComponentIdList
 %type<TypeValue>    ParseLevel
+%type<TypeValue>    ParseExceptionIdentification
+%type<TypeValue>    ParseNamedType
+%type<TypeValue>    ParseNamedBitList
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -2753,44 +2756,205 @@ ParseAtNotationList:
  *****************************************************************************/
 ParseAtNotation:
     AT_THE_RATE ParseComponentIdList {
-        $$ = nil
+        $$ = MAP {
+            "componentIdList": $2,
+        }
     }
   | AT_THE_RATE DOT ParseLevel ParseComponentIdList {
-        $$ = nil
+        $$ = MAP {
+            "componentIdList": $4,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ComponentIdList ::=
+ *      identifier "." +
+ *****************************************************************************/
 ParseComponentIdList:
-    // TODO: ParseComponentIdList
-    /* EMPTY */ {
-        $$ = nil
+    ParseString {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseComponentIdList DOT ParseString {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Level ::=
+ *      "." Level | empty
+ *****************************************************************************/
 ParseLevel:
-    // TODO: ParseLevel
-    /* EMPTY */ {
+    DOT ParseLevel {
+        $$ = nil
+    }
+  | /* EMPTY */ {
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ContentsConstraint ::=
+ *      CONTAINING Type
+ *      | ENCODED BY Value
+ *      | CONTAINING Type ENCODED BY Value
+ *****************************************************************************/
 ParseContentsConstraint:
-    // TODO: ParseContentsConstraint
-    /* EMPTY */ {
-        $$ = nil
+    CONTAINING_SYMBOL ParseType {
+        $$ = MAP {
+            "type": $2,
+        }
+    }
+  | ENCODED_SYMBOL BY_SYMBOL ParseValue {
+        $$ = MAP {
+            "value": $3,
+        }
+    }
+  | CONTAINING_SYMBOL ParseType ENCODED_SYMBOL BY_SYMBOL ParseValue {
+        $$ = MAP {
+            "type":  $2,
+            "value": $5,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ExceptionSpec ::=
+ *      "!" ExceptionIdentification | empty
+ *****************************************************************************/
 ParseExceptionSpec:
-    // TODO: ParseExceptionSpec
-    /* EMPTY */ {
+    EXCLAMATION ParseExceptionIdentification {
+
+    }
+  | /* EMPTY */ {
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ExceptionIdentification ::=
+ *      SignedNumber
+ *      | DefinedValue
+ *      | Type ":" Value
+ *****************************************************************************/
+ParseExceptionIdentification:
+    ParseNumber {
+        $$ = $1
+    }
+  | ParseDefinedValue {
+        $$ = $1
+    }
+  | ParseType COLON ParseValue {
+        $$ = MAP {
+            "type":  $1,
+            "value": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * TypeWithConstraint ::=
+ *      SET Constraint OF Type
+ *      | SET SizeConstraint OF Type
+ *      | SEQUENCE Constraint OF Type
+ *      | SEQUENCE SizeConstraint OF Type
+ *      | SET Constraint OF NamedType
+ *      | SET SizeConstraint OF NamedType
+ *      | SEQUENCE Constraint OF NamedType
+ *      | SEQUENCE SizeConstraint OF NamedType
+ *****************************************************************************/
 ParseTypeWithConstraint:
-    // TODO: ParseTypeWithConstraint
-    /* EMPTY */ {
-        $$ = nil
+    SET_SYMBOL ParseConstraint OF_SYMBOL ParseType {
+        $$ = MAP {
+            "setOrSequence": "SET",
+            "constraint":    $2,
+            "type":          $4,
+        }
+    }
+  | SET_SYMBOL ParseSizeConstraint OF_SYMBOL ParseType {
+        $$ = MAP {
+            "setOrSequence":  "SET",
+            "sizeConstraint": $2,
+            "type":           $4,
+        }
+    }
+  | SEQUENCE_SYMBOL ParseConstraint OF_SYMBOL ParseType {
+        $$ = MAP {
+            "setOrSequence": "SEQUENCE",
+            "constraint":    $2,
+            "type":          $4,
+        }
+    }
+  | SEQUENCE_SYMBOL ParseSizeConstraint OF_SYMBOL ParseType {
+        $$ = MAP {
+            "setOrSequence":  "SEQUENCE",
+            "sizeConstraint": $2,
+            "type":           $4,
+        }
+    }
+  | SET_SYMBOL ParseConstraint OF_SYMBOL ParseNamedType {
+        $$ = MAP {
+            "setOrSequence": "SET",
+            "constraint":    $2,
+            "namedType":     $4,
+        }
+    }
+  | SET_SYMBOL ParseSizeConstraint OF_SYMBOL ParseNamedType {
+        $$ = MAP {
+            "setOrSequence":  "SET",
+            "sizeConstraint": $2,
+            "namedType":      $4,
+        }
+    }
+  | SEQUENCE_SYMBOL ParseConstraint OF_SYMBOL ParseNamedType {
+        $$ = MAP {
+            "setOrSequence": "SEQUENCE",
+            "constraint":    $2,
+            "namedType":     $4,
+        }
+    }
+  | SEQUENCE_SYMBOL ParseSizeConstraint OF_SYMBOL ParseNamedType {
+        $$ = MAP {
+            "setOrSequence":  "SEQUENCE",
+            "sizeConstraint": $2,
+            "namedType":      $4,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * NamedType ::=
+ *      identifier Type
+ *****************************************************************************/
+ParseNamedType:
+    ParseString ParseType {
+        $$ = MAP {
+            "identifier": $1,
+            "type":       $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * BitStringType ::=
+ *      BIT STRING
+ *      | BIT STRING "{" NamedBitList "}"
+ *****************************************************************************/
 ParseBitStringType:
-    // TODO: ParseBitStringType
+    BIT_SYMBOL STRING_SYMBOL {
+        $$ = LIST {
+            // EMPTY NAMED BIT LIST ...
+        }
+    }
+    BIT_SYMBOL STRING_SYMBOL CURLY_START ParseNamedBitList CURLY_END {
+        $$ = $4
+    }
+
+ParseNamedBitList:
+    // TODO: ParseNamedBitList
     /* EMPTY */ {
         $$ = nil
     }
