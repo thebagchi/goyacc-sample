@@ -391,6 +391,18 @@ type (
 %type<TypeValue>    ParseValueConstraint
 %type<TypeValue>    ParsePresenceConstraint
 %type<TypeValue>    ParseObjectSetFromObjects
+%type<TypeValue>    ParseUserDefinedConstraint
+%type<TypeValue>    ParseTableConstraint
+%type<TypeValue>    ParseContentsConstraint
+%type<TypeValue>    ParseUserDefinedConstraintParameterList
+%type<TypeValue>    ParseUserDefinedConstraintParameter
+%type<TypeValue>    ParseGovernor
+%type<TypeValue>    ParseSimpleTableConstraint
+%type<TypeValue>    ParseComponentRelationConstraint
+%type<TypeValue>    ParseAtNotationList
+%type<TypeValue>    ParseAtNotation
+%type<TypeValue>    ParseComponentIdList
+%type<TypeValue>    ParseLevel
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -2543,26 +2555,224 @@ ParseUElems:
         $$ = $1
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * UnionMark ::=
+ *      "|" | UNION
+ *****************************************************************************/
 ParseUnionMark:
-    // TODO: ParseUnionMark
-    /* EMPTY */ {
-        $$ = nil
+    PIPE {
+        $$ = "UNION"
+    }
+  | UNION_SYMBOL {
+        $$ = "UNION"
     }
 
-ParseIntersections:
-    // TODO: ParseIntersections
-    /* EMPTY */ {
-        $$ = nil
-    }
-
+/******************************************************************************
+ * BNF Definition:
+ * Exclusions ::=
+ *      EXCEPT Elements
+ *****************************************************************************/
 ParseExclusions:
-    // TODO: ParseExclusions
+    EXCEPT_SYMBOL ParseElements {
+        $$ = $2
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * GeneralConstraint ::=
+ *      UserDefinedConstraint
+ *      | TableConstraint
+ *      | ContentsConstraint
+ *****************************************************************************/
+ParseGeneralConstraint:
+    ParseUserDefinedConstraint {
+        $$ = MAP {
+            "userDefinedConstraint": $1,
+        }
+    }
+  | ParseTableConstraint {
+        $$ = MAP {
+            "tableConstraint": $1,
+        }
+    }
+  | ParseContentsConstraint {
+        $$ = MAP {
+            "contentsConstraint": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * UserDefinedConstraint ::=
+ *      CONSTRAINED BY "{" UserDefinedConstraintParameter "," * "}"
+ *****************************************************************************/
+ParseUserDefinedConstraint:
+    CONSTRAINED_SYMBOL BY_SYMBOL CURLY_START ParseUserDefinedConstraintParameterList CURLY_END {
+        $$ = $4
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * UserDefinedConstraintParameterList ::=
+ *      UserDefinedConstraintParameter
+ *      | UserDefinedConstraintParameterList "," UserDefinedConstraintParameter
+ *      | empty
+ *****************************************************************************/
+ParseUserDefinedConstraintParameterList:
+    ParseUserDefinedConstraintParameter {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseUserDefinedConstraintParameterList COMMA ParseUserDefinedConstraintParameter {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+  | /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * UserDefinedConstraintParameter ::=
+ *      Governor ":" Value
+ *      | Governor ":" Object
+ *      | DefinedObjectSet
+ *      | Type
+ *      | DefinedObjectClass
+ *****************************************************************************/
+ParseUserDefinedConstraintParameter:
+    ParseGovernor COLON ParseValue {
+        $$ = MAP {
+            "governor": $1,
+            "value":    $3,
+        }
+    }
+  | ParseGovernor COLON ParseObject {
+        $$ = MAP {
+            "governor": $1,
+            "object":   $3,
+        }
+    }
+  | ParseDefinedObjectSet {
+        $$ = MAP {
+            "definedObjectSet": $1,
+        }
+    }
+  | ParseType {
+        $$ = MAP {
+            "type": $1,
+        }
+    }
+  | ParseDefinedObjectClass {
+        $$ = MAP {
+            "definedObjectClass": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Governor ::=
+ *      Type | DefinedObjectClass
+ *****************************************************************************/
+ParseGovernor:
+    ParseType {
+        $$ = MAP {
+            "type": $1,
+        }
+    }
+  | ParseDefinedObjectClass {
+        $$ = MAP {
+            "definedObjectClass": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * TableConstraint ::=
+ *      SimpleTableConstraint | ComponentRelationConstraint
+ *****************************************************************************/
+ParseTableConstraint:
+    ParseSimpleTableConstraint{
+        $$ = MAP{
+            "simpleTableConstraint": $1,
+        }
+    }
+  | ParseComponentRelationConstraint {
+        $$ = MAP{
+            "componentRelationConstraint": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SimpleTableConstraint ::=
+ *      ObjectSet
+ *****************************************************************************/
+ParseSimpleTableConstraint:
+    ParseObjectSet {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ComponentRelationConstraint ::=
+ *      "{" DefinedObjectSet "}" "{" AtNotation "," + "}"
+ *****************************************************************************/
+ParseComponentRelationConstraint:
+    CURLY_START ParseDefinedObjectSet CURLY_END CURLY_START ParseAtNotationList CURLY_END
+    /* EMPTY */ {
+        $$ = MAP {
+            "definedObjectSet": $1,
+            "atNotations":      $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AtNotationList ::=
+ *      AtNotation
+ *      AtNotationList "," AtNotation
+ *****************************************************************************/
+ParseAtNotationList:
+    ParseAtNotation {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseAtNotationList COMMA ParseAtNotation {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AtNotation ::=
+ *      "@" ComponentIdList | "@." Level ComponentIdList
+ *****************************************************************************/
+ParseAtNotation:
+    AT_THE_RATE ParseComponentIdList {
+        $$ = nil
+    }
+  | AT_THE_RATE DOT ParseLevel ParseComponentIdList {
+        $$ = nil
+    }
+
+ParseComponentIdList:
+    // TODO: ParseComponentIdList
     /* EMPTY */ {
         $$ = nil
     }
 
-ParseGeneralConstraint:
-    // TODO: ParseGeneralConstraint
+ParseLevel:
+    // TODO: ParseLevel
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+ParseContentsConstraint:
+    // TODO: ParseContentsConstraint
     /* EMPTY */ {
         $$ = nil
     }
