@@ -406,6 +406,7 @@ type (
 %type<TypeValue>    ParseExceptionIdentification
 %type<TypeValue>    ParseNamedType
 %type<TypeValue>    ParseNamedBitList
+%type<TypeValue>    ParseNamedBit
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -2945,30 +2946,174 @@ ParseNamedType:
  *****************************************************************************/
 ParseBitStringType:
     BIT_SYMBOL STRING_SYMBOL {
-        $$ = LIST {
-            // EMPTY NAMED BIT LIST ...
+        $$ = MAP {
+            "type": "BIT_STRING",
         }
     }
-    BIT_SYMBOL STRING_SYMBOL CURLY_START ParseNamedBitList CURLY_END {
-        $$ = $4
+  | BIT_SYMBOL STRING_SYMBOL CURLY_START ParseNamedBitList CURLY_END {
+        $$ = MAP {
+            "type":      "BIT_STRING",
+            "namedBits": $4,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * NamedBitList ::=
+ *      NamedBit
+ *      | NamedBitList "," NamedBit
+ *****************************************************************************/
 ParseNamedBitList:
-    // TODO: ParseNamedBitList
-    /* EMPTY */ {
-        $$ = nil
+    ParseNamedBit {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseNamedBitList COMMA ParseNamedBit {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * NamedBit ::=
+ *      identifier "(" number ")"
+ *      | identifier "(" DefinedValue ")"
+ *****************************************************************************/
+ParseNamedBit:
+    ParseString ROUND_START ParseNumber ROUND_END {
+        $$ = MAP {
+            "identifier": $1,
+            "number":     $3,
+        }
+    }
+  | ParseString ROUND_START ParseDefinedValue ROUND_END {
+        $$ = MAP {
+            "identifier":   $1,
+            "definedValue": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * BooleanType ::=
+ *      BOOLEAN
+ *****************************************************************************/
 ParseBooleanType:
-    // TODO: ParseBooleanType
-    /* EMPTY */ {
-        $$ = nil
+    BOOLEAN_SYMBOL {
+        $$ = MAP {
+            "type": "BOOLEAN",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * CharacterStringType ::=
+ *      RestrictedCharacterStringType
+ *      | UnrestrictedCharacterStringType
+ *****************************************************************************/
 ParseCharacterStringType:
-    // TODO: ParseCharacterStringType
-    /* EMPTY */ {
-        $$ = nil
+    ParseRestrictedCharacterStringType {
+        $$ = $1
+    }
+  | ParseUnrestrictedCharacterStringType {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RestrictedCharacterStringType ::=
+ *      BMPString
+ *      | GeneralString
+ *      | GraphicString
+ *      | IA5String
+ *      | ISO646String
+ *      | NumericString
+ *      | PrintableString
+ *      | TeletexString
+ *      | T61String
+ *      | UniversalString
+ *      | UTF8String
+ *      | VideotexString
+ *      | VisibleString
+ *****************************************************************************/
+ParseRestrictedCharacterStringType:
+    BMPSTRING_SYMBOL {
+        $$ = MAP {
+            "type": "BMP_STRING",
+        }
+    }
+  | GENERALSTRING_SYMBOL {
+        $$ = MAP {
+            "type": "GENERAL_STRING",
+        }
+    }
+  | GRAPHICSTRING_SYMBOL {
+        $$ = MAP {
+            "type": "GRAPHIC_STRING",
+        }
+    }
+  | IA5STRING_SYMBOL {
+        $$ = MAP {
+            "type": "IA5_STRING",
+        }
+    }
+  | ISO646STRING_SYMBOL {
+        $$ = MAP {
+            "type": "ISO646_STRING",
+        }
+    }
+  | NUMERICSTRING_SYMBOL {
+        $$ = MAP {
+            "type": "NUMERIC_STRING",
+        }
+    }
+  | PRINTABLESTRING_SYMBOL {
+        $$ = MAP {
+            "type": "PRINTABLE_STRING",
+        }
+    }
+  | TELETEXSTRING_SYMBOL {
+        $$ = MAP {
+            "type": "TELETEX_STRING",
+        }
+    }
+  | T61STRING_SYMBOL {
+        $$ = MAP {
+            "type": "T61_STRING",
+        }
+    }
+  | UNIVERSALSTRING_SYMBOL {
+        $$ = MAP {
+            "type": "UNIVERSAL_STRING",
+        }
+    }
+  | UTF8STRING_SYMBOL {
+        $$ = MAP {
+            "type": "UTF8_STRING",
+        }
+    }
+  | VIDEOTEXSTRING_SYMBOL {
+        $$ = MAP {
+            "type": "VIDEO_TEX_STRING",
+        }
+    }
+  | VISIBLESTRING_SYMBOL {
+        $$ = MAP {
+            "type": "VISIBLE_STRING",
+        }        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * UnrestrictedCharacterStringType ::=
+ *      CHARACTER STRING
+ *****************************************************************************/
+ParseUnrestrictedCharacterStringType:
+    CHARACTER_SYMBOL STRING_SYMBOL {
+        $$ = MAP {
+            "type": "CHARACTER_STRING",
+        }
     }
 
 ParseChoiceType:
