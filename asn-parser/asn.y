@@ -5,7 +5,9 @@ import (
     "fmt"
     "encoding/json"
 )
+
 var code bytes.Buffer
+
 func AddLine(line string) {
     code.WriteString(line)
     code.WriteByte('\n')
@@ -30,6 +32,10 @@ func Join(values ...string) string {
         buffer.WriteString(value)
     }
     return buffer.String()
+}
+
+func SkipBlock() {
+    parser.ExpectBlock = true
 }
 
 func SetResult(l ASNLexer, v VALUE) {
@@ -184,6 +190,7 @@ type (
 %token<TypeString>  TokenBString
 %token<TypeString>  TokenHString
 %token<TypeString>  TokenCString
+%token<TypeString>  TokenBlock
 
 %type<TypeValue>    ParseModules
 %type<TypeValue>    ParseModule
@@ -407,10 +414,23 @@ type (
 %type<TypeValue>    ParseNamedType
 %type<TypeValue>    ParseNamedBitList
 %type<TypeValue>    ParseNamedBit
+%type<TypeValue>    ParseRestrictedCharacterStringType
+%type<TypeValue>    ParseUnrestrictedCharacterStringType
+%type<TypeValue>    ParseAlternativeTypeLists
+%type<TypeValue>    ParseRootAlternativeTypeList
+%type<TypeValue>    ParseExtensionAndException
+%type<TypeValue>    ParseExtensionAdditionAlternatives
+%type<TypeValue>    ParseOptionalExtensionMarker
+%type<TypeValue>    ParseAlternativeTypeList
+%type<TypeValue>    ParseExtensionAdditionAlternativesList
+%type<TypeValue>    ParseExtensionAdditionAlternative
+%type<TypeValue>    ParseExtensionAdditionAlternativesGroup
+%type<TypeValue>    ParseVersionNumber
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
 %type<TypeValue>    ParseBoolean
+%type<TypeValue>    ParseBlock
 
 %start ParseASN
 
@@ -2828,7 +2848,9 @@ ParseContentsConstraint:
  *****************************************************************************/
 ParseExceptionSpec:
     EXCLAMATION ParseExceptionIdentification {
-
+        $$ = MAP {
+            "exceptionIdentification": $1,
+        }
     }
   | /* EMPTY */ {
         $$ = nil
@@ -3101,7 +3123,7 @@ ParseRestrictedCharacterStringType:
   | VISIBLESTRING_SYMBOL {
         $$ = MAP {
             "type": "VISIBLE_STRING",
-        }        $$ = nil
+        }
     }
 
 /******************************************************************************
@@ -3116,9 +3138,162 @@ ParseUnrestrictedCharacterStringType:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ChoiceType ::=
+ *      CHOICE "{" AlternativeTypeLists "}"
+ *****************************************************************************/
 ParseChoiceType:
-    // TODO: ParseChoiceType
-    /* EMPTY */ {
+    CHOICE_SYMBOL CURLY_START ParseAlternativeTypeLists CURLY_END {
+        $$ = MAP {
+            "type":           "CHOICE",
+            "alternateTypes": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AlternativeTypeLists ::=
+ *      RootAlternativeTypeList
+ *      | RootAlternativeTypeList "," ExtensionAndException ExtensionAdditionAlternatives OptionalExtensionMarker
+ *****************************************************************************/
+ParseAlternativeTypeLists:
+    ParseRootAlternativeTypeList {
+        $$ = MAP {
+            "alternativeTypes": $1,
+        }
+    }
+  | ParseRootAlternativeTypeList COMMA ParseExtensionAndException ParseExtensionAdditionAlternatives ParseOptionalExtensionMarker {
+        $$ = MAP {
+            "alternativeTypes":              $1,
+            "extensionAndException":         $3,
+            "extensionAdditionAlternatives": $4,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RootAlternativeTypeList ::=
+ *      AlternativeTypeList
+ *****************************************************************************/
+ParseRootAlternativeTypeList:
+    ParseAlternativeTypeList {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AlternativeTypeList ::=
+ *       NamedType
+ *       | AlternativeTypeList "," NamedType
+ *****************************************************************************/
+ParseAlternativeTypeList:
+    ParseNamedType {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseAlternativeTypeList COMMA ParseNamedType {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAndException ::=
+ *      "..."
+ *      | "..." ExceptionSpec
+ *****************************************************************************/
+ParseExtensionAndException:
+    ELLIPSIS {
+        $$ = nil
+    }
+  | ELLIPSIS  ParseExceptionSpec {
+        $$ = $2
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionAlternatives ::=
+ *      "," ExtensionAdditionAlternativesList
+ *      | empty
+ *****************************************************************************/
+ParseExtensionAdditionAlternatives:
+    COMMA ParseExtensionAdditionAlternativesList {
+        $$ = $2
+    }
+  | /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionAlternativesList ::=
+ *      ExtensionAdditionAlternative
+ *      | ExtensionAdditionAlternativesList "," ExtensionAdditionAlternative
+ *****************************************************************************/
+ParseExtensionAdditionAlternativesList:
+    ParseExtensionAdditionAlternative {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseExtensionAdditionAlternativesList COMMA ParseExtensionAdditionAlternative {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionAlternative ::=
+ *      ExtensionAdditionAlternativesGroup
+ *      | NamedType
+ *****************************************************************************/
+ParseExtensionAdditionAlternative:
+    ParseExtensionAdditionAlternativesGroup {
+        $$ = $1
+    }
+  | ParseNamedType {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionAlternativesGroup ::=
+ *      "[[" VersionNumber AlternativeTypeList "]]"
+ *****************************************************************************/
+ParseExtensionAdditionAlternativesGroup:
+    SQUARE_START SQUARE_START ParseVersionNumber ParseAlternativeTypeList SQUARE_END SQUARE_END {
+        $$ = MAP {
+            "version":          $3,
+            "alternativeTypes": $4,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * VersionNumber ::=
+ *      empty | number ":"
+ *****************************************************************************/
+ParseVersionNumber:
+    ParseNumber COLON {
+        $$ = $1
+    }
+  | /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * OptionalExtensionMarker ::=
+ *      "," "..."
+ *      | empty
+ *****************************************************************************/
+ParseOptionalExtensionMarker:
+    COMMA ELLIPSIS {
+        $$ = true
+    }
+  | /* EMPTY */ {
         $$ = nil
     }
 
@@ -3811,5 +3986,13 @@ ParseNumber:
 ParseAssignementSymbol:
     COLON COLON EQUALITY {
         $$ = "::="
+    }
+
+ParseBlock:
+    {
+        SkipBlock()
+    }
+    TokenBlock {
+        $$ = $2
     }
 %%

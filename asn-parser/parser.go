@@ -296,9 +296,10 @@ var Tokens = map[int]string{
 }
 
 type Parser struct {
-	Input    *bufio.Reader
-	ErrorMsg error
-	Result   string
+	Input       *bufio.Reader
+	ErrorMsg    error
+	Result      string
+	ExpectBlock bool
 }
 
 func IsUpper(str string) bool {
@@ -630,15 +631,22 @@ func RemoveComments(content []byte) []byte {
 	return RemoveBlanks(RemoveLineComment(RemoveBlockComment(content)))
 }
 
+var parser *Parser = nil
+
+func MakeParser(content []byte) *Parser {
+	parser = &Parser{
+		Input: bufio.NewReader(bytes.NewReader(content)),
+	}
+	return parser
+}
+
 func Parse(content []byte) (string, error) {
 
 	ASNDebug = 1
 	ASNErrorVerbose = true
 
 	content = RemoveComments(content)
-	parser := &Parser{
-		Input: bufio.NewReader(bytes.NewReader(content)),
-	}
+	parser := MakeParser(content)
 	ASNParse(parser)
 	return parser.Result, parser.ErrorMsg
 }
