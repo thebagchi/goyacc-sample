@@ -433,6 +433,15 @@ type (
 %type<TypeValue>    ParseEnumerationItem
 %type<TypeValue>    ParseNamedNumber
 %type<TypeValue>    ParseNamedNumberList
+%type<TypeValue>    ParseComponentTypeLists
+%type<TypeValue>    ParseRootComponentTypeList
+%type<TypeValue>    ParseExtensionAdditions
+%type<TypeValue>    ParseExtensionEndMarker
+%type<TypeValue>    ParseComponentTypeList
+%type<TypeValue>    ParseComponentType
+%type<TypeValue>    ParseExtensionAdditionList
+%type<TypeValue>    ParseExtensionAddition
+%type<TypeValue>    ParseExtensionAdditionGroup
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -3526,58 +3535,306 @@ ParseNamedNumberList:
         $$ = append($$.(LIST), $3)
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * IRIType ::=
+ *      OID-IRI
+ *****************************************************************************/
 ParseIRIType:
-    // TODO: ParseIRIType
-    /* EMPTY */ {
-        $$ = nil
+    OIDIRI_SYMBOL {
+        $$ = MAP {
+            "type": "OID_IRI",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * NullType ::=
+ *      NULL
+ *****************************************************************************/
 ParseNullType:
-    // TODO: ParseNullType
-    /* EMPTY */ {
-        $$ = nil
+    NULL_SYMBOL {
+        $$ = MAP {
+            "type": "NULL",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectClassFieldType ::=
+ *      DefinedObjectClass "." FieldName
+ *****************************************************************************/
 ParseObjectClassFieldType:
-    // TODO: ParseObjectClassFieldType
-    /* EMPTY */ {
-        $$ = nil
+    ParseDefinedObjectClass DOT ParseFieldName {
+        $$ = MAP {
+            "type":               "OBJECT_FIELD",
+            "definedObjectClass": $1,
+            "fieldName":          $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectIdentifierType ::=
+ *      OBJECT IDENTIFIER
+ *****************************************************************************/
 ParseObjectIdentifierType:
-    // TODO: ParseObjectIdentifierType
-    /* EMPTY */ {
-        $$ = nil
+    OBJECT_SYMBOL IDENTIFIER_SYMBOL {
+        $$ = MAP {
+            "type": "OBJECT_IDENTIFIER",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * OctetStringType ::=
+ *      OCTET STRING
+ *****************************************************************************/
 ParseOctetStringType:
-    // TODO: ParseOctetStringType
-    /* EMPTY */ {
-        $$ = nil
+    OCTET_SYMBOL STRING_SYMBOL {
+        $$ = MAP {
+            "type": "OCTET_STRING",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * RealType ::=
+ *      REAL
+ *****************************************************************************/
 ParseRealType:
-    // TODO: ParseRealType
-    /* EMPTY */ {
-        $$ = nil
+    REAL_SYMBOL {
+        $$ = MAP {
+            "type": "REAL",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * RelativeIRIType ::=
+ *      RELATIVE-OID-IRI
+ *****************************************************************************/
 ParseRelativeIRIType:
-    // TODO: ParseRelativeIRIType
-    /* EMPTY */ {
-        $$ = nil
+    RELATIVEOIDIRI_SYMBOL {
+        $$ = MAP {
+            "type": "RELATIVE_OID_IRI",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * RelativeOIDType ::=
+ *      RELATIVE-OID
+ *****************************************************************************/
 ParseRelativeOIDType:
-    // TODO: ParseRelativeOIDType
-    /* EMPTY */ {
+    RELATIVEOID_SYMBOL {
+        $$ = MAP {
+            "type": "RELATIVE_OID",
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SequenceType ::=
+ *      SEQUENCE "{" "}"
+ *      | SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"
+ *      | SEQUENCE "{" ComponentTypeLists "}"
+ *****************************************************************************/
+ParseSequenceType:
+    SEQUENCE_SYMBOL CURLY_START CURLY_END {
+        $$ = MAP {
+            "type": "SEQUENCE",
+        }
+    }
+    SEQUENCE_SYMBOL CURLY_START ParseExtensionAndException ParseOptionalExtensionMarker CURLY_END {
+        $$ = MAP {
+            "type":                  "SEQUENCE",
+            "extensionAndException": $3,
+        }
+    }
+    SEQUENCE_SYMBOL CURLY_START ParseComponentTypeLists CURLY_END {
+        $$ = MAP {
+            "type":           "SEQUENCE",
+            "componentTypes": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ComponentTypeLists ::=
+ *      RootComponentTypeList
+ *      | RootComponentTypeList "," ExtensionAndException ExtensionAdditions OptionalExtensionMarker
+ *      | RootComponentTypeList "," ExtensionAndException ExtensionAdditions ExtensionEndMarker "," RootComponentTypeList
+ *      | ExtensionAndException ExtensionAdditions ExensionEndMarker "," RootComponentTypeList
+ *      | ExtensionAndException ExtensionAdditions OptionalExtensionMarker
+ *****************************************************************************/
+ParseComponentTypeLists:
+    ParseRootComponentTypeList {
+        $$ = MAP {
+            "rootComponentTypes":    $1,
+        }
+    }
+  | ParseRootComponentTypeList COMMA ParseExtensionAndException ParseExtensionAdditions ParseOptionalExtensionMarker {
+        $$ = MAP {
+            "extensionAndException": $3,
+            "extensionAdditions":    $4,
+            "rootComponentTypes":    $1,
+        }
+    }
+  | ParseRootComponentTypeList COMMA ParseExtensionAndException ParseExtensionAdditions ParseExtensionEndMarker COMMA ParseRootComponentTypeList {
+        $$ = MAP {
+            "extensionAndException": $3,
+            "extensionAdditions":    $4,
+            "rootComponentTypes":    append($1.(LIST), $7.(LIST)),
+        }
+    }
+  | ParseExtensionAndException ParseExtensionAdditions ParseExtensionEndMarker COMMA ParseRootComponentTypeList {
+        $$ = MAP {
+            "extensionAndException": $1,
+            "extensionAdditions":    $2,
+            "rootComponentTypes":    $5,
+        }
+    }
+  | ParseExtensionAndException ParseExtensionAdditions ParseOptionalExtensionMarker {
+        $$ = MAP {
+            "extensionAndException": $1,
+            "extensionAdditions":    $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RootComponentTypeList ::=
+ *      ComponentTypeList
+ *****************************************************************************/
+ParseRootComponentTypeList:
+    ParseComponentTypeList {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ComponentTypeList ::=
+ *      ComponentType
+ *      | ComponentTypeList "," ComponentType
+ *****************************************************************************/
+ParseComponentTypeList:
+    ParseComponentType {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseComponentTypeList COMMA ParseComponentType {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ComponentType ::=
+ *      NamedType
+ *      | NamedType OPTIONAL
+ *      | NamedType DEFAULT Value
+ *      | COMPONENTS OF Type
+ *****************************************************************************/
+ParseComponentType:
+    ParseNamedType {
+        $$ = MAP {
+            "type":     "COMPONENTS",
+            "namedType": $1,
+        }
+    }
+  | ParseNamedType OPTIONAL_SYMBOL {
+        $$ = MAP {
+            "type":     "COMPONENTS",
+            "namedType": $1,
+            "optional":  true,
+        }
+    }
+  | ParseNamedType DEFAULT_SYMBOL ParseValue {
+        $$ = MAP {
+            "type":         "COMPONENTS",
+            "namedType":    $1,
+            "defaultValue": $3,
+        }
+    }
+  | COMPONENTS_SYMBOL OF_SYMBOL ParseType {
+        $$ = MAP {
+            "type":     "COMPONENTS",
+            "typeName": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionList ::=
+ *      ExtensionAddition
+ *      | ExtensionAdditionList "," ExtensionAddition
+ *****************************************************************************/
+ParseExtensionAdditions:
+    COMMA ParseExtensionAdditionList {
+        $$ = $2
+    }
+  | /* EMPTY */ {
         $$ = nil
     }
 
-ParseSequenceType:
-    // TODO: ParseSequenceType
-    /* EMPTY */ {
-        $$ = nil
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionList ::=
+ *      ExtensionAddition
+ *      | ExtensionAdditionList "," ExtensionAddition
+ *****************************************************************************/
+ParseExtensionAdditionList:
+    ParseExtensionAddition {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseExtensionAdditionList COMMA ParseExtensionAddition {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAddition ::=
+ *      ComponentType
+ *      | ExtensionAdditionGroup
+ *****************************************************************************/
+ParseExtensionAddition:
+    ParseComponentType {
+        $$ = MAP {
+            "componentType": $1,
+        }
+    }
+  | ParseExtensionAdditionGroup {
+        $$ = MAP {
+            "extensionAdditionGroup": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionGroup ::=
+ *      "[[" VersionNumber ComponentTypeList "]]"
+ *****************************************************************************/
+ParseExtensionAdditionGroup:
+    SQUARE_START SQUARE_START ParseVersionNumber ParseComponentTypeList SQUARE_END SQUARE_END {
+        $$ = MAP {
+            "version":        $3,
+            "componentTypes": $4,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionEndMarker ::=
+ *      "," "..."
+ *****************************************************************************/
+ParseExtensionEndMarker:
+    COMMA ELLIPSIS {
+        $$ = true
     }
 
 ParseSequenceOfType:
