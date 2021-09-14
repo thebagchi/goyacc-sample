@@ -425,7 +425,14 @@ type (
 %type<TypeValue>    ParseExtensionAdditionAlternativesList
 %type<TypeValue>    ParseExtensionAdditionAlternative
 %type<TypeValue>    ParseExtensionAdditionAlternativesGroup
+%type<TypeValue>    ParseEnumerations
 %type<TypeValue>    ParseVersionNumber
+%type<TypeValue>    ParseRootEnumeration
+%type<TypeValue>    ParseAdditionalEnumeration
+%type<TypeValue>    ParseEnumeration
+%type<TypeValue>    ParseEnumerationItem
+%type<TypeValue>    ParseNamedNumber
+%type<TypeValue>    ParseNamedNumberList
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -3297,52 +3304,226 @@ ParseOptionalExtensionMarker:
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DateType ::=
+ *      DATE
+ *****************************************************************************/
 ParseDateType:
-    // TODO: ParseDateType
-    /* EMPTY */ {
-        $$ = nil
+    DATE_SYMBOL {
+        $$ = MAP {
+            "type": "DATE",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DateTimeType ::=
+ *      DATE-TIME
+ *****************************************************************************/
 ParseDateTimeType:
-    // TODO: ParseDateTimeType
-    /* EMPTY */ {
-        $$ = nil
+    DATETIME_SYMBOL {
+        $$ = MAP {
+            "type": "DATE_TIME",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DurationType ::=
+ *      DURATION
+ *****************************************************************************/
 ParseDurationType:
-    // TODO: ParseDurationType
-    /* EMPTY */ {
-        $$ = nil
+    DURATION_SYMBOL {
+        $$ = MAP {
+            "type": "DURATION",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * EmbeddedPDVType ::=
+ *      EMBEDDED PDV
+ *****************************************************************************/
 ParseEmbeddedPDVType:
-    // TODO: ParseEmbeddedPDVType
-    /* EMPTY */ {
-        $$ = nil
+    EMBEDDED_SYMBOL PDV_SYMBOL {
+        $$ = MAP {
+            "type": "EMBEDDED_PDV",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * EnumeratedType ::=
+ *      ENUMERATED "{" Enumerations "}"
+ *****************************************************************************/
 ParseEnumeratedType:
-    // TODO: ParseEnumeratedType
-    /* EMPTY */ {
-        $$ = nil
+    ENUMERATED_SYMBOL CURLY_START ParseEnumerations CURLY_END {
+        $$ = MAP {
+            "type":         "ENUMERATED",
+            "enumerations": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Enumerations ::=
+ *      RootEnumeration
+ *      | RootEnumeration "," "..." ExceptionSpec
+ *      | RootEnumeration "," "..." ExceptionSpec "," AdditionalEnumeration
+ *****************************************************************************/
+ParseEnumerations:
+    ParseRootEnumeration {
+        $$ = MAP {
+            "enumeration": $1,
+        }
+    }
+  | ParseRootEnumeration COMMA ELLIPSIS ParseExceptionSpec {
+        $$ = MAP {
+            "enumeration": $1,
+            "exception":   $4,
+        }
+    }
+  | ParseRootEnumeration COMMA ELLIPSIS ParseExceptionSpec COMMA ParseAdditionalEnumeration {
+        $$ = MAP {
+            "enumeration":           $1,
+            "exception":             $4,
+            "additionalEnumeration": $6,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RootEnumeration ::=
+ *      Enumeration
+ *****************************************************************************/
+ParseRootEnumeration:
+    ParseEnumeration {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AdditionalEnumeration ::=
+ *      Enumeration
+ *****************************************************************************/
+ParseAdditionalEnumeration:
+    ParseEnumeration {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Enumeration ::=
+ *      EnumerationItem
+ *      | EnumerationItem "," Enumeration
+ *****************************************************************************/
+ParseEnumeration:
+    ParseEnumerationItem {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseEnumeration COMMA ParseEnumerationItem {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EnumerationItem ::=
+ *      identifier | NamedNumber
+ *****************************************************************************/
+ParseEnumerationItem:
+    ParseString {
+        $$ = MAP {
+            "name": $1,
+        }
+    }
+  | ParseNamedNumber {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * NamedNumber ::=
+ *      identifier "(" SignedNumber ")"
+ *      | identifier "(" DefinedValue ")"
+ *****************************************************************************/
+ParseNamedNumber:
+    ParseString ROUND_START ParseNumber ROUND_END
+    /* EMPTY */ {
+        $$ = MAP {
+            "name":   $1,
+            "number": $3,
+        }
+    }
+  | ParseString ROUND_START ParseDefinedValue ROUND_END {
+        $$ = MAP {
+            "name":         $1,
+            "definedValue": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExternalType ::=
+ *      EXTERNAL
+ *****************************************************************************/
 ParseExternalType:
-    // TODO: ParseExternalType
-    /* EMPTY */ {
-        $$ = nil
+    EXTERNEL_SYMBOL {
+        $$ = MAP {
+            "type": "EXTERNAL",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * InstanceOfType ::=
+ *      INSTANCE OF DefinedObjectClass
+ *****************************************************************************/
 ParseInstanceOfType:
-    // TODO: ParseInstanceOfType
-    /* EMPTY */ {
-        $$ = nil
+    INSTANCE_SYMBOL OF_SYMBOL ParseDefinedObjectClass {
+        $$ = MAP {
+            "type":               "INSTANCE_OF",
+            "definedObjectClass": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * IntegerType ::=
+ *      INTEGER
+ *      | INTEGER "{" NamedNumberList "}"
+ *****************************************************************************/
 ParseIntegerType:
-    // TODO: ParseIntegerType
-    /* EMPTY */ {
-        $$ = nil
+    INTEGER_SYMBOL {
+        $$ = MAP {
+            "type": "INTEGER",
+        }
+    }
+  | INTEGER_SYMBOL CURLY_START ParseNamedNumberList CURLY_END {
+        $$ = MAP {
+            "type":    "INTEGER",
+            "numbers": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * NamedNumberList ::=
+ *      NamedNumber
+ *      | NamedNumberList "," NamedNumber
+ *****************************************************************************/
+ParseNamedNumberList:
+    ParseNamedNumber {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseNamedNumberList COMMA ParseNamedNumber {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
     }
 
 ParseIRIType:
