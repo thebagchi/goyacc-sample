@@ -442,6 +442,8 @@ type (
 %type<TypeValue>    ParseExtensionAdditionList
 %type<TypeValue>    ParseExtensionAddition
 %type<TypeValue>    ParseExtensionAdditionGroup
+%type<TypeValue>    ParseTaggedType
+%type<TypeValue>    ParseEncodingPrefixedType
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -3837,42 +3839,128 @@ ParseExtensionEndMarker:
         $$ = true
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SequenceOfType ::=
+ *      SEQUENCE OF Type
+ *      | SEQUENCE OF NamedType
+ *****************************************************************************/
 ParseSequenceOfType:
-    // TODO: ParseSequenceOfType
-    /* EMPTY */ {
-        $$ = nil
+    SEQUENCE_SYMBOL OF_SYMBOL ParseType {
+        $$ = MAP {
+            "type":     "SEQUENCE_OF",
+            "typeName": $3,
+        }
+    }
+  | SEQUENCE_SYMBOL OF_SYMBOL ParseNamedType {
+        $$ = MAP {
+            "type":      "SEQUENCE_OF",
+            "namedType": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SetType ::=
+ *      SET "{" "}"
+ *      | SET "{" ExtensionAndException OptionalExtensionMarker "}"
+ *      | SET "{" ComponentTypeLists "}"
+ *****************************************************************************/
 ParseSetType:
-    // TODO: ParseSetType
-    /* EMPTY */ {
-        $$ = nil
+    SET_SYMBOL CURLY_START CURLY_END {
+        $$ = MAP {
+            "type": "SET",
+        }
+    }
+    SET_SYMBOL CURLY_START ParseExtensionAndException ParseOptionalExtensionMarker CURLY_END {
+        $$ = MAP {
+            "type":                  "SET",
+            "extensionAndException": $3,
+        }
+    }
+    SET_SYMBOL CURLY_START ParseComponentTypeLists CURLY_END {
+        $$ = MAP {
+            "type":           "SET",
+            "componentTypes": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SetOfType ::=
+ *      SET OF Type
+ *      | SET OF NamedType
+ *****************************************************************************/
 ParseSetOfType:
-    // TODO: ParseSetOfType
-    /* EMPTY */ {
-        $$ = nil
+    SET_SYMBOL OF_SYMBOL ParseType {
+        $$ = MAP {
+            "type":     "SET_OF",
+            "typeName": $3,
+        }
+    }
+    SET_SYMBOL OF_SYMBOL ParseNamedType {
+        $$ = MAP {
+            "type":      "SET_OF",
+            "namedType": $3,
+        }
     }
 
-ParsePrefixedType:
-    // TODO: ParsePrefixedType
-    /* EMPTY */ {
-        $$ = nil
-    }
-
+/******************************************************************************
+ * BNF Definition:
+ * TimeType ::=
+ *      TIME
+ *****************************************************************************/
 ParseTimeType:
-    // TODO: ParseTimeType
-    /* EMPTY */ {
-        $$ = nil
+    TIME_SYMBOL {
+        $$ = MAP {
+            "type": "TIME",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * TimeOfDayType ::=
+ *      TIME-OF-DAY
+ *****************************************************************************/
 ParseTimeOfDayType:
-    // TODO: ParseTimeOfDayType
+    TIMEOFDAY_SYMBOL {
+        $$ = MAP {
+            "type": "TIME_OF_DAY",
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * PrefixedType ::=
+ *      TaggedType
+ *      | EncodingPrefixedType
+ *****************************************************************************/
+ParsePrefixedType:
+    ParseTaggedType {
+        $$ = MAP {
+            "type":       "PREFIXED",
+            "taggedType": $1,
+        }
+    }
+  | ParseEncodingPrefixedType {
+        $$ = MAP {
+            "type":                 "PREFIXED",
+            "encodingPrefixedType": $1,
+        }
+    }
+
+// TODO
+ParseTaggedType:
     /* EMPTY */ {
         $$ = nil
     }
 
+ParseEncodingPrefixedType:
+    /* EMPTY */ {
+        $$ = nil
+    }
+
+// TODO
 ParseBuiltinValue:
     ParseBitStringValue {
         $$ = MAP {
