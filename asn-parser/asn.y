@@ -180,6 +180,9 @@ type (
 %token<TypeString>  VISIBLESTRING_SYMBOL
 %token<TypeString>  WITH_SYMBOL
 %token<TypeString>  ASSIGNMENT_SYMBOL
+%token<TypeString>  TAG_SYMBOL
+%token<TypeString>  XER_SYMBOL
+%token<TypeString>  PER_SYMBOL
 
 %token<TypeString>  TokenCapitalString
 %token<TypeString>  TokenString
@@ -448,6 +451,8 @@ type (
 %type<TypeValue>    ParseEncodingReference
 %type<TypeValue>    ParseClass
 %type<TypeValue>    ParseClassNumber
+%type<TypeValue>    ParseEncodingPrefix
+%type<TypeValue>    ParseEncodingInstruction
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -4011,28 +4016,112 @@ ParseEncodingReference:
 
 /******************************************************************************
  * BNF Definition:
+ * Class ::=
+ *      UNIVERSAL
+ *      | APPLICATION
+ *      | PRIVATE
+ *      | empty
+ *****************************************************************************/
+ParseClass:
+    UNIVERSAL_SYMBOL {
+        $$ = "UNIVERSAL"
+    }
+  | APPLICATION_SYMBOL {
+        $$ = "APPLICATION"
+    }
+  | PRIVATE_SYMBOL {
+        $$ = "PRIVATE"
+    }
+  | /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
  * ClassNumber ::=
  *      number
  *      | DefinedValue
  *****************************************************************************/
-ParseClass:
+ParseClassNumber:
     ParseNumber {
         $$ = MAP {
-            "number":
+            "number": $1,
+        }
+    }
+  | ParseDefinedValue {
+        $$ = MAP {
+            "definedValue": $1,
         }
     }
 
-ParseClassNumber:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
+/******************************************************************************
+ * BNF Definition:
+ * EncodingPrefixedType ::=
+ *      EncodingPrefix Type
+ *****************************************************************************/
 ParseEncodingPrefixedType:
-    /* EMPTY */ {
-        $$ = nil
+    ParseEncodingPrefix ParseType {
+        $$ = MAP {
+            "encodingPrefix": $1,
+            "typename":       $2,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * EncodingPrefix ::=
+ *      "[" EncodingReference EncodingInstruction "]"
+ *****************************************************************************/
+ParseEncodingPrefix:
+    SQUARE_START ParseEncodingReference ParseEncodingInstruction SQUARE_END {
+        $$ = MAP {
+            "encodingReference":   $2,
+            "encodingInstruction": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EncodingInstruction ::=
+ *      TAG | XER | PER
+ *****************************************************************************/
+ParseEncodingInstruction:
+    TAG_SYMBOL {
+        $$ = "TAG"
+    }
+  | XER_SYMBOL {
+        $$ = "XER"
+    }
+  | PER_SYMBOL {
+        $$ = "PER"
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * BuiltinValue ::=
+ *      BitStringValue
+ *      | BooleanValue
+ *      | CharacterStringValue
+ *      | ChoiceValue
+ *      | EmbeddedPDVValue
+ *      | EnumeratedValue
+ *      | ExternalValue
+ *      | InstanceOfValue
+ *      | IntegerValue
+ *      | IRIValue
+ *      | NullValue
+ *      | ObjectIdentifierValue
+ *      | OctetStringValue
+ *      | RealValue
+ *      | RelativeIRIValue
+ *      | RelativeOIDValue
+ *      | SequenceValue
+ *      | SequenceOfValue
+ *      | SetValue
+ *      | SetOfValue
+ *      | PrefixedValue
+ *      | TimeValue
+ *****************************************************************************/
 ParseBuiltinValue:
     ParseBitStringValue {
         $$ = MAP {
@@ -4145,6 +4234,7 @@ ParseBuiltinValue:
         }
     }
 
+// TODO
 ParseBitStringValue:
     TokenBString {
         $$ = $1
@@ -4162,6 +4252,7 @@ ParseBitStringValue:
         $$ = $2
     }
 
+// TODO
 ParseIdentifierList:
     ParseIdentifier {
         $$ = LIST {
@@ -4173,16 +4264,19 @@ ParseIdentifierList:
         $$ = append($$.(LIST), $2)
     }
 
+// TODO
 ParseIdentifier:
     ParseString {
         $$ = $1
     }
 
+// TODO
 ParseBooleanValue:
     ParseBoolean {
         $$ = $1
     }
 
+// TODO
 ParseCharacterStringValue:
     ParseRestrictedCharacterStringValue {
         $$ = nil
@@ -4191,6 +4285,7 @@ ParseCharacterStringValue:
 
     }
 
+// TODO
 ParseRestrictedCharacterStringValue:
     TokenCString {
         $$ = $1
@@ -4205,11 +4300,13 @@ ParseRestrictedCharacterStringValue:
         $$ = $1
     }
 
+// TODO
 ParseCharacterStringList:
     CURLY_START ParseCharSyms CURLY_END {
         $$ = nil
     }
 
+// TODO
 ParseCharSyms:
     ParseCharsDefn {
         $$ = LIST{
@@ -4221,6 +4318,7 @@ ParseCharSyms:
         $$ = append($$.(LIST), $2)
     }
 
+// TODO
 ParseCharsDefn:
     TokenCString {
         $$ = $1
@@ -4235,6 +4333,7 @@ ParseCharsDefn:
         $$ = $1
     }
 
+// TODO
 ParseQuadruple:
     CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END {
         $$ = MAP {
@@ -4245,26 +4344,31 @@ ParseQuadruple:
         }
     }
 
+// TODO
 ParseGroup:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParsePlane:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseRow:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseCell:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseTuple:
     CURLY_START ParseTableColumn COMMA ParseTableRow CURLY_END {
         $$ = MAP {
@@ -4273,21 +4377,25 @@ ParseTuple:
         }
     }
 
+// TODO
 ParseTableColumn:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseTableRow:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseUnrestrictedCharacterStringValue:
     ParseSequenceValue {
         $$ = $1
     }
 
+// TODO
 ParseChoiceValue:
     ParseString COLON ParseValue {
         $$ = MAP {
@@ -4296,26 +4404,31 @@ ParseChoiceValue:
         }
     }
 
+// TODO
 ParseEmbeddedPDVValue:
     ParseSequenceValue {
         $$ = nil
     }
 
+// TODO
 ParseEnumeratedValue:
     ParseString {
         $$ = $1
     }
 
+// TODO
 ParseExternalValue:
     ParseSequenceValue {
         $$ = $1
     }
 
+// TODO
 ParseInstanceOfValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseIntegerValue:
     ParseNumber {
         $$ = $1
@@ -4324,12 +4437,13 @@ ParseIntegerValue:
         $$ = $1
     }
 
+// TODO
 ParseNullValue:
     NULL_SYMBOL {
         $$ = "NULL"
     }
 
-// Conflicts with ParseBitStringValue
+// TODO
 ParseOctetStringValue:
     TokenBString {
         $$ = $1
@@ -4341,6 +4455,7 @@ ParseOctetStringValue:
         $$ = $1
     }
 
+// TODO
 ParseRealValue:
     ParseNumericRealValue {
         $$ = $1
@@ -4349,6 +4464,7 @@ ParseRealValue:
         $$ = nil
     }
 
+// TODO
 ParseNumericRealValue:
     ParseNumber {
         $$ = $1
@@ -4357,6 +4473,7 @@ ParseNumericRealValue:
         $$ = $1
     }
 
+// TODO
 ParseSpecialRealValue:
     PLUSINFINITY_SYMBOL {
         $$ = nil
@@ -4368,21 +4485,25 @@ ParseSpecialRealValue:
         $$ = nil
     }
 
+// TODO
 ParseIRIValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseRelativeIRIValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseRelativeOIDValue:
     CURLY_START ParseRelativeOIDComponentsList CURLY_END {
         $$ = nil
     }
 
+// TODO
 ParseRelativeOIDComponentsList:
     ParseRelativeOIDComponents {
         $$ = nil
@@ -4391,6 +4512,7 @@ ParseRelativeOIDComponentsList:
         $$ = nil
     }
 
+// TODO
 ParseRelativeOIDComponents:
     ParseNumberForm {
         $$ = nil
@@ -4402,106 +4524,127 @@ ParseRelativeOIDComponents:
         $$ = nil
     }
 
+// TODO
 ParseSequenceValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseSequenceOfValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseSetValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseSetOfValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParsePrefixedValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseTimeValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseReferencedValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseObjectClassFieldValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseXMLTypedValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseValueSet:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseObjectClass:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseDefinedObjectClass:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseObject:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseObjectSet:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedTypeAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedValueAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedValueSetTypeAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedObjectClassAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedObjectAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedObjectSetAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseDefinedValue:
     ParseExternalValueReference {
         $$ = MAP {
@@ -4528,6 +4671,7 @@ ParseDefinedValue:
         }
     }
 
+// TODO
 ParseExternalValueReference:
     ParseString DOT ParseString {
         $$ = MAP {
@@ -4536,21 +4680,25 @@ ParseExternalValueReference:
         }
     }
 
+// TODO
 ParseParameterizedValue:
     ParseSimpleDefinedValue ParseActualParameterList {
         $$ = nil
     }
 
+// TODO
 ParseSimpleDefinedValue:
     {
         $$ = nil
     }
 
+// TODO
 ParseActualParameterList:
     {
         $$ = nil
     }
 
+// TODO
 ParseBoolean:
     TRUE_SYMBOL {
         $$ = $1
@@ -4558,7 +4706,7 @@ ParseBoolean:
   | FALSE_SYMBOL {
         $$ = $1
     }
-
+// TODO
 ParseString:
     TokenCapitalString {
         $$ = $1
@@ -4567,6 +4715,7 @@ ParseString:
         $$ = $1
     }
 
+// TODO
 ParseNumber:
     TokenInteger {
         $$ = $1
@@ -4581,11 +4730,13 @@ ParseNumber:
         $$ = (-1) * $2
     }
 
+// TODO
 ParseAssignementSymbol:
     COLON COLON EQUALITY {
         $$ = "::="
     }
 
+// TODO
 ParseBlock:
     {
         SkipBlock()
