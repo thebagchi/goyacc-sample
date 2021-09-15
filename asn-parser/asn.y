@@ -444,6 +444,10 @@ type (
 %type<TypeValue>    ParseExtensionAdditionGroup
 %type<TypeValue>    ParseTaggedType
 %type<TypeValue>    ParseEncodingPrefixedType
+%type<TypeValue>    ParseTag
+%type<TypeValue>    ParseEncodingReference
+%type<TypeValue>    ParseClass
+%type<TypeValue>    ParseClassNumber
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -1130,7 +1134,7 @@ ParseTypeAssignment:
     ParseString ParseAssignementSymbol ParseType {
         $$ = MAP {
             "reference":  $1,
-            "type":       $2,
+            "typename":   $2,
         }
     }
 
@@ -1146,7 +1150,7 @@ ParseValueAssignment:
     ParseString ParseType ParseAssignementSymbol ParseValue {
         $$ = MAP {
             "reference":  $1,
-            "type":       $2,
+            "typename":   $2,
             "value":      $4,
         }
     }
@@ -1178,7 +1182,7 @@ ParseValueSetTypeAssignment:
     ParseString ParseType ParseAssignementSymbol ParseValueSet {
         $$ = MAP {
             "reference":  $1,
-            "type":       $2,
+            "typename":   $2,
             "valueSet":   $4,
         }
     }
@@ -1747,7 +1751,7 @@ ParseSelectionType:
     ParseString LESS_THAN ParseType {
         $$ = MAP {
             "identifier": $1,
-            "type":       $3,
+            "typename":   $3,
         }
     }
 
@@ -1936,12 +1940,14 @@ ParseValueSetFromObjects:
 ParseConstrainedType:
     ParseType ParseConstraint {
         $$ = MAP {
-            "type":       $1,
+            "typename":   $1,
             "constraint": $2,
         }
     }
   | ParseTypeWithConstraint {
-        $$ = $1
+        $$ = MAP {
+            "typename":   $1,
+        }
     }
 
 /******************************************************************************
@@ -2721,7 +2727,7 @@ ParseUserDefinedConstraintParameter:
 ParseGovernor:
     ParseType {
         $$ = MAP {
-            "type": $1,
+            "typename": $1,
         }
     }
   | ParseDefinedObjectClass {
@@ -2844,7 +2850,7 @@ ParseLevel:
 ParseContentsConstraint:
     CONTAINING_SYMBOL ParseType {
         $$ = MAP {
-            "type": $2,
+            "typename": $2,
         }
     }
   | ENCODED_SYMBOL BY_SYMBOL ParseValue {
@@ -2854,7 +2860,7 @@ ParseContentsConstraint:
     }
   | CONTAINING_SYMBOL ParseType ENCODED_SYMBOL BY_SYMBOL ParseValue {
         $$ = MAP {
-            "type":  $2,
+            "typename":  $2,
             "value": $5,
         }
     }
@@ -2890,8 +2896,8 @@ ParseExceptionIdentification:
     }
   | ParseType COLON ParseValue {
         $$ = MAP {
-            "type":  $1,
-            "value": $3,
+            "typename": $1,
+            "value":    $3,
         }
     }
 
@@ -2912,28 +2918,28 @@ ParseTypeWithConstraint:
         $$ = MAP {
             "setOrSequence": "SET",
             "constraint":    $2,
-            "type":          $4,
+            "typename":      $4,
         }
     }
   | SET_SYMBOL ParseSizeConstraint OF_SYMBOL ParseType {
         $$ = MAP {
             "setOrSequence":  "SET",
             "sizeConstraint": $2,
-            "type":           $4,
+            "typename":       $4,
         }
     }
   | SEQUENCE_SYMBOL ParseConstraint OF_SYMBOL ParseType {
         $$ = MAP {
             "setOrSequence": "SEQUENCE",
             "constraint":    $2,
-            "type":          $4,
+            "typename":      $4,
         }
     }
   | SEQUENCE_SYMBOL ParseSizeConstraint OF_SYMBOL ParseType {
         $$ = MAP {
             "setOrSequence":  "SEQUENCE",
             "sizeConstraint": $2,
-            "type":           $4,
+            "typename":       $4,
         }
     }
   | SET_SYMBOL ParseConstraint OF_SYMBOL ParseNamedType {
@@ -2974,7 +2980,7 @@ ParseNamedType:
     ParseString ParseType {
         $$ = MAP {
             "identifier": $1,
-            "type":       $2,
+            "typename":   $2,
         }
     }
 
@@ -3763,7 +3769,7 @@ ParseComponentType:
   | COMPONENTS_SYMBOL OF_SYMBOL ParseType {
         $$ = MAP {
             "type":     "COMPONENTS",
-            "typeName": $3,
+            "typename": $3,
         }
     }
 
@@ -3849,7 +3855,7 @@ ParseSequenceOfType:
     SEQUENCE_SYMBOL OF_SYMBOL ParseType {
         $$ = MAP {
             "type":     "SEQUENCE_OF",
-            "typeName": $3,
+            "typename": $3,
         }
     }
   | SEQUENCE_SYMBOL OF_SYMBOL ParseNamedType {
@@ -3895,7 +3901,7 @@ ParseSetOfType:
     SET_SYMBOL OF_SYMBOL ParseType {
         $$ = MAP {
             "type":     "SET_OF",
-            "typeName": $3,
+            "typename": $3,
         }
     }
     SET_SYMBOL OF_SYMBOL ParseNamedType {
@@ -3949,8 +3955,74 @@ ParsePrefixedType:
         }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * TaggedType ::=
+ *      Tag Type
+ *      | Tag IMPLICIT Type
+ *      | Tag EXPLICIT Type
+ *****************************************************************************/
 ParseTaggedType:
+    ParseTag ParseType {
+        $$ = MAP {
+            "tag":      $1,
+            "typename": $2,
+        }
+    }
+    ParseTag IMPLICIT_SYMBOL ParseType {
+        $$ = MAP {
+            "tag":      $1,
+            "typename": $2,
+            "implicit": true,
+        }
+    }
+    ParseTag EXPLICIT_SYMBOL ParseType {
+        $$ = MAP {
+            "tag":      $1,
+            "typename": $2,
+            "explicit": true,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Tag ::=
+ *      "[" EncodingReference Class ClassNumber "]"
+ *****************************************************************************/
+ParseTag:
+    SQUARE_START ParseEncodingReference ParseClass ParseClassNumber SQUARE_END {
+        $$ = MAP {
+            "encodingReference": $2,
+            "class":             $3,
+            "classNumber":       $4,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EncodingReference ::=
+ *      encodingreference ":"
+ *      | empty
+ *****************************************************************************/
+ParseEncodingReference:
+    TokenCapitalString COLON {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ClassNumber ::=
+ *      number
+ *      | DefinedValue
+ *****************************************************************************/
+ParseClass:
+    ParseNumber {
+        $$ = MAP {
+            "number":
+        }
+    }
+
+ParseClassNumber:
     /* EMPTY */ {
         $$ = nil
     }

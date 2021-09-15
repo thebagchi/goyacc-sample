@@ -1,4 +1,5 @@
 //go:generate goyacc -p ASN asn.y
+//go:generate ../tools/protoc/bin/protoc --proto_path=. -I ../tools/protoc/include --go_out=asn1pb --go_opt=paths=source_relative asn1.proto
 package main
 
 import (
