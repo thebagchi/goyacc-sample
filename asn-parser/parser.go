@@ -1,4 +1,5 @@
 //go:generate goyacc -p ASN asn.y
+//go:generate ../tools/protoc/bin/protoc --proto_path=. -I ../tools/protoc/include --go_out=asn1pb --go_opt=paths=source_relative asn1.proto
 package main
 
 import (
@@ -14,191 +15,197 @@ import (
 )
 
 const (
-	Absent           = "ABSENT"
-	AbstractSyntax   = "ABSTRACT-SYNTAX"
-	All              = "ALL"
-	Application      = "APPLICATION"
-	Automatic        = "AUTOMATIC"
-	Begin            = "BEGIN"
-	Bit              = "BIT"
-	BMPString        = "BMPString"
-	Boolean          = "BOOLEAN"
-	By               = "BY"
-	Character        = "CHARACTER"
-	Choice           = "CHOICE"
-	Class            = "CLASS"
-	Component        = "COMPONENT"
-	Components       = "COMPONENTS"
-	Constrained      = "CONSTRAINED"
-	Containing       = "CONTAINING"
-	Date             = "DATE"
-	DateTime         = "DATE-TIME"
-	Default          = "DEFAULT"
-	Definitions      = "DEFINITIONS"
-	Duration         = "DURATION"
-	Embedded         = "EMBEDDED"
-	Encoded          = "ENCODED"
-	EncodingControl  = "ENCODING-CONTROL"
-	End              = "END"
-	Enumerated       = "ENUMERATED"
-	Except           = "EXCEPT"
-	Explicit         = "EXPLICIT"
-	Exports          = "EXPORTS"
-	Extensibility    = "EXTENSIBILITY"
-	Externel         = "EXTERNAL"
-	False            = "FALSE"
-	From             = "FROM"
-	GeneralizedTime  = "GeneralizedTime"
-	GeneralString    = "GeneralString"
-	GraphicString    = "GraphicString"
-	IA5String        = "IA5String"
-	Identifier       = "IDENTIFIER"
-	Implicit         = "IMPLICIT"
-	Implied          = "IMPLIED"
-	Imports          = "IMPORTS"
-	Includes         = "INCLUDES"
-	Instance         = "INSTANCE"
-	Instructions     = "INSTRUCTIONS"
-	Integer          = "INTEGER"
-	Intersection     = "INTERSECTION"
-	ISO646String     = "ISO646String"
-	Max              = "MAX"
-	Min              = "MIN"
-	MinusInfinity    = "MINUS-INFINITY"
-	NotANumber       = "NOT-A-NUMBER"
-	Null             = "NULL"
-	NumericString    = "NumericString"
-	Object           = "OBJECT"
-	ObjectDescriptor = "ObjectDescriptor"
-	Octet            = "OCTET"
-	Of               = "OF"
-	OIDIRI           = "OID-IRI"
-	Optional         = "OPTIONAL"
-	Pattern          = "PATTERN"
-	PDV              = "PDV"
-	PlusInfinity     = "PLUS-INFINITY"
-	Present          = "PRESENT"
-	PrintableString  = "PrintableString"
-	Private          = "PRIVATE"
-	Real             = "REAL"
-	RelativeOID      = "RELATIVE-OID"
-	RelativeOIDIRI   = "RELATIVE-OID-IRI"
-	Sequence         = "SEQUENCE"
-	Set              = "SET"
-	Settings         = "SETTINGS"
-	Size             = "SIZE"
-	String           = "STRING"
-	Syntax           = "SYNTAX"
-	T61String        = "T61String"
-	Tags             = "TAGS"
-	TeletexString    = "TeletexString"
-	Time             = "TIME"
-	TimeOfDay        = "TIME-OF-DAY"
-	True             = "TRUE"
-	TypeIdentifier   = "TYPE-IDENTIFIER"
-	Union            = "UNION"
-	Unique           = "UNIQUE"
-	Universal        = "UNIVERSAL"
-	UniversalString  = "UniversalString"
-	UTCTime          = "UTCTime"
-	UTF8String       = "UTF8String"
-	VideotexString   = "VideotexString"
-	VisibleString    = "VisibleString"
-	With             = "WITH"
+	Absent             = "ABSENT"
+	AbstractSyntax     = "ABSTRACT-SYNTAX"
+	All                = "ALL"
+	Application        = "APPLICATION"
+	Automatic          = "AUTOMATIC"
+	Begin              = "BEGIN"
+	Bit                = "BIT"
+	BMPString          = "BMPString"
+	Boolean            = "BOOLEAN"
+	By                 = "BY"
+	Character          = "CHARACTER"
+	Choice             = "CHOICE"
+	Class              = "CLASS"
+	Component          = "COMPONENT"
+	Components         = "COMPONENTS"
+	Constrained        = "CONSTRAINED"
+	Containing         = "CONTAINING"
+	Date               = "DATE"
+	DateTime           = "DATE-TIME"
+	Default            = "DEFAULT"
+	Definitions        = "DEFINITIONS"
+	Duration           = "DURATION"
+	Embedded           = "EMBEDDED"
+	Encoded            = "ENCODED"
+	EncodingControl    = "ENCODING-CONTROL"
+	End                = "END"
+	Enumerated         = "ENUMERATED"
+	Except             = "EXCEPT"
+	Explicit           = "EXPLICIT"
+	Exports            = "EXPORTS"
+	Extensibility      = "EXTENSIBILITY"
+	Externel           = "EXTERNAL"
+	False              = "FALSE"
+	From               = "FROM"
+	GeneralizedTime    = "GeneralizedTime"
+	GeneralString      = "GeneralString"
+	GraphicString      = "GraphicString"
+	IA5String          = "IA5String"
+	Identifier         = "IDENTIFIER"
+	Implicit           = "IMPLICIT"
+	Implied            = "IMPLIED"
+	Imports            = "IMPORTS"
+	Includes           = "INCLUDES"
+	Instance           = "INSTANCE"
+	Instructions       = "INSTRUCTIONS"
+	Integer            = "INTEGER"
+	Intersection       = "INTERSECTION"
+	ISO646String       = "ISO646String"
+	Max                = "MAX"
+	Min                = "MIN"
+	MinusInfinity      = "MINUS-INFINITY"
+	NotANumber         = "NOT-A-NUMBER"
+	Null               = "NULL"
+	NumericString      = "NumericString"
+	Object             = "OBJECT"
+	ObjectDescriptor   = "ObjectDescriptor"
+	Octet              = "OCTET"
+	Of                 = "OF"
+	OIDIRI             = "OID-IRI"
+	Optional           = "OPTIONAL"
+	Pattern            = "PATTERN"
+	PDV                = "PDV"
+	PlusInfinity       = "PLUS-INFINITY"
+	Present            = "PRESENT"
+	PrintableString    = "PrintableString"
+	Private            = "PRIVATE"
+	Real               = "REAL"
+	RelativeOID        = "RELATIVE-OID"
+	RelativeOIDIRI     = "RELATIVE-OID-IRI"
+	Sequence           = "SEQUENCE"
+	Set                = "SET"
+	Settings           = "SETTINGS"
+	Size               = "SIZE"
+	String             = "STRING"
+	Syntax             = "SYNTAX"
+	T61String          = "T61String"
+	Tags               = "TAGS"
+	TeletexString      = "TeletexString"
+	Time               = "TIME"
+	TimeOfDay          = "TIME-OF-DAY"
+	True               = "TRUE"
+	TypeIdentifier     = "TYPE-IDENTIFIER"
+	Union              = "UNION"
+	Unique             = "UNIQUE"
+	Universal          = "UNIVERSAL"
+	UniversalString    = "UniversalString"
+	UTCTime            = "UTCTime"
+	UTF8String         = "UTF8String"
+	VideotexString     = "VideotexString"
+	VisibleString      = "VisibleString"
+	With               = "WITH"
+	Tag                = "TAG"
+	XmlEncodingRule    = "XER"
+	PackedEncodingRule = "PER"
 )
 
 var Keywords = map[string]int{
-	Absent:           ABSENT_SYMBOL,
-	AbstractSyntax:   ABSTRACTSYNTAX_SYMBOL,
-	All:              ALL_SYMBOL,
-	Application:      APPLICATION_SYMBOL,
-	Automatic:        AUTOMATIC_SYMBOL,
-	Begin:            BEGIN_SYMBOL,
-	Bit:              BIT_SYMBOL,
-	BMPString:        BMPSTRING_SYMBOL,
-	Boolean:          BOOLEAN_SYMBOL,
-	By:               BY_SYMBOL,
-	Character:        CHARACTER_SYMBOL,
-	Choice:           CHOICE_SYMBOL,
-	Class:            CLASS_SYMBOL,
-	Component:        COMPONENT_SYMBOL,
-	Components:       COMPONENTS_SYMBOL,
-	Constrained:      CONSTRAINED_SYMBOL,
-	Containing:       CONTAINING_SYMBOL,
-	Date:             DATE_SYMBOL,
-	DateTime:         DATETIME_SYMBOL,
-	Default:          DEFAULT_SYMBOL,
-	Definitions:      DEFINITIONS_SYMBOL,
-	Duration:         DURATION_SYMBOL,
-	Embedded:         EMBEDDED_SYMBOL,
-	Encoded:          ENCODED_SYMBOL,
-	EncodingControl:  ENCODINGCONTROL_SYMBOL,
-	End:              END_SYMBOL,
-	Enumerated:       ENUMERATED_SYMBOL,
-	Except:           EXCEPT_SYMBOL,
-	Explicit:         EXPLICIT_SYMBOL,
-	Exports:          EXPORTS_SYMBOL,
-	Extensibility:    EXTENSIBILITY_SYMBOL,
-	Externel:         EXTERNEL_SYMBOL,
-	False:            FALSE_SYMBOL,
-	From:             FROM_SYMBOL,
-	GeneralizedTime:  GENERALIZEDTIME_SYMBOL,
-	GeneralString:    GENERALSTRING_SYMBOL,
-	GraphicString:    GRAPHICSTRING_SYMBOL,
-	IA5String:        IA5STRING_SYMBOL,
-	Identifier:       IDENTIFIER_SYMBOL,
-	Implicit:         IMPLICIT_SYMBOL,
-	Implied:          IMPLIED_SYMBOL,
-	Imports:          IMPORTS_SYMBOL,
-	Includes:         INCLUDES_SYMBOL,
-	Instance:         INSTANCE_SYMBOL,
-	Instructions:     INSTRUCTIONS_SYMBOL,
-	Integer:          INTEGER_SYMBOL,
-	Intersection:     INTERSECTION_SYMBOL,
-	ISO646String:     ISO646STRING_SYMBOL,
-	Max:              MAX_SYMBOL,
-	Min:              MIN_SYMBOL,
-	MinusInfinity:    MINUSINFINITY_SYMBOL,
-	NotANumber:       NOTANUMBER_SYMBOL,
-	Null:             NULL_SYMBOL,
-	NumericString:    NUMERICSTRING_SYMBOL,
-	Object:           OBJECT_SYMBOL,
-	ObjectDescriptor: OBJECTDESCRIPTOR_SYMBOL,
-	Octet:            OCTET_SYMBOL,
-	Of:               OF_SYMBOL,
-	OIDIRI:           OIDIRI_SYMBOL,
-	Optional:         OPTIONAL_SYMBOL,
-	Pattern:          PATTERN_SYMBOL,
-	PDV:              PDV_SYMBOL,
-	PlusInfinity:     PLUSINFINITY_SYMBOL,
-	Present:          PRESENT_SYMBOL,
-	PrintableString:  PRINTABLESTRING_SYMBOL,
-	Private:          PRIVATE_SYMBOL,
-	Real:             REAL_SYMBOL,
-	RelativeOID:      RELATIVEOID_SYMBOL,
-	RelativeOIDIRI:   RELATIVEOIDIRI_SYMBOL,
-	Sequence:         SEQUENCE_SYMBOL,
-	Set:              SET_SYMBOL,
-	Settings:         SETTINGS_SYMBOL,
-	Size:             SIZE_SYMBOL,
-	String:           STRING_SYMBOL,
-	Syntax:           SYNTAX_SYMBOL,
-	T61String:        T61STRING_SYMBOL,
-	Tags:             TAGS_SYMBOL,
-	TeletexString:    TELETEXSTRING_SYMBOL,
-	Time:             TIME_SYMBOL,
-	TimeOfDay:        TIMEOFDAY_SYMBOL,
-	True:             TRUE_SYMBOL,
-	TypeIdentifier:   TYPEIDENTIFIER_SYMBOL,
-	Union:            UNION_SYMBOL,
-	Unique:           UNIQUE_SYMBOL,
-	Universal:        UNIVERSAL_SYMBOL,
-	UniversalString:  UNIVERSALSTRING_SYMBOL,
-	UTCTime:          UTCTIME_SYMBOL,
-	UTF8String:       UTF8STRING_SYMBOL,
-	VideotexString:   VIDEOTEXSTRING_SYMBOL,
-	VisibleString:    VISIBLESTRING_SYMBOL,
-	With:             WITH_SYMBOL,
+	Absent:             ABSENT_SYMBOL,
+	AbstractSyntax:     ABSTRACTSYNTAX_SYMBOL,
+	All:                ALL_SYMBOL,
+	Application:        APPLICATION_SYMBOL,
+	Automatic:          AUTOMATIC_SYMBOL,
+	Begin:              BEGIN_SYMBOL,
+	Bit:                BIT_SYMBOL,
+	BMPString:          BMPSTRING_SYMBOL,
+	Boolean:            BOOLEAN_SYMBOL,
+	By:                 BY_SYMBOL,
+	Character:          CHARACTER_SYMBOL,
+	Choice:             CHOICE_SYMBOL,
+	Class:              CLASS_SYMBOL,
+	Component:          COMPONENT_SYMBOL,
+	Components:         COMPONENTS_SYMBOL,
+	Constrained:        CONSTRAINED_SYMBOL,
+	Containing:         CONTAINING_SYMBOL,
+	Date:               DATE_SYMBOL,
+	DateTime:           DATETIME_SYMBOL,
+	Default:            DEFAULT_SYMBOL,
+	Definitions:        DEFINITIONS_SYMBOL,
+	Duration:           DURATION_SYMBOL,
+	Embedded:           EMBEDDED_SYMBOL,
+	Encoded:            ENCODED_SYMBOL,
+	EncodingControl:    ENCODINGCONTROL_SYMBOL,
+	End:                END_SYMBOL,
+	Enumerated:         ENUMERATED_SYMBOL,
+	Except:             EXCEPT_SYMBOL,
+	Explicit:           EXPLICIT_SYMBOL,
+	Exports:            EXPORTS_SYMBOL,
+	Extensibility:      EXTENSIBILITY_SYMBOL,
+	Externel:           EXTERNEL_SYMBOL,
+	False:              FALSE_SYMBOL,
+	From:               FROM_SYMBOL,
+	GeneralizedTime:    GENERALIZEDTIME_SYMBOL,
+	GeneralString:      GENERALSTRING_SYMBOL,
+	GraphicString:      GRAPHICSTRING_SYMBOL,
+	IA5String:          IA5STRING_SYMBOL,
+	Identifier:         IDENTIFIER_SYMBOL,
+	Implicit:           IMPLICIT_SYMBOL,
+	Implied:            IMPLIED_SYMBOL,
+	Imports:            IMPORTS_SYMBOL,
+	Includes:           INCLUDES_SYMBOL,
+	Instance:           INSTANCE_SYMBOL,
+	Instructions:       INSTRUCTIONS_SYMBOL,
+	Integer:            INTEGER_SYMBOL,
+	Intersection:       INTERSECTION_SYMBOL,
+	ISO646String:       ISO646STRING_SYMBOL,
+	Max:                MAX_SYMBOL,
+	Min:                MIN_SYMBOL,
+	MinusInfinity:      MINUSINFINITY_SYMBOL,
+	NotANumber:         NOTANUMBER_SYMBOL,
+	Null:               NULL_SYMBOL,
+	NumericString:      NUMERICSTRING_SYMBOL,
+	Object:             OBJECT_SYMBOL,
+	ObjectDescriptor:   OBJECTDESCRIPTOR_SYMBOL,
+	Octet:              OCTET_SYMBOL,
+	Of:                 OF_SYMBOL,
+	OIDIRI:             OIDIRI_SYMBOL,
+	Optional:           OPTIONAL_SYMBOL,
+	Pattern:            PATTERN_SYMBOL,
+	PDV:                PDV_SYMBOL,
+	PlusInfinity:       PLUSINFINITY_SYMBOL,
+	Present:            PRESENT_SYMBOL,
+	PrintableString:    PRINTABLESTRING_SYMBOL,
+	Private:            PRIVATE_SYMBOL,
+	Real:               REAL_SYMBOL,
+	RelativeOID:        RELATIVEOID_SYMBOL,
+	RelativeOIDIRI:     RELATIVEOIDIRI_SYMBOL,
+	Sequence:           SEQUENCE_SYMBOL,
+	Set:                SET_SYMBOL,
+	Settings:           SETTINGS_SYMBOL,
+	Size:               SIZE_SYMBOL,
+	String:             STRING_SYMBOL,
+	Syntax:             SYNTAX_SYMBOL,
+	T61String:          T61STRING_SYMBOL,
+	Tags:               TAGS_SYMBOL,
+	TeletexString:      TELETEXSTRING_SYMBOL,
+	Time:               TIME_SYMBOL,
+	TimeOfDay:          TIMEOFDAY_SYMBOL,
+	True:               TRUE_SYMBOL,
+	TypeIdentifier:     TYPEIDENTIFIER_SYMBOL,
+	Union:              UNION_SYMBOL,
+	Unique:             UNIQUE_SYMBOL,
+	Universal:          UNIVERSAL_SYMBOL,
+	UniversalString:    UNIVERSALSTRING_SYMBOL,
+	UTCTime:            UTCTIME_SYMBOL,
+	UTF8String:         UTF8STRING_SYMBOL,
+	VideotexString:     VIDEOTEXSTRING_SYMBOL,
+	VisibleString:      VISIBLESTRING_SYMBOL,
+	With:               WITH_SYMBOL,
+	Tag:                TAG_SYMBOL,
+	XmlEncodingRule:    XER_SYMBOL,
+	PackedEncodingRule: PER_SYMBOL,
 }
 
 var Tokens = map[int]string{
@@ -293,12 +300,16 @@ var Tokens = map[int]string{
 	VIDEOTEXSTRING_SYMBOL:   VideotexString,
 	VISIBLESTRING_SYMBOL:    VisibleString,
 	WITH_SYMBOL:             With,
+	TAG_SYMBOL:              Tag,
+	XER_SYMBOL:              XmlEncodingRule,
+	PER_SYMBOL:              PackedEncodingRule,
 }
 
 type Parser struct {
-	Input    *bufio.Reader
-	ErrorMsg error
-	Result   string
+	Input       *bufio.Reader
+	ErrorMsg    error
+	Result      string
+	ExpectBlock bool
 }
 
 func IsUpper(str string) bool {
@@ -630,15 +641,22 @@ func RemoveComments(content []byte) []byte {
 	return RemoveBlanks(RemoveLineComment(RemoveBlockComment(content)))
 }
 
+var parser *Parser = nil
+
+func MakeParser(content []byte) *Parser {
+	parser = &Parser{
+		Input: bufio.NewReader(bytes.NewReader(content)),
+	}
+	return parser
+}
+
 func Parse(content []byte) (string, error) {
 
 	ASNDebug = 1
 	ASNErrorVerbose = true
 
 	content = RemoveComments(content)
-	parser := &Parser{
-		Input: bufio.NewReader(bytes.NewReader(content)),
-	}
+	parser := MakeParser(content)
 	ASNParse(parser)
 	return parser.Result, parser.ErrorMsg
 }

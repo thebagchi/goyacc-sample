@@ -5,7 +5,9 @@ import (
     "fmt"
     "encoding/json"
 )
+
 var code bytes.Buffer
+
 func AddLine(line string) {
     code.WriteString(line)
     code.WriteByte('\n')
@@ -30,6 +32,10 @@ func Join(values ...string) string {
         buffer.WriteString(value)
     }
     return buffer.String()
+}
+
+func SkipBlock() {
+    parser.ExpectBlock = true
 }
 
 func SetResult(l ASNLexer, v VALUE) {
@@ -174,6 +180,9 @@ type (
 %token<TypeString>  VISIBLESTRING_SYMBOL
 %token<TypeString>  WITH_SYMBOL
 %token<TypeString>  ASSIGNMENT_SYMBOL
+%token<TypeString>  TAG_SYMBOL
+%token<TypeString>  XER_SYMBOL
+%token<TypeString>  PER_SYMBOL
 
 %token<TypeString>  TokenCapitalString
 %token<TypeString>  TokenString
@@ -184,6 +193,7 @@ type (
 %token<TypeString>  TokenBString
 %token<TypeString>  TokenHString
 %token<TypeString>  TokenCString
+%token<TypeString>  TokenBlock
 
 %type<TypeValue>    ParseModules
 %type<TypeValue>    ParseModule
@@ -407,10 +417,47 @@ type (
 %type<TypeValue>    ParseNamedType
 %type<TypeValue>    ParseNamedBitList
 %type<TypeValue>    ParseNamedBit
+%type<TypeValue>    ParseRestrictedCharacterStringType
+%type<TypeValue>    ParseUnrestrictedCharacterStringType
+%type<TypeValue>    ParseAlternativeTypeLists
+%type<TypeValue>    ParseRootAlternativeTypeList
+%type<TypeValue>    ParseExtensionAndException
+%type<TypeValue>    ParseExtensionAdditionAlternatives
+%type<TypeValue>    ParseOptionalExtensionMarker
+%type<TypeValue>    ParseAlternativeTypeList
+%type<TypeValue>    ParseExtensionAdditionAlternativesList
+%type<TypeValue>    ParseExtensionAdditionAlternative
+%type<TypeValue>    ParseExtensionAdditionAlternativesGroup
+%type<TypeValue>    ParseEnumerations
+%type<TypeValue>    ParseVersionNumber
+%type<TypeValue>    ParseRootEnumeration
+%type<TypeValue>    ParseAdditionalEnumeration
+%type<TypeValue>    ParseEnumeration
+%type<TypeValue>    ParseEnumerationItem
+%type<TypeValue>    ParseNamedNumber
+%type<TypeValue>    ParseNamedNumberList
+%type<TypeValue>    ParseComponentTypeLists
+%type<TypeValue>    ParseRootComponentTypeList
+%type<TypeValue>    ParseExtensionAdditions
+%type<TypeValue>    ParseExtensionEndMarker
+%type<TypeValue>    ParseComponentTypeList
+%type<TypeValue>    ParseComponentType
+%type<TypeValue>    ParseExtensionAdditionList
+%type<TypeValue>    ParseExtensionAddition
+%type<TypeValue>    ParseExtensionAdditionGroup
+%type<TypeValue>    ParseTaggedType
+%type<TypeValue>    ParseEncodingPrefixedType
+%type<TypeValue>    ParseTag
+%type<TypeValue>    ParseEncodingReference
+%type<TypeValue>    ParseClass
+%type<TypeValue>    ParseClassNumber
+%type<TypeValue>    ParseEncodingPrefix
+%type<TypeValue>    ParseEncodingInstruction
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
 %type<TypeValue>    ParseBoolean
+%type<TypeValue>    ParseBlock
 
 %start ParseASN
 
@@ -1092,7 +1139,7 @@ ParseTypeAssignment:
     ParseString ParseAssignementSymbol ParseType {
         $$ = MAP {
             "reference":  $1,
-            "type":       $2,
+            "typename":   $2,
         }
     }
 
@@ -1108,7 +1155,7 @@ ParseValueAssignment:
     ParseString ParseType ParseAssignementSymbol ParseValue {
         $$ = MAP {
             "reference":  $1,
-            "type":       $2,
+            "typename":   $2,
             "value":      $4,
         }
     }
@@ -1140,7 +1187,7 @@ ParseValueSetTypeAssignment:
     ParseString ParseType ParseAssignementSymbol ParseValueSet {
         $$ = MAP {
             "reference":  $1,
-            "type":       $2,
+            "typename":   $2,
             "valueSet":   $4,
         }
     }
@@ -1709,7 +1756,7 @@ ParseSelectionType:
     ParseString LESS_THAN ParseType {
         $$ = MAP {
             "identifier": $1,
-            "type":       $3,
+            "typename":   $3,
         }
     }
 
@@ -1898,12 +1945,14 @@ ParseValueSetFromObjects:
 ParseConstrainedType:
     ParseType ParseConstraint {
         $$ = MAP {
-            "type":       $1,
+            "typename":   $1,
             "constraint": $2,
         }
     }
   | ParseTypeWithConstraint {
-        $$ = $1
+        $$ = MAP {
+            "typename":   $1,
+        }
     }
 
 /******************************************************************************
@@ -2683,7 +2732,7 @@ ParseUserDefinedConstraintParameter:
 ParseGovernor:
     ParseType {
         $$ = MAP {
-            "type": $1,
+            "typename": $1,
         }
     }
   | ParseDefinedObjectClass {
@@ -2806,7 +2855,7 @@ ParseLevel:
 ParseContentsConstraint:
     CONTAINING_SYMBOL ParseType {
         $$ = MAP {
-            "type": $2,
+            "typename": $2,
         }
     }
   | ENCODED_SYMBOL BY_SYMBOL ParseValue {
@@ -2816,7 +2865,7 @@ ParseContentsConstraint:
     }
   | CONTAINING_SYMBOL ParseType ENCODED_SYMBOL BY_SYMBOL ParseValue {
         $$ = MAP {
-            "type":  $2,
+            "typename":  $2,
             "value": $5,
         }
     }
@@ -2828,7 +2877,9 @@ ParseContentsConstraint:
  *****************************************************************************/
 ParseExceptionSpec:
     EXCLAMATION ParseExceptionIdentification {
-
+        $$ = MAP {
+            "exceptionIdentification": $1,
+        }
     }
   | /* EMPTY */ {
         $$ = nil
@@ -2850,8 +2901,8 @@ ParseExceptionIdentification:
     }
   | ParseType COLON ParseValue {
         $$ = MAP {
-            "type":  $1,
-            "value": $3,
+            "typename": $1,
+            "value":    $3,
         }
     }
 
@@ -2872,28 +2923,28 @@ ParseTypeWithConstraint:
         $$ = MAP {
             "setOrSequence": "SET",
             "constraint":    $2,
-            "type":          $4,
+            "typename":      $4,
         }
     }
   | SET_SYMBOL ParseSizeConstraint OF_SYMBOL ParseType {
         $$ = MAP {
             "setOrSequence":  "SET",
             "sizeConstraint": $2,
-            "type":           $4,
+            "typename":       $4,
         }
     }
   | SEQUENCE_SYMBOL ParseConstraint OF_SYMBOL ParseType {
         $$ = MAP {
             "setOrSequence": "SEQUENCE",
             "constraint":    $2,
-            "type":          $4,
+            "typename":      $4,
         }
     }
   | SEQUENCE_SYMBOL ParseSizeConstraint OF_SYMBOL ParseType {
         $$ = MAP {
             "setOrSequence":  "SEQUENCE",
             "sizeConstraint": $2,
-            "type":           $4,
+            "typename":       $4,
         }
     }
   | SET_SYMBOL ParseConstraint OF_SYMBOL ParseNamedType {
@@ -2934,7 +2985,7 @@ ParseNamedType:
     ParseString ParseType {
         $$ = MAP {
             "identifier": $1,
-            "type":       $2,
+            "typename":   $2,
         }
     }
 
@@ -3101,7 +3152,7 @@ ParseRestrictedCharacterStringType:
   | VISIBLESTRING_SYMBOL {
         $$ = MAP {
             "type": "VISIBLE_STRING",
-        }        $$ = nil
+        }
     }
 
 /******************************************************************************
@@ -3116,150 +3167,961 @@ ParseUnrestrictedCharacterStringType:
         }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ChoiceType ::=
+ *      CHOICE "{" AlternativeTypeLists "}"
+ *****************************************************************************/
 ParseChoiceType:
-    // TODO: ParseChoiceType
-    /* EMPTY */ {
+    CHOICE_SYMBOL CURLY_START ParseAlternativeTypeLists CURLY_END {
+        $$ = MAP {
+            "type":           "CHOICE",
+            "alternateTypes": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AlternativeTypeLists ::=
+ *      RootAlternativeTypeList
+ *      | RootAlternativeTypeList "," ExtensionAndException ExtensionAdditionAlternatives OptionalExtensionMarker
+ *****************************************************************************/
+ParseAlternativeTypeLists:
+    ParseRootAlternativeTypeList {
+        $$ = MAP {
+            "alternativeTypes": $1,
+        }
+    }
+  | ParseRootAlternativeTypeList COMMA ParseExtensionAndException ParseExtensionAdditionAlternatives ParseOptionalExtensionMarker {
+        $$ = MAP {
+            "alternativeTypes":              $1,
+            "extensionAndException":         $3,
+            "extensionAdditionAlternatives": $4,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RootAlternativeTypeList ::=
+ *      AlternativeTypeList
+ *****************************************************************************/
+ParseRootAlternativeTypeList:
+    ParseAlternativeTypeList {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AlternativeTypeList ::=
+ *       NamedType
+ *       | AlternativeTypeList "," NamedType
+ *****************************************************************************/
+ParseAlternativeTypeList:
+    ParseNamedType {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseAlternativeTypeList COMMA ParseNamedType {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAndException ::=
+ *      "..."
+ *      | "..." ExceptionSpec
+ *****************************************************************************/
+ParseExtensionAndException:
+    ELLIPSIS {
+        $$ = nil
+    }
+  | ELLIPSIS  ParseExceptionSpec {
+        $$ = $2
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionAlternatives ::=
+ *      "," ExtensionAdditionAlternativesList
+ *      | empty
+ *****************************************************************************/
+ParseExtensionAdditionAlternatives:
+    COMMA ParseExtensionAdditionAlternativesList {
+        $$ = $2
+    }
+  | /* EMPTY */ {
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionAlternativesList ::=
+ *      ExtensionAdditionAlternative
+ *      | ExtensionAdditionAlternativesList "," ExtensionAdditionAlternative
+ *****************************************************************************/
+ParseExtensionAdditionAlternativesList:
+    ParseExtensionAdditionAlternative {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseExtensionAdditionAlternativesList COMMA ParseExtensionAdditionAlternative {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionAlternative ::=
+ *      ExtensionAdditionAlternativesGroup
+ *      | NamedType
+ *****************************************************************************/
+ParseExtensionAdditionAlternative:
+    ParseExtensionAdditionAlternativesGroup {
+        $$ = $1
+    }
+  | ParseNamedType {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionAlternativesGroup ::=
+ *      "[[" VersionNumber AlternativeTypeList "]]"
+ *****************************************************************************/
+ParseExtensionAdditionAlternativesGroup:
+    SQUARE_START SQUARE_START ParseVersionNumber ParseAlternativeTypeList SQUARE_END SQUARE_END {
+        $$ = MAP {
+            "version":          $3,
+            "alternativeTypes": $4,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * VersionNumber ::=
+ *      empty | number ":"
+ *****************************************************************************/
+ParseVersionNumber:
+    ParseNumber COLON {
+        $$ = $1
+    }
+  | /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * OptionalExtensionMarker ::=
+ *      "," "..."
+ *      | empty
+ *****************************************************************************/
+ParseOptionalExtensionMarker:
+    COMMA ELLIPSIS {
+        $$ = true
+    }
+  | /* EMPTY */ {
+        $$ = nil
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * DateType ::=
+ *      DATE
+ *****************************************************************************/
 ParseDateType:
-    // TODO: ParseDateType
-    /* EMPTY */ {
-        $$ = nil
+    DATE_SYMBOL {
+        $$ = MAP {
+            "type": "DATE",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DateTimeType ::=
+ *      DATE-TIME
+ *****************************************************************************/
 ParseDateTimeType:
-    // TODO: ParseDateTimeType
-    /* EMPTY */ {
-        $$ = nil
+    DATETIME_SYMBOL {
+        $$ = MAP {
+            "type": "DATE_TIME",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * DurationType ::=
+ *      DURATION
+ *****************************************************************************/
 ParseDurationType:
-    // TODO: ParseDurationType
-    /* EMPTY */ {
-        $$ = nil
+    DURATION_SYMBOL {
+        $$ = MAP {
+            "type": "DURATION",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * EmbeddedPDVType ::=
+ *      EMBEDDED PDV
+ *****************************************************************************/
 ParseEmbeddedPDVType:
-    // TODO: ParseEmbeddedPDVType
-    /* EMPTY */ {
-        $$ = nil
+    EMBEDDED_SYMBOL PDV_SYMBOL {
+        $$ = MAP {
+            "type": "EMBEDDED_PDV",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * EnumeratedType ::=
+ *      ENUMERATED "{" Enumerations "}"
+ *****************************************************************************/
 ParseEnumeratedType:
-    // TODO: ParseEnumeratedType
-    /* EMPTY */ {
-        $$ = nil
+    ENUMERATED_SYMBOL CURLY_START ParseEnumerations CURLY_END {
+        $$ = MAP {
+            "type":         "ENUMERATED",
+            "enumerations": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * Enumerations ::=
+ *      RootEnumeration
+ *      | RootEnumeration "," "..." ExceptionSpec
+ *      | RootEnumeration "," "..." ExceptionSpec "," AdditionalEnumeration
+ *****************************************************************************/
+ParseEnumerations:
+    ParseRootEnumeration {
+        $$ = MAP {
+            "enumeration": $1,
+        }
+    }
+  | ParseRootEnumeration COMMA ELLIPSIS ParseExceptionSpec {
+        $$ = MAP {
+            "enumeration": $1,
+            "exception":   $4,
+        }
+    }
+  | ParseRootEnumeration COMMA ELLIPSIS ParseExceptionSpec COMMA ParseAdditionalEnumeration {
+        $$ = MAP {
+            "enumeration":           $1,
+            "exception":             $4,
+            "additionalEnumeration": $6,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RootEnumeration ::=
+ *      Enumeration
+ *****************************************************************************/
+ParseRootEnumeration:
+    ParseEnumeration {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * AdditionalEnumeration ::=
+ *      Enumeration
+ *****************************************************************************/
+ParseAdditionalEnumeration:
+    ParseEnumeration {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Enumeration ::=
+ *      EnumerationItem
+ *      | EnumerationItem "," Enumeration
+ *****************************************************************************/
+ParseEnumeration:
+    ParseEnumerationItem {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseEnumeration COMMA ParseEnumerationItem {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EnumerationItem ::=
+ *      identifier | NamedNumber
+ *****************************************************************************/
+ParseEnumerationItem:
+    ParseString {
+        $$ = MAP {
+            "name": $1,
+        }
+    }
+  | ParseNamedNumber {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * NamedNumber ::=
+ *      identifier "(" SignedNumber ")"
+ *      | identifier "(" DefinedValue ")"
+ *****************************************************************************/
+ParseNamedNumber:
+    ParseString ROUND_START ParseNumber ROUND_END
+    /* EMPTY */ {
+        $$ = MAP {
+            "name":   $1,
+            "number": $3,
+        }
+    }
+  | ParseString ROUND_START ParseDefinedValue ROUND_END {
+        $$ = MAP {
+            "name":         $1,
+            "definedValue": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExternalType ::=
+ *      EXTERNAL
+ *****************************************************************************/
 ParseExternalType:
-    // TODO: ParseExternalType
-    /* EMPTY */ {
-        $$ = nil
+    EXTERNEL_SYMBOL {
+        $$ = MAP {
+            "type": "EXTERNAL",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * InstanceOfType ::=
+ *      INSTANCE OF DefinedObjectClass
+ *****************************************************************************/
 ParseInstanceOfType:
-    // TODO: ParseInstanceOfType
-    /* EMPTY */ {
-        $$ = nil
+    INSTANCE_SYMBOL OF_SYMBOL ParseDefinedObjectClass {
+        $$ = MAP {
+            "type":               "INSTANCE_OF",
+            "definedObjectClass": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * IntegerType ::=
+ *      INTEGER
+ *      | INTEGER "{" NamedNumberList "}"
+ *****************************************************************************/
 ParseIntegerType:
-    // TODO: ParseIntegerType
-    /* EMPTY */ {
-        $$ = nil
+    INTEGER_SYMBOL {
+        $$ = MAP {
+            "type": "INTEGER",
+        }
+    }
+  | INTEGER_SYMBOL CURLY_START ParseNamedNumberList CURLY_END {
+        $$ = MAP {
+            "type":    "INTEGER",
+            "numbers": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * NamedNumberList ::=
+ *      NamedNumber
+ *      | NamedNumberList "," NamedNumber
+ *****************************************************************************/
+ParseNamedNumberList:
+    ParseNamedNumber {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseNamedNumberList COMMA ParseNamedNumber {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * IRIType ::=
+ *      OID-IRI
+ *****************************************************************************/
 ParseIRIType:
-    // TODO: ParseIRIType
-    /* EMPTY */ {
-        $$ = nil
+    OIDIRI_SYMBOL {
+        $$ = MAP {
+            "type": "OID_IRI",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * NullType ::=
+ *      NULL
+ *****************************************************************************/
 ParseNullType:
-    // TODO: ParseNullType
-    /* EMPTY */ {
-        $$ = nil
+    NULL_SYMBOL {
+        $$ = MAP {
+            "type": "NULL",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectClassFieldType ::=
+ *      DefinedObjectClass "." FieldName
+ *****************************************************************************/
 ParseObjectClassFieldType:
-    // TODO: ParseObjectClassFieldType
-    /* EMPTY */ {
-        $$ = nil
+    ParseDefinedObjectClass DOT ParseFieldName {
+        $$ = MAP {
+            "type":               "OBJECT_FIELD",
+            "definedObjectClass": $1,
+            "fieldName":          $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ObjectIdentifierType ::=
+ *      OBJECT IDENTIFIER
+ *****************************************************************************/
 ParseObjectIdentifierType:
-    // TODO: ParseObjectIdentifierType
-    /* EMPTY */ {
-        $$ = nil
+    OBJECT_SYMBOL IDENTIFIER_SYMBOL {
+        $$ = MAP {
+            "type": "OBJECT_IDENTIFIER",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * OctetStringType ::=
+ *      OCTET STRING
+ *****************************************************************************/
 ParseOctetStringType:
-    // TODO: ParseOctetStringType
-    /* EMPTY */ {
-        $$ = nil
+    OCTET_SYMBOL STRING_SYMBOL {
+        $$ = MAP {
+            "type": "OCTET_STRING",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * RealType ::=
+ *      REAL
+ *****************************************************************************/
 ParseRealType:
-    // TODO: ParseRealType
-    /* EMPTY */ {
-        $$ = nil
+    REAL_SYMBOL {
+        $$ = MAP {
+            "type": "REAL",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * RelativeIRIType ::=
+ *      RELATIVE-OID-IRI
+ *****************************************************************************/
 ParseRelativeIRIType:
-    // TODO: ParseRelativeIRIType
-    /* EMPTY */ {
-        $$ = nil
+    RELATIVEOIDIRI_SYMBOL {
+        $$ = MAP {
+            "type": "RELATIVE_OID_IRI",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * RelativeOIDType ::=
+ *      RELATIVE-OID
+ *****************************************************************************/
 ParseRelativeOIDType:
-    // TODO: ParseRelativeOIDType
-    /* EMPTY */ {
-        $$ = nil
+    RELATIVEOID_SYMBOL {
+        $$ = MAP {
+            "type": "RELATIVE_OID",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SequenceType ::=
+ *      SEQUENCE "{" "}"
+ *      | SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"
+ *      | SEQUENCE "{" ComponentTypeLists "}"
+ *****************************************************************************/
 ParseSequenceType:
-    // TODO: ParseSequenceType
-    /* EMPTY */ {
+    SEQUENCE_SYMBOL CURLY_START CURLY_END {
+        $$ = MAP {
+            "type": "SEQUENCE",
+        }
+    }
+    SEQUENCE_SYMBOL CURLY_START ParseExtensionAndException ParseOptionalExtensionMarker CURLY_END {
+        $$ = MAP {
+            "type":                  "SEQUENCE",
+            "extensionAndException": $3,
+        }
+    }
+    SEQUENCE_SYMBOL CURLY_START ParseComponentTypeLists CURLY_END {
+        $$ = MAP {
+            "type":           "SEQUENCE",
+            "componentTypes": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ComponentTypeLists ::=
+ *      RootComponentTypeList
+ *      | RootComponentTypeList "," ExtensionAndException ExtensionAdditions OptionalExtensionMarker
+ *      | RootComponentTypeList "," ExtensionAndException ExtensionAdditions ExtensionEndMarker "," RootComponentTypeList
+ *      | ExtensionAndException ExtensionAdditions ExensionEndMarker "," RootComponentTypeList
+ *      | ExtensionAndException ExtensionAdditions OptionalExtensionMarker
+ *****************************************************************************/
+ParseComponentTypeLists:
+    ParseRootComponentTypeList {
+        $$ = MAP {
+            "rootComponentTypes":    $1,
+        }
+    }
+  | ParseRootComponentTypeList COMMA ParseExtensionAndException ParseExtensionAdditions ParseOptionalExtensionMarker {
+        $$ = MAP {
+            "extensionAndException": $3,
+            "extensionAdditions":    $4,
+            "rootComponentTypes":    $1,
+        }
+    }
+  | ParseRootComponentTypeList COMMA ParseExtensionAndException ParseExtensionAdditions ParseExtensionEndMarker COMMA ParseRootComponentTypeList {
+        $$ = MAP {
+            "extensionAndException": $3,
+            "extensionAdditions":    $4,
+            "rootComponentTypes":    append($1.(LIST), $7.(LIST)),
+        }
+    }
+  | ParseExtensionAndException ParseExtensionAdditions ParseExtensionEndMarker COMMA ParseRootComponentTypeList {
+        $$ = MAP {
+            "extensionAndException": $1,
+            "extensionAdditions":    $2,
+            "rootComponentTypes":    $5,
+        }
+    }
+  | ParseExtensionAndException ParseExtensionAdditions ParseOptionalExtensionMarker {
+        $$ = MAP {
+            "extensionAndException": $1,
+            "extensionAdditions":    $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RootComponentTypeList ::=
+ *      ComponentTypeList
+ *****************************************************************************/
+ParseRootComponentTypeList:
+    ParseComponentTypeList {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ComponentTypeList ::=
+ *      ComponentType
+ *      | ComponentTypeList "," ComponentType
+ *****************************************************************************/
+ParseComponentTypeList:
+    ParseComponentType {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseComponentTypeList COMMA ParseComponentType {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ComponentType ::=
+ *      NamedType
+ *      | NamedType OPTIONAL
+ *      | NamedType DEFAULT Value
+ *      | COMPONENTS OF Type
+ *****************************************************************************/
+ParseComponentType:
+    ParseNamedType {
+        $$ = MAP {
+            "type":     "COMPONENTS",
+            "namedType": $1,
+        }
+    }
+  | ParseNamedType OPTIONAL_SYMBOL {
+        $$ = MAP {
+            "type":     "COMPONENTS",
+            "namedType": $1,
+            "optional":  true,
+        }
+    }
+  | ParseNamedType DEFAULT_SYMBOL ParseValue {
+        $$ = MAP {
+            "type":         "COMPONENTS",
+            "namedType":    $1,
+            "defaultValue": $3,
+        }
+    }
+  | COMPONENTS_SYMBOL OF_SYMBOL ParseType {
+        $$ = MAP {
+            "type":     "COMPONENTS",
+            "typename": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionList ::=
+ *      ExtensionAddition
+ *      | ExtensionAdditionList "," ExtensionAddition
+ *****************************************************************************/
+ParseExtensionAdditions:
+    COMMA ParseExtensionAdditionList {
+        $$ = $2
+    }
+  | /* EMPTY */ {
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionList ::=
+ *      ExtensionAddition
+ *      | ExtensionAdditionList "," ExtensionAddition
+ *****************************************************************************/
+ParseExtensionAdditionList:
+    ParseExtensionAddition {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseExtensionAdditionList COMMA ParseExtensionAddition {
+        $$ = $1
+        $$ = append($$.(LIST), $3)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAddition ::=
+ *      ComponentType
+ *      | ExtensionAdditionGroup
+ *****************************************************************************/
+ParseExtensionAddition:
+    ParseComponentType {
+        $$ = MAP {
+            "componentType": $1,
+        }
+    }
+  | ParseExtensionAdditionGroup {
+        $$ = MAP {
+            "extensionAdditionGroup": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionAdditionGroup ::=
+ *      "[[" VersionNumber ComponentTypeList "]]"
+ *****************************************************************************/
+ParseExtensionAdditionGroup:
+    SQUARE_START SQUARE_START ParseVersionNumber ParseComponentTypeList SQUARE_END SQUARE_END {
+        $$ = MAP {
+            "version":        $3,
+            "componentTypes": $4,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ExtensionEndMarker ::=
+ *      "," "..."
+ *****************************************************************************/
+ParseExtensionEndMarker:
+    COMMA ELLIPSIS {
+        $$ = true
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SequenceOfType ::=
+ *      SEQUENCE OF Type
+ *      | SEQUENCE OF NamedType
+ *****************************************************************************/
 ParseSequenceOfType:
-    // TODO: ParseSequenceOfType
-    /* EMPTY */ {
-        $$ = nil
+    SEQUENCE_SYMBOL OF_SYMBOL ParseType {
+        $$ = MAP {
+            "type":     "SEQUENCE_OF",
+            "typename": $3,
+        }
+    }
+  | SEQUENCE_SYMBOL OF_SYMBOL ParseNamedType {
+        $$ = MAP {
+            "type":      "SEQUENCE_OF",
+            "namedType": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SetType ::=
+ *      SET "{" "}"
+ *      | SET "{" ExtensionAndException OptionalExtensionMarker "}"
+ *      | SET "{" ComponentTypeLists "}"
+ *****************************************************************************/
 ParseSetType:
-    // TODO: ParseSetType
-    /* EMPTY */ {
-        $$ = nil
+    SET_SYMBOL CURLY_START CURLY_END {
+        $$ = MAP {
+            "type": "SET",
+        }
+    }
+    SET_SYMBOL CURLY_START ParseExtensionAndException ParseOptionalExtensionMarker CURLY_END {
+        $$ = MAP {
+            "type":                  "SET",
+            "extensionAndException": $3,
+        }
+    }
+    SET_SYMBOL CURLY_START ParseComponentTypeLists CURLY_END {
+        $$ = MAP {
+            "type":           "SET",
+            "componentTypes": $3,
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * SetOfType ::=
+ *      SET OF Type
+ *      | SET OF NamedType
+ *****************************************************************************/
 ParseSetOfType:
-    // TODO: ParseSetOfType
-    /* EMPTY */ {
-        $$ = nil
+    SET_SYMBOL OF_SYMBOL ParseType {
+        $$ = MAP {
+            "type":     "SET_OF",
+            "typename": $3,
+        }
+    }
+    SET_SYMBOL OF_SYMBOL ParseNamedType {
+        $$ = MAP {
+            "type":      "SET_OF",
+            "namedType": $3,
+        }
     }
 
-ParsePrefixedType:
-    // TODO: ParsePrefixedType
-    /* EMPTY */ {
-        $$ = nil
-    }
-
+/******************************************************************************
+ * BNF Definition:
+ * TimeType ::=
+ *      TIME
+ *****************************************************************************/
 ParseTimeType:
-    // TODO: ParseTimeType
-    /* EMPTY */ {
-        $$ = nil
+    TIME_SYMBOL {
+        $$ = MAP {
+            "type": "TIME",
+        }
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * TimeOfDayType ::=
+ *      TIME-OF-DAY
+ *****************************************************************************/
 ParseTimeOfDayType:
-    // TODO: ParseTimeOfDayType
-    /* EMPTY */ {
+    TIMEOFDAY_SYMBOL {
+        $$ = MAP {
+            "type": "TIME_OF_DAY",
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * PrefixedType ::=
+ *      TaggedType
+ *      | EncodingPrefixedType
+ *****************************************************************************/
+ParsePrefixedType:
+    ParseTaggedType {
+        $$ = MAP {
+            "type":       "PREFIXED",
+            "taggedType": $1,
+        }
+    }
+  | ParseEncodingPrefixedType {
+        $$ = MAP {
+            "type":                 "PREFIXED",
+            "encodingPrefixedType": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * TaggedType ::=
+ *      Tag Type
+ *      | Tag IMPLICIT Type
+ *      | Tag EXPLICIT Type
+ *****************************************************************************/
+ParseTaggedType:
+    ParseTag ParseType {
+        $$ = MAP {
+            "tag":      $1,
+            "typename": $2,
+        }
+    }
+    ParseTag IMPLICIT_SYMBOL ParseType {
+        $$ = MAP {
+            "tag":      $1,
+            "typename": $2,
+            "implicit": true,
+        }
+    }
+    ParseTag EXPLICIT_SYMBOL ParseType {
+        $$ = MAP {
+            "tag":      $1,
+            "typename": $2,
+            "explicit": true,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Tag ::=
+ *      "[" EncodingReference Class ClassNumber "]"
+ *****************************************************************************/
+ParseTag:
+    SQUARE_START ParseEncodingReference ParseClass ParseClassNumber SQUARE_END {
+        $$ = MAP {
+            "encodingReference": $2,
+            "class":             $3,
+            "classNumber":       $4,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EncodingReference ::=
+ *      encodingreference ":"
+ *      | empty
+ *****************************************************************************/
+ParseEncodingReference:
+    TokenCapitalString COLON {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * Class ::=
+ *      UNIVERSAL
+ *      | APPLICATION
+ *      | PRIVATE
+ *      | empty
+ *****************************************************************************/
+ParseClass:
+    UNIVERSAL_SYMBOL {
+        $$ = "UNIVERSAL"
+    }
+  | APPLICATION_SYMBOL {
+        $$ = "APPLICATION"
+    }
+  | PRIVATE_SYMBOL {
+        $$ = "PRIVATE"
+    }
+  | /* EMPTY */ {
         $$ = nil
     }
 
+/******************************************************************************
+ * BNF Definition:
+ * ClassNumber ::=
+ *      number
+ *      | DefinedValue
+ *****************************************************************************/
+ParseClassNumber:
+    ParseNumber {
+        $$ = MAP {
+            "number": $1,
+        }
+    }
+  | ParseDefinedValue {
+        $$ = MAP {
+            "definedValue": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EncodingPrefixedType ::=
+ *      EncodingPrefix Type
+ *****************************************************************************/
+ParseEncodingPrefixedType:
+    ParseEncodingPrefix ParseType {
+        $$ = MAP {
+            "encodingPrefix": $1,
+            "typename":       $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EncodingPrefix ::=
+ *      "[" EncodingReference EncodingInstruction "]"
+ *****************************************************************************/
+ParseEncodingPrefix:
+    SQUARE_START ParseEncodingReference ParseEncodingInstruction SQUARE_END {
+        $$ = MAP {
+            "encodingReference":   $2,
+            "encodingInstruction": $3,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * EncodingInstruction ::=
+ *      TAG | XER | PER
+ *****************************************************************************/
+ParseEncodingInstruction:
+    TAG_SYMBOL {
+        $$ = "TAG"
+    }
+  | XER_SYMBOL {
+        $$ = "XER"
+    }
+  | PER_SYMBOL {
+        $$ = "PER"
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * BuiltinValue ::=
+ *      BitStringValue
+ *      | BooleanValue
+ *      | CharacterStringValue
+ *      | ChoiceValue
+ *      | EmbeddedPDVValue
+ *      | EnumeratedValue
+ *      | ExternalValue
+ *      | InstanceOfValue
+ *      | IntegerValue
+ *      | IRIValue
+ *      | NullValue
+ *      | ObjectIdentifierValue
+ *      | OctetStringValue
+ *      | RealValue
+ *      | RelativeIRIValue
+ *      | RelativeOIDValue
+ *      | SequenceValue
+ *      | SequenceOfValue
+ *      | SetValue
+ *      | SetOfValue
+ *      | PrefixedValue
+ *      | TimeValue
+ *****************************************************************************/
 ParseBuiltinValue:
     ParseBitStringValue {
         $$ = MAP {
@@ -3372,6 +4234,7 @@ ParseBuiltinValue:
         }
     }
 
+// TODO
 ParseBitStringValue:
     TokenBString {
         $$ = $1
@@ -3389,6 +4252,7 @@ ParseBitStringValue:
         $$ = $2
     }
 
+// TODO
 ParseIdentifierList:
     ParseIdentifier {
         $$ = LIST {
@@ -3400,16 +4264,19 @@ ParseIdentifierList:
         $$ = append($$.(LIST), $2)
     }
 
+// TODO
 ParseIdentifier:
     ParseString {
         $$ = $1
     }
 
+// TODO
 ParseBooleanValue:
     ParseBoolean {
         $$ = $1
     }
 
+// TODO
 ParseCharacterStringValue:
     ParseRestrictedCharacterStringValue {
         $$ = nil
@@ -3418,6 +4285,7 @@ ParseCharacterStringValue:
 
     }
 
+// TODO
 ParseRestrictedCharacterStringValue:
     TokenCString {
         $$ = $1
@@ -3432,11 +4300,13 @@ ParseRestrictedCharacterStringValue:
         $$ = $1
     }
 
+// TODO
 ParseCharacterStringList:
     CURLY_START ParseCharSyms CURLY_END {
         $$ = nil
     }
 
+// TODO
 ParseCharSyms:
     ParseCharsDefn {
         $$ = LIST{
@@ -3448,6 +4318,7 @@ ParseCharSyms:
         $$ = append($$.(LIST), $2)
     }
 
+// TODO
 ParseCharsDefn:
     TokenCString {
         $$ = $1
@@ -3462,6 +4333,7 @@ ParseCharsDefn:
         $$ = $1
     }
 
+// TODO
 ParseQuadruple:
     CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END {
         $$ = MAP {
@@ -3472,26 +4344,31 @@ ParseQuadruple:
         }
     }
 
+// TODO
 ParseGroup:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParsePlane:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseRow:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseCell:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseTuple:
     CURLY_START ParseTableColumn COMMA ParseTableRow CURLY_END {
         $$ = MAP {
@@ -3500,21 +4377,25 @@ ParseTuple:
         }
     }
 
+// TODO
 ParseTableColumn:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseTableRow:
     ParseNumber {
         $$ = $1
     }
 
+// TODO
 ParseUnrestrictedCharacterStringValue:
     ParseSequenceValue {
         $$ = $1
     }
 
+// TODO
 ParseChoiceValue:
     ParseString COLON ParseValue {
         $$ = MAP {
@@ -3523,26 +4404,31 @@ ParseChoiceValue:
         }
     }
 
+// TODO
 ParseEmbeddedPDVValue:
     ParseSequenceValue {
         $$ = nil
     }
 
+// TODO
 ParseEnumeratedValue:
     ParseString {
         $$ = $1
     }
 
+// TODO
 ParseExternalValue:
     ParseSequenceValue {
         $$ = $1
     }
 
+// TODO
 ParseInstanceOfValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseIntegerValue:
     ParseNumber {
         $$ = $1
@@ -3551,12 +4437,13 @@ ParseIntegerValue:
         $$ = $1
     }
 
+// TODO
 ParseNullValue:
     NULL_SYMBOL {
         $$ = "NULL"
     }
 
-// Conflicts with ParseBitStringValue
+// TODO
 ParseOctetStringValue:
     TokenBString {
         $$ = $1
@@ -3568,6 +4455,7 @@ ParseOctetStringValue:
         $$ = $1
     }
 
+// TODO
 ParseRealValue:
     ParseNumericRealValue {
         $$ = $1
@@ -3576,6 +4464,7 @@ ParseRealValue:
         $$ = nil
     }
 
+// TODO
 ParseNumericRealValue:
     ParseNumber {
         $$ = $1
@@ -3584,6 +4473,7 @@ ParseNumericRealValue:
         $$ = $1
     }
 
+// TODO
 ParseSpecialRealValue:
     PLUSINFINITY_SYMBOL {
         $$ = nil
@@ -3595,21 +4485,25 @@ ParseSpecialRealValue:
         $$ = nil
     }
 
+// TODO
 ParseIRIValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseRelativeIRIValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseRelativeOIDValue:
     CURLY_START ParseRelativeOIDComponentsList CURLY_END {
         $$ = nil
     }
 
+// TODO
 ParseRelativeOIDComponentsList:
     ParseRelativeOIDComponents {
         $$ = nil
@@ -3618,6 +4512,7 @@ ParseRelativeOIDComponentsList:
         $$ = nil
     }
 
+// TODO
 ParseRelativeOIDComponents:
     ParseNumberForm {
         $$ = nil
@@ -3629,106 +4524,127 @@ ParseRelativeOIDComponents:
         $$ = nil
     }
 
+// TODO
 ParseSequenceValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseSequenceOfValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseSetValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseSetOfValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParsePrefixedValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseTimeValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseReferencedValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseObjectClassFieldValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseXMLTypedValue:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseValueSet:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseObjectClass:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseDefinedObjectClass:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseObject:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseObjectSet:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedTypeAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedValueAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedValueSetTypeAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedObjectClassAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedObjectAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseParameterizedObjectSetAssignment:
     /* EMPTY */ {
         $$ = nil
     }
 
+// TODO
 ParseDefinedValue:
     ParseExternalValueReference {
         $$ = MAP {
@@ -3755,6 +4671,7 @@ ParseDefinedValue:
         }
     }
 
+// TODO
 ParseExternalValueReference:
     ParseString DOT ParseString {
         $$ = MAP {
@@ -3763,21 +4680,25 @@ ParseExternalValueReference:
         }
     }
 
+// TODO
 ParseParameterizedValue:
     ParseSimpleDefinedValue ParseActualParameterList {
         $$ = nil
     }
 
+// TODO
 ParseSimpleDefinedValue:
     {
         $$ = nil
     }
 
+// TODO
 ParseActualParameterList:
     {
         $$ = nil
     }
 
+// TODO
 ParseBoolean:
     TRUE_SYMBOL {
         $$ = $1
@@ -3785,7 +4706,7 @@ ParseBoolean:
   | FALSE_SYMBOL {
         $$ = $1
     }
-
+// TODO
 ParseString:
     TokenCapitalString {
         $$ = $1
@@ -3794,6 +4715,7 @@ ParseString:
         $$ = $1
     }
 
+// TODO
 ParseNumber:
     TokenInteger {
         $$ = $1
@@ -3808,8 +4730,18 @@ ParseNumber:
         $$ = (-1) * $2
     }
 
+// TODO
 ParseAssignementSymbol:
     COLON COLON EQUALITY {
         $$ = "::="
+    }
+
+// TODO
+ParseBlock:
+    {
+        SkipBlock()
+    }
+    TokenBlock {
+        $$ = $2
     }
 %%
