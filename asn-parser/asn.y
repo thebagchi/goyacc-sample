@@ -311,7 +311,6 @@ type (
 %type<TypeValue>    ParseRestrictedCharacterStringValue
 %type<TypeValue>    ParseUnrestrictedCharacterStringValue
 %type<TypeValue>    ParseIdentifierList
-%type<TypeValue>    ParseIdentifier
 %type<TypeValue>    ParseCharacterStringList
 %type<TypeValue>    ParseQuadruple
 %type<TypeValue>    ParseTuple
@@ -456,7 +455,6 @@ type (
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
-%type<TypeValue>    ParseBoolean
 %type<TypeValue>    ParseBlock
 
 %start ParseASN
@@ -591,7 +589,7 @@ ParseEncodingReferenceDefault:
         $$ = $1
     }
   | /*EMPTY*/ {
-        $$ = ""
+        $$ = STRING("")
     }
 
 /******************************************************************************
@@ -698,16 +696,16 @@ ParseDefinitiveNameAndNumberForm:
  *****************************************************************************/
 ParseTagDefault:
     IMPLICIT_SYMBOL TAGS_SYMBOL {
-        $$ = "Implicit"
+        $$ = STRING("IMPLICIT")
     }
   | EXPLICIT_SYMBOL TAGS_SYMBOL {
-        $$ = "Explicit"
+        $$ = STRING("EXPLICIT")
     }
   | AUTOMATIC_SYMBOL TAGS_SYMBOL {
-        $$ = "Automatic"
+        $$ = STRING("AUTOMATIC")
     }
   | /*EMPTY*/ {
-        $$ = "Explicit"
+        $$ = STRING("EXPLICIT")
     }
 
 /******************************************************************************
@@ -2248,10 +2246,10 @@ ParseContainedSubtype:
  *****************************************************************************/
 ParseIncludes:
     INCLUDES_SYMBOL {
-        $$ = "INCLUDES"
+        $$ = STRING("INCLUDES")
     }
   | /* EMPTY */ {
-        $$ = "INCLUDES"
+        $$ = STRING("INCLUDES")
     }
 
 /******************************************************************************
@@ -2290,7 +2288,7 @@ ParseLowerEndValue:
         $$ = $1
     }
   | MIN_SYMBOL {
-        $$ = "MIN"
+        $$ = STRING("MIN")
     }
 
 /******************************************************************************
@@ -2316,7 +2314,7 @@ ParseUpperEndValue:
         $$ = $1
     }
   | MAX_SYMBOL {
-        $$ = "MAX"
+        $$ = STRING("MAX")
     }
 
 /******************************************************************************
@@ -2460,13 +2458,13 @@ ParseValueConstraint:
  *****************************************************************************/
 ParsePresenceConstraint:
     PRESENT_SYMBOL {
-        $$ = "PRESENT"
+        $$ = STRING("PRESENT")
     }
   | ABSENT_SYMBOL {
-        $$ = "ABSENT"
+        $$ = STRING("ABSENT")
     }
   | OPTIONAL_SYMBOL {
-        $$ = "OPTIONAL"
+        $$ = STRING("OPTIONAL")
     }
   | /* EMPTY */ {
         $$ = nil
@@ -2592,10 +2590,10 @@ ParseIElems:
  *****************************************************************************/
 ParseIntersectionMark:
     CARET {
-        $$ = "INTERSECTION"
+        $$ = STRING("INTERSECTION")
     }
   | INTERSECTION_SYMBOL {
-        $$ = "INTERSECTION"
+        $$ = STRING("INTERSECTION")
     }
 
 /******************************************************************************
@@ -2615,10 +2613,10 @@ ParseUElems:
  *****************************************************************************/
 ParseUnionMark:
     PIPE {
-        $$ = "UNION"
+        $$ = STRING("UNION")
     }
   | UNION_SYMBOL {
-        $$ = "UNION"
+        $$ = STRING("UNION")
     }
 
 /******************************************************************************
@@ -4024,13 +4022,13 @@ ParseEncodingReference:
  *****************************************************************************/
 ParseClass:
     UNIVERSAL_SYMBOL {
-        $$ = "UNIVERSAL"
+        $$ = STRING("UNIVERSAL")
     }
   | APPLICATION_SYMBOL {
-        $$ = "APPLICATION"
+        $$ = STRING("APPLICATION")
     }
   | PRIVATE_SYMBOL {
-        $$ = "PRIVATE"
+        $$ = STRING("PRIVATE")
     }
   | /* EMPTY */ {
         $$ = nil
@@ -4087,13 +4085,13 @@ ParseEncodingPrefix:
  *****************************************************************************/
 ParseEncodingInstruction:
     TAG_SYMBOL {
-        $$ = "TAG"
+        $$ = STRING("TAG")
     }
   | XER_SYMBOL {
-        $$ = "XER"
+        $$ = STRING("XER")
     }
   | PER_SYMBOL {
-        $$ = "PER"
+        $$ = STRING("PER")
     }
 
 /******************************************************************************
@@ -4234,79 +4232,133 @@ ParseBuiltinValue:
         }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * BitStringValue ::=
+ *      bstring
+ *      | hstring
+ *      | "{" IdentifierList "}"
+ *      | "{" "}"
+ *      | CONTAINING Value
+ *****************************************************************************/
 ParseBitStringValue:
     TokenBString {
-        $$ = $1
+        $$ = MAP {
+            "bstring": $1,
+        }
     }
   | TokenHString {
-        $$ = $1
+        $$ = MAP {
+            "hstring": $1,
+        }
     }
   | CURLY_START ParseIdentifierList CURLY_END {
-        $$ = $2
+        $$ = MAP {
+            "indentifiers": $2,
+        }
     }
   | CURLY_START CURLY_END {
         $$ = nil
     }
   | CONTAINING_SYMBOL ParseValue {
-        $$ = $2
+        $$ = MAP {
+            "bstring": $2,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * IdentifierList ::=
+ *      identifier
+ *      | IdentifierList "," identifier
+ *****************************************************************************/
 ParseIdentifierList:
-    ParseIdentifier {
+    ParseString {
         $$ = LIST {
             $1,
         }
     }
-  | ParseIdentifierList COMMA ParseIdentifier {
+  | ParseIdentifierList COMMA ParseString {
         $$ = $1
         $$ = append($$.(LIST), $2)
     }
 
-// TODO
-ParseIdentifier:
-    ParseString {
-        $$ = $1
-    }
-
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * BooleanValue::=
+ *      TRUE | FALSE
+ *****************************************************************************/
 ParseBooleanValue:
-    ParseBoolean {
+    TRUE_SYMBOL {
+        $$ = $1
+    }
+  | FALSE_SYMBOL {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * CharacterStringValue ::=
+ *      RestrictedCharacterStringValue
+ *      | UnrestrictedCharacterStringValue
+ *****************************************************************************/
 ParseCharacterStringValue:
     ParseRestrictedCharacterStringValue {
-        $$ = nil
+        $$ = MAP {
+            "restrictedCharacterString": $1,
+        }
     }
   | ParseUnrestrictedCharacterStringValue {
-
+        $$ = MAP {
+            "unrestrictedCharacterString": $1,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * RestrictedCharacterStringValue ::=
+ *      cstring
+ *      | CharacterStringList
+ *      | Quadruple
+ *      | Tuple
+ *****************************************************************************/
 ParseRestrictedCharacterStringValue:
     TokenCString {
-        $$ = $1
+        $$ = MAP {
+            "cstring": $1,
+        }
     }
   | ParseCharacterStringList {
-        $$ = $1
+        $$ = MAP {
+            "characterStringList": $1,
+        }
     }
   | ParseQuadruple {
-        $$ = $1
+        $$ = MAP {
+            "quadruple": $1,
+        }
     }
   | ParseTuple {
-        $$ = $1
+        $$ = MAP {
+            "tuple": $1,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * CharacterStringList ::= "{" CharSyms "}"
+ *****************************************************************************/
 ParseCharacterStringList:
     CURLY_START ParseCharSyms CURLY_END {
-        $$ = nil
+        $$ = $2
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * CharSyms ::=
+ *      CharsDefn
+ *      | CharSyms "," CharsDefn
+ *****************************************************************************/
 ParseCharSyms:
     ParseCharsDefn {
         $$ = LIST{
@@ -4318,22 +4370,40 @@ ParseCharSyms:
         $$ = append($$.(LIST), $2)
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * CharsDefn ::=
+ *      cstring
+ *      | Quadruple
+ *      | Tuple
+ *      | DefinedValue
+ *****************************************************************************/
 ParseCharsDefn:
     TokenCString {
-        $$ = $1
+        $$ = MAP {
+            "cstring": $1,
+        }
     }
   | ParseQuadruple {
-        $$ = $1
+        $$ = MAP {
+            "quadruple": $1,
+        }
     }
   | ParseTuple {
-        $$ = $1
+        $$ = MAP {
+            "tuple": $1,
+        }
     }
   | ParseDefinedValue {
-        $$ = $1
+        $$ = MAP {
+            "definedValue": $1,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * Quadruple ::= "{" Group "," Plane "," Row "," Cell "}"
+ *****************************************************************************/
 ParseQuadruple:
     CURLY_START ParseGroup COMMA ParsePlane COMMA ParseRow COMMA ParseCell CURLY_END {
         $$ = MAP {
@@ -4344,31 +4414,46 @@ ParseQuadruple:
         }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * Group ::= number
+ *****************************************************************************/
 ParseGroup:
     ParseNumber {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * Plane ::= number
+ *****************************************************************************/
 ParsePlane:
     ParseNumber {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * Row ::= number
+ *****************************************************************************/
 ParseRow:
     ParseNumber {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * Cell ::= number
+ *****************************************************************************/
 ParseCell:
     ParseNumber {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * Tuple ::= "{" TableColumn "," TableRow "}"
+ *****************************************************************************/
 ParseTuple:
     CURLY_START ParseTableColumn COMMA ParseTableRow CURLY_END {
         $$ = MAP {
@@ -4377,25 +4462,37 @@ ParseTuple:
         }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * TableColumn ::= number
+ *****************************************************************************/
 ParseTableColumn:
     ParseNumber {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * TableRow ::= number
+ *****************************************************************************/
 ParseTableRow:
     ParseNumber {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * UnrestrictedCharacterStringValue ::= SequenceValue
+ *****************************************************************************/
 ParseUnrestrictedCharacterStringValue:
     ParseSequenceValue {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * ChoiceValue ::= identifier ":" Value
+ *****************************************************************************/
 ParseChoiceValue:
     ParseString COLON ParseValue {
         $$ = MAP {
@@ -4404,84 +4501,129 @@ ParseChoiceValue:
         }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * EmbeddedPDVValue ::= SequenceValue
+ *****************************************************************************/
 ParseEmbeddedPDVValue:
     ParseSequenceValue {
-        $$ = nil
+        $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * EnumeratedValue ::= identifier
+ *****************************************************************************/
 ParseEnumeratedValue:
     ParseString {
         $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * ExternalValue ::= SequenceValue
+ *****************************************************************************/
 ParseExternalValue:
     ParseSequenceValue {
         $$ = $1
     }
 
-// TODO
-ParseInstanceOfValue:
-    /* EMPTY */ {
-        $$ = nil
-    }
-
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * IntegerValue ::=
+ *      SignedNumber
+ *      | identifier
+ *****************************************************************************/
 ParseIntegerValue:
     ParseNumber {
         $$ = $1
     }
-  | ParseString {
-        $$ = $1
-    }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * NullValue ::= NULL
+ *****************************************************************************/
 ParseNullValue:
     NULL_SYMBOL {
-        $$ = "NULL"
+        $$ = STRING("NULL")
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * OctetStringValue ::=
+ *      bstring
+ *      | hstring
+ *      | CONTAINING Value
+ *****************************************************************************/
 ParseOctetStringValue:
     TokenBString {
-        $$ = $1
+        $$ = MAP {
+            "bstring": $1,
+        }
     }
   | TokenHString {
-        $$ = $1
+        $$ = MAP {
+            "hstring": $1,
+        }
     }
-  CONTAINING_SYMBOL ParseValue {
-        $$ = $1
+  | CONTAINING_SYMBOL ParseValue {
+        $$ = MAP {
+            "value": $2,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * RealValue ::=
+ *      NumericRealValue
+ *      | SpecialRealValue
+ *****************************************************************************/
 ParseRealValue:
     ParseNumericRealValue {
-        $$ = $1
+        $$ = MAP {
+            "numericRealValue": $1,
+        }
     }
   | ParseSpecialRealValue {
-        $$ = nil
+        $$ = MAP {
+            "specialRealValue": $1,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * NumericRealValue ::=
+       realnumber
+       | "-" realnumber
+       | SequenceValue
+ *****************************************************************************/
 ParseNumericRealValue:
     ParseNumber {
-        $$ = $1
+        $$ = MAP {
+            "realNumber": $1,
+        }
     }
   | ParseSequenceValue {
-        $$ = $1
+        $$ = MAP {
+            "sequenceValue": $1,
+        }
     }
 
 // TODO
 ParseSpecialRealValue:
     PLUSINFINITY_SYMBOL {
-        $$ = nil
+        $$ = STRING("PLUS_INFINITY")
     }
   | MINUSINFINITY_SYMBOL {
-        $$ = nil
+        $$ = STRING("MINUS_INFINITY")
     }
   | NOTANUMBER_SYMBOL {
+        $$ = STRING("NOT_A_NUMBER")
+    }
+
+// TODO
+ParseInstanceOfValue:
+    /* EMPTY */ {
         $$ = nil
     }
 
@@ -4699,14 +4841,6 @@ ParseActualParameterList:
     }
 
 // TODO
-ParseBoolean:
-    TRUE_SYMBOL {
-        $$ = $1
-    }
-  | FALSE_SYMBOL {
-        $$ = $1
-    }
-// TODO
 ParseString:
     TokenCapitalString {
         $$ = $1
@@ -4733,7 +4867,7 @@ ParseNumber:
 // TODO
 ParseAssignementSymbol:
     COLON COLON EQUALITY {
-        $$ = "::="
+        $$ = STRING("::=")
     }
 
 // TODO
