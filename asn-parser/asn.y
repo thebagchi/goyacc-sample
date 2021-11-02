@@ -452,6 +452,11 @@ type (
 %type<TypeValue>    ParseClassNumber
 %type<TypeValue>    ParseEncodingPrefix
 %type<TypeValue>    ParseEncodingInstruction
+%type<TypeValue>    ParseFirstArcIdentifier
+%type<TypeValue>    ParseSubsequentArcIdentifier
+%type<TypeValue>    ParseArcIdentifier
+%type<TypeValue>    ParseFirstRelativeArcIdentifier
+%type<TypeValue>    ParseComponentValueList
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -4593,9 +4598,9 @@ ParseRealValue:
 /******************************************************************************
  * BNF Definition:
  * NumericRealValue ::=
-       realnumber
-       | "-" realnumber
-       | SequenceValue
+ *      realnumber
+ *      | "-" realnumber
+ *      | SequenceValue
  *****************************************************************************/
 ParseNumericRealValue:
     ParseNumber {
@@ -4609,7 +4614,13 @@ ParseNumericRealValue:
         }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * SpecialRealValue ::=
+ *      PLUS-INFINITY
+ *      | MINUS-INFINITY
+ *      | NOT-A-NUMBER
+ *****************************************************************************/
 ParseSpecialRealValue:
     PLUSINFINITY_SYMBOL {
         $$ = STRING("PLUS_INFINITY")
@@ -4621,53 +4632,170 @@ ParseSpecialRealValue:
         $$ = STRING("NOT_A_NUMBER")
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * InstanceOfValue ::= Value
+ *****************************************************************************/
 ParseInstanceOfValue:
-    /* EMPTY */ {
-        $$ = nil
+    ParseValue {
+        $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * IRIValue ::=
+ *      "\""
+ *      FirstArcIdentifier
+ *      SubsequentArcIdentifier
+ *      "\""
+ *****************************************************************************/
 ParseIRIValue:
-    /* EMPTY */ {
-        $$ = nil
+    DOUBLE_QUOTE ParseFirstArcIdentifier ParseSubsequentArcIdentifier DOUBLE_QUOTE {
+        $$ = MAP {
+            "firstArcIdentifier":       $2,
+            "subsequentArcIndentifier": $3,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * FirstArcIdentifier ::=
+ *      "/" ArcIdentifier
+ *****************************************************************************/
+ParseFirstArcIdentifier:
+    SLASH ParseArcIdentifier {
+        $$ = $2
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * ArcIdentifier ::=
+ *      integerUnicodeLabel
+ *      | non-integerUnicodeLabel
+ *****************************************************************************/
+ParseArcIdentifier:
+    ParseNumber {
+        $$ = MAP {
+            "integerUnicodeLabel": $1,
+        }
+    }
+  | ParseString {
+        $$ = MAP {
+            "nonintegerUnicodeLabel": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SubsequentArcIdentifier ::=
+ *      "/" ArcIdentifier SubsequentArcIdentifier
+ *      | empty
+ *****************************************************************************/
+ParseSubsequentArcIdentifier:
+    SLASH ParseArcIdentifier ParseSubsequentArcIdentifier {
+        $$ = LIST{
+            $2,
+        }
+        $$ = append($$.(LIST), $2)
+    }
+  | /* EMPTY */ {
+        $$ = LIST {
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RelativeIRIValue ::=
+ *      "\""
+ *      FirstRelativeArcIdentifier
+ *      SubsequentArcIdentifier
+ *      "\""
+ *****************************************************************************/
 ParseRelativeIRIValue:
-    /* EMPTY */ {
-        $$ = nil
+    DOUBLE_QUOTE ParseFirstRelativeArcIdentifier ParseSubsequentArcIdentifier DOUBLE_QUOTE {
+        $$ = MAP {
+            "firstRelativeArcIdentifier": $2,
+            "subsequentArcIdentifier":    $3,
+        }
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * FirstRelativeArcIdentifier ::=
+ *      ArcIdentifier
+ *****************************************************************************/
+ParseFirstRelativeArcIdentifier:
+    ParseArcIdentifier {
+        $$ = $1
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * RelativeOIDValue ::=
+ *      "{" RelativeOIDComponentsList "}"
+ *****************************************************************************/
 ParseRelativeOIDValue:
     CURLY_START ParseRelativeOIDComponentsList CURLY_END {
-        $$ = nil
+        $$ = $2
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * RelativeOIDComponentsList ::=
+ *      RelativeOIDComponents
+ *      | RelativeOIDComponents RelativeOIDComponentsList
+ *****************************************************************************/
 ParseRelativeOIDComponentsList:
     ParseRelativeOIDComponents {
-        $$ = nil
+        $$ = LIST {
+            $1,
+        }
     }
   | ParseRelativeOIDComponentsList ParseRelativeOIDComponents {
-        $$ = nil
+        $$ = $1
+        $$ = append($$.(LIST), $2)
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * RelativeOIDComponents ::=
+ *      NumberForm
+ *      | NameAndNumberForm
+ *      | DefinedValue
+ *****************************************************************************/
 ParseRelativeOIDComponents:
     ParseNumberForm {
-        $$ = nil
+        $$ = MAP {
+            "number": $1,
+        }
     }
   | ParseNameAndNumberForm {
-        $$ = nil
+        $$ = MAP {
+            "nameAndNumber": $1,
+        }
     }
   | ParseDefinedValue {
+        $$ = MAP {
+            "definedValue": $1,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SequenceValue ::=
+       "{" ComponentValueList "}"
+       | "{" "}"
+ *****************************************************************************/
+ParseSequenceValue:
+    CURLY_START ParseComponentValueList CURLY_END {
+        $$ = $2
+    }
+  | CURLY_START CURLY_END {
         $$ = nil
     }
 
 // TODO
-ParseSequenceValue:
+ParseComponentValueList:
     /* EMPTY */ {
         $$ = nil
     }

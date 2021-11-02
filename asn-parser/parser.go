@@ -1,5 +1,4 @@
 //go:generate goyacc -p ASN asn.y
-//go:generate ../tools/protoc/bin/protoc --proto_path=. -I ../tools/protoc/include --go_out=asn1pb --go_opt=paths=source_relative asn1.proto
 package main
 
 import (
@@ -488,6 +487,9 @@ func (p *Parser) CanBeCharString() (string, error) {
 		if nil != err {
 			return "", err
 		}
+		if !p.IsAlphaNumeric(b[i]) {
+			return "", fmt.Errorf("encoding/char: invalid byte: %#U", rune(b[count]))
+		}
 		buffer.WriteByte(b[i])
 	}
 	_, _ = p.Input.Discard(count)
@@ -521,6 +523,10 @@ func (p *Parser) CanBeBinaryString() (string, error) {
 	}
 	_, _ = p.Input.Discard(count + 2)
 	return buffer.String(), nil
+}
+
+func (p *Parser) IsAlphaNumeric(c byte) bool {
+	return unicode.IsLetter(rune(c)) || unicode.IsDigit(rune(c))
 }
 
 func (p *Parser) IsHexDigit(c byte) bool {

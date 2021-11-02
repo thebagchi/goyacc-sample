@@ -4,12 +4,15 @@ import (
 	"archive/zip"
 	"bytes"
 	"fmt"
+	"go/build"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 //go:generate go install golang.org/x/tools/cmd/goyacc
@@ -19,9 +22,10 @@ const (
 	ProtocLinux   = "https://github.com/protocolbuffers/protobuf/releases/download/v3.17.3/protoc-3.17.3-linux-x86_64.zip"
 	ProtocWindows = "https://github.com/protocolbuffers/protobuf/releases/download/v3.17.3/protoc-3.17.3-win64.zip"
 	ProtocDarwin  = "https://github.com/protocolbuffers/protobuf/releases/download/v3.17.3/protoc-3.17.3-osx-x86_64.zip"
+	GoogleAPIs    = "https://github.com/googleapis/googleapis/archive/master.zip"
 )
 
-func Unzip(source, destination string) error {
+func Unzip(source, destination, pattern string) error {
 	data, err := ioutil.ReadFile(source)
 	if nil != err {
 		return err
@@ -34,6 +38,14 @@ func Unzip(source, destination string) error {
 	for _, file := range reader.File {
 		if file.FileInfo().IsDir() {
 			continue
+		}
+		_, name := filepath.Split(file.Name)
+		if matched, err := filepath.Match(pattern, name); nil == err {
+			if !matched {
+				continue
+			}
+		} else {
+			return err
 		}
 		err := func() error {
 			reader, err := file.Open()
@@ -104,6 +116,7 @@ func DownloadProtoc() error {
 		err = Unzip(
 			filepath.Join(dir, "tools", "protoc-3.17.3-win64.zip"),
 			filepath.Join(dir, "tools", "protoc"),
+			"*",
 		)
 		if nil != err {
 			return err
@@ -121,6 +134,7 @@ func DownloadProtoc() error {
 		err = Unzip(
 			filepath.Join(dir, "tools", "protoc-3.17.3-linux-x86_64.zip"),
 			filepath.Join(dir, "tools", "protoc"),
+			"*",
 		)
 		if nil != err {
 			return err
@@ -138,6 +152,23 @@ func DownloadProtoc() error {
 		err = Unzip(
 			filepath.Join(dir, "tools", "protoc-3.17.3-osx-x86_64.zip"),
 			filepath.Join(dir, "tools", "protoc"),
+			"*",
+		)
+		if nil != err {
+			return err
+		}
+	}
+	{
+		if _, err := os.Stat(filepath.Join(dir, "tools", "googleapis.zip")); os.IsNotExist(err) {
+			err = DownloadFile(GoogleAPIs, filepath.Join(dir, "tools", "googleapis.zip"))
+			if nil != err {
+				return err
+			}
+		}
+		err = Unzip(
+			filepath.Join(dir, "tools", "googleapis.zip"),
+			filepath.Join(dir, "tools", "googleapis"),
+			"*.proto",
 		)
 		if nil != err {
 			return err
@@ -146,10 +177,76 @@ func DownloadProtoc() error {
 	return nil
 }
 
+func GoPath() string {
+	gopath := os.Getenv("GOPATH")
+	if gopath == "" {
+		gopath = build.Default.GOPATH
+	}
+	return gopath
+}
+
+func CompileProto() error {
+	files := make([]string, 0)
+	if entries, err := ioutil.ReadDir(filepath.Join("proto")); nil == err {
+		for _, entry := range entries {
+			if match, err := filepath.Match("*.proto", entry.Name()); nil == err {
+				if match {
+					files = append(files, entry.Name())
+				}
+			}
+		}
+	} else {
+		return err
+	}
+	for _, file := range files {
+		fmt.Println("Compiling: ", file)
+		name := strings.TrimSuffix(file, filepath.Ext(file))
+		_ = os.MkdirAll(filepath.Join("proto", fmt.Sprintf("%spb", name)), os.ModePerm)
+		arguments := strings.Join(
+			[]string{
+				"--proto_path=proto",
+				fmt.Sprintf("-I %s", filepath.Join("tools", "protoc", "include")),
+				fmt.Sprintf("-I %s", filepath.Join("tools", "googleapis", "googleapis-master")),
+				fmt.Sprintf("--go_out=proto/%spb --go_opt=paths=source_relative", name),
+				fmt.Sprintf("--go-grpc_out=proto/%spb --go-grpc_opt=paths=source_relative", name),
+				fmt.Sprintf("--grpc-gateway_out=proto/%spb --grpc-gateway_opt=paths=source_relative", name),
+				filepath.Join("proto", file),
+			},
+			" ",
+		)
+		cmd := exec.Command(
+			filepath.Join("tools", "protoc", "bin", "protoc"),
+			strings.Split(arguments, " ")...,
+		)
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, fmt.Sprintf("PATH=%s", strings.Join(
+			[]string{
+				os.Getenv("PATH"),
+				GoPath(),
+				filepath.Join(GoPath(), "bin"),
+			},
+			string(os.PathListSeparator),
+		)))
+		output, err := cmd.CombinedOutput()
+		if nil != err {
+			fmt.Println(string(output))
+			return err
+		}
+	}
+	return nil
+}
+
 func main() {
-	err := DownloadProtoc()
+	var err error = nil
+	err = DownloadProtoc()
 	if nil != err {
 		fmt.Println("Failed downloading protoc binaries")
+		fmt.Println("Error: ", err)
+		return
+	}
+	err = CompileProto()
+	if nil != err {
+		fmt.Println("Failed compiling proto files")
 		fmt.Println("Error: ", err)
 		return
 	}
