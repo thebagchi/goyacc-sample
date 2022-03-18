@@ -457,6 +457,9 @@ type (
 %type<TypeValue>    ParseArcIdentifier
 %type<TypeValue>    ParseFirstRelativeArcIdentifier
 %type<TypeValue>    ParseComponentValueList
+%type<TypeValue>    ParseNamedValue
+%type<TypeValue>    ParseValueList
+%type<TypeValue>    ParseNamedValueList
 %type<TypeValue>    ParseAssignementSymbol
 %type<TypeValue>    ParseString
 %type<TypeValue>    ParseNumber
@@ -4783,8 +4786,8 @@ ParseRelativeOIDComponents:
 /******************************************************************************
  * BNF Definition:
  * SequenceValue ::=
-       "{" ComponentValueList "}"
-       | "{" "}"
+ *      "{" ComponentValueList "}"
+ *      | "{" "}"
  *****************************************************************************/
 ParseSequenceValue:
     CURLY_START ParseComponentValueList CURLY_END {
@@ -4794,37 +4797,142 @@ ParseSequenceValue:
         $$ = nil
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * ComponentValueList ::=
+ *      NamedValue
+ *      | ComponentValueList "," NamedValue
+ *****************************************************************************/
 ParseComponentValueList:
-    /* EMPTY */ {
-        $$ = nil
+    ParseNamedValue {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseComponentValueList COMMA ParseNamedValue {
+        $$ = $1
+        $$ = append($$.(LIST), $2)
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * NamedValue ::= identifier Value
+ *****************************************************************************/
+ParseNamedValue:
+    ParseString ParseValue {
+        $$ = MAP {
+           "identifier": $1,
+           "value":      $2,
+        }
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SequenceOfValue ::=
+       "{" ValueList "}"
+       | "{" NamedValueList "}"
+       | "{" "}"
+ *****************************************************************************/
 ParseSequenceOfValue:
-    /* EMPTY */ {
+    CURLY_START ParseValueList CURLY_END {
+        $$ = MAP {
+            "valueList": $1,
+        }
+    }
+  | CURLY_START ParseNamedValueList CURLY_END {
+        $$ = MAP {
+            "namedValueList": $1,
+        }
+    }
+  | CURLY_START CURLY_END {
         $$ = nil
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * ValueList ::=
+ *      Value
+ *      | ValueList "," Value
+ *****************************************************************************/
+ParseValueList:
+    ParseValue {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseValueList COMMA ParseValue {
+        $$ = $1
+        $$ = append($$.(LIST), $2)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * NamedValueList ::=
+ *      NamedValue
+ *      | NamedValueList "," NamedValue
+ *****************************************************************************/
+ParseNamedValueList:
+    ParseNamedValue {
+        $$ = LIST {
+            $1,
+        }
+    }
+  | ParseNamedValueList COMMA ParseNamedValue {
+        $$ = $1
+        $$ = append($$.(LIST), $2)
+    }
+
+/******************************************************************************
+ * BNF Definition:
+ * SetValue ::=
+ *      "{" ComponentValueList "}"
+ *      | "{" "}"
+ *****************************************************************************/
 ParseSetValue:
-    /* EMPTY */ {
+    CURLY_START ParseValueList CURLY_END {
+        $$ = MAP {
+            "componentValueList": $1,
+        }
+    }
+  | CURLY_START CURLY_END {
         $$ = nil
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * SetOfValue ::=
+ *      "{" ValueList "}"
+ *      | "{" NamedValueList "}"
+ *      | "{" "}"
+ *****************************************************************************/
 ParseSetOfValue:
-    /* EMPTY */ {
+    CURLY_START ParseValueList CURLY_END {
+        $$ = MAP {
+            "valueList": $1,
+        }
+    }
+  | CURLY_START ParseNamedValueList CURLY_END {
+        $$ = MAP {
+            "namedValueList": $1,
+        }
+    }
+  | CURLY_START CURLY_END {
         $$ = nil
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * PrefixedValue ::= Value
+ *****************************************************************************/
 ParsePrefixedValue:
-    /* EMPTY */ {
-        $$ = nil
+    ParseValue {
+        $$ = $1
     }
 
-// TODO
+/******************************************************************************
+ * BNF Definition:
+ * TimeValue ::= tstring
+ *****************************************************************************/
 ParseTimeValue:
     /* EMPTY */ {
         $$ = nil
