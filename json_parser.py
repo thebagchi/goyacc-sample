@@ -8,66 +8,66 @@ class ParserError(Exception):
     pass
 
 tokens = [
-    "curly_start",
-    "curly_end",
-    "square_start",
-    "square_end",
-    "comma",
-    "colon",
-    "token_number",
-    "token_string",
-    "token_true",
-    "token_false",
-    "token_null",
+    "CURLY_START",
+    "CURLY_END",
+    "SQUARE_START",
+    "SQUARE_END",
+    "COMMA",
+    "COLON",
+    "NUMBER",
+    "STRING",
+    "TRUE",
+    "FALSE",
+    "NULL",
 ]
 
 t_ignore = " \t\n"
 
-def t_curly_start(t):
+def t_CURLY_START(t):
     r"\{"
     return t
 
-def t_curly_end(t):
+def t_CURLY_END(t):
     r"\}"
     return t
 
-def t_square_start(t):
+def t_SQUARE_START(t):
     r"\["
     return t
 
-def t_square_end(t):
+def t_SQUARE_END(t):
     r"\]"
     return t
 
-def t_comma(t):
+def t_COMMA(t):
     r","
     return t
 
-def t_colon(t):
+def t_COLON(t):
     r":"
     return t
 
-def t_token_true(t):
+def t_TRUE(t):
     r"true"
     t.value = True
     return t
 
-def t_token_false(t):
+def t_FALSE(t):
     r"false"
     t.value = False
     return t
 
-def t_token_null(t):
+def t_NULL(t):
     r"null"
     t.value = None
     return t
 
-def t_token_string(t):
+def t_STRING(t):
     r'"(([^"\\])|(\\["\\\/bfnrt])|(\\u[0-9a-f]{4}))*"'
     t.value = t.value[1:-1]  # Remove quotation marks
     return t
 
-def t_token_number(t):
+def t_NUMBER(t):
     r'\-?(0|([1-9][0-9]*))(\.[0-9]*)?([eE][\+\-]?[0-9]*)?'
     try:
         t.value = int(t.value)
@@ -78,67 +78,66 @@ def t_token_number(t):
 def t_error(t):
     raise LexerError(t)
 
-def p_token_value(p):
-    """token_value : token_string
-                   | token_number
-                   | curly_start token_object curly_end
-                   | square_start token_list square_end
-                   | token_bool
-                   | token_null
+def p_Value(p):
+    """Value : STRING
+             | NUMBER
+             | CURLY_START Object CURLY_END
+             | SQUARE_START List SQUARE_END
+             | Bool
+             | NULL
     """
     if len(p) == 4:
         p[0] = p[2]
     else:
         p[0] = p[1]
 
-def p_empty(p):
-    """empty :  """
-
-def p_token_bool(p):
+def p_Bool(p):
     """
-    token_bool : token_true
-               | token_false
+    Bool : TRUE
+               | FALSE
     """
     p[0] = p[1]
 
-def p_token_list(p):
+def p_List(p):
     """
-    token_list : token_list comma token_value
-               | token_value
+    List : List COMMA Value
+               | Value
                | empty
     """
     p[0] = []
-    print("stb", len(p))
     if len(p) == 2:
-        # 1 empty | token_value
+        # 1 empty | Value
         if p[1] is not None:
             p[0].append(p[1])
             pass
         pass
     if len(p) == 4:
-        # 1 token_list 2 comma 3 token_value
+        # 1 List 2 COMMA 3 Value
         for item in p[1]:
             p[0].append(item)
         p[0].append(p[3])
         pass
 
-def p_token_object(p):
+def p_Object(p):
     """
-    token_object : token_object comma token_string colon token_value
-                 | token_string colon token_value
+    Object : Object COMMA STRING COLON Value
+                 | STRING COLON Value
                  | empty
     """
     p[0] = {}
     if len(p) == 4:
-        # 1 token_string 2 colon 3 token_value
+        # 1 STRING 2 COLON 3 Value
         p[0][p[1]] = p[3]
         pass
     if len(p) == 6:
-        # 1 token_object 2 comma 3 token_string 4 comma 5 token_value
+        # 1 Object 2 COMMA 3 STRING 4 COMMA 5 Value
         for key, value in p[1].items():
             p[0][key] = value
         p[0][p[3]] = p[5]
         pass
+
+def p_empty(p):
+    """empty :  """
 
 def p_error(p):
     print(p)
